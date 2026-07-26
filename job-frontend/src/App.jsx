@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { Home } from './pages/Home'
 
 function App() {
-  
+
 
   return (
     <>
 
-    {/* Here We Define Routes of our pages */}
-      
+      <Home />
+
+      {/* H ere We Define Routes of our pages */}
+
     </>
   )
 }
