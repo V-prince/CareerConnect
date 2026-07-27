@@ -37,7 +37,7 @@ export const Sidebar = () => {
 
 
   return (
-    <section className='w-72 min-h-screen border-r border-zinc-200  '>
+    <section className='w-72 min-h-screen border-r border-zinc-200 bg-white  '>
       <div className='flex flex-col '>
         <Link to={"/"}>
           <img src="/images/logo.png" alt="" className='w-50 mx-auto py-6' />

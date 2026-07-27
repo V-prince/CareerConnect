@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
 import { MianSidebar } from './layouts/MianSidebar'
+import { Dashboard } from './pages/student/Dashboard'
 
 function App() {
 
@@ -16,8 +17,8 @@ function App() {
 
         </Route>
 
-        <Route  path="/side"  element={<MianSidebar />} >
-
+        <Route element={<MianSidebar />} >
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
 
