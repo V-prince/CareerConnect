@@ -1,15 +1,31 @@
 import { useState } from 'react'
-import { Navbar } from './layouts/Navbar'
+import { Home } from './pages/public/Home'
+import { Navbar } from './components/Navbar'
+import { Route, Routes } from 'react-router-dom'
+import { MainLayout } from './layouts/MainLayout'
+import { MianSidebar } from './layouts/MianSidebar'
+import { Dashboard } from './pages/student/Dashboard'
 
 function App() {
-  
+
 
   return (
     <>
-    <Navbar/>
+      <Routes >
+        <Route element={<MainLayout />} >
+          <Route path="/" element={<Home />} />
 
-    {/* Here We Define Routes of our pages */}
-      
+        </Route>
+
+        <Route element={<MianSidebar />} >
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
+
+      </Routes>
+
+      {/* H ere We Define Routes of our pages */}
+
     </>
   )
 }
