@@ -14,7 +14,6 @@ function App() {
       <Routes >
         <Route element={<MainLayout />} >
           <Route path="/" element={<Home />} />
-
         </Route>
 
         <Route element={<MainSidebar />} >
