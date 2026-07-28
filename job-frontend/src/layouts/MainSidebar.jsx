@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { TopHeader } from '../components/TopHeader'
 
-export const MianSidebar = () => {
+export const MainSidebar = () => {
 
   const [isOpen, SetIsOpen] = useState(false)
 

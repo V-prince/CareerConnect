@@ -3,7 +3,7 @@ import { Home } from './pages/public/Home'
 import { Navbar } from './components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
-import { MianSidebar } from './layouts/MianSidebar'
+import { MainSidebar } from './layouts/MainSidebar'
 import { Dashboard } from './pages/student/Dashboard'
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Route>
 
-        <Route element={<MianSidebar />} >
+        <Route element={<MainSidebar />} >
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
 
