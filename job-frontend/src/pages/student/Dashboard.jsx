@@ -1,5 +1,6 @@
 import { icons } from 'lucide-react'
 import React from 'react'
+import { TopHeader } from '../../components/TopHeader'
 
 export const Dashboard = () => {
 
@@ -57,22 +58,7 @@ export const Dashboard = () => {
 
 
   return (
-    <section className="min-h-screen bg-gray-100">
-
-      <div className="flex items-center justify-end gap-3 p-4 bg-white shadow-sm">
-        <img
-          src="/images/profile.jpg"
-          alt="Profile"
-          className="h-10 w-10 md:h-11 md:w-11 rounded-full object-cover"
-        />
-
-        <div>
-          <h2 className="font-bold text-sm md:text-base">Prince Vadher</h2>
-          <p className="text-zinc-500 text-xs md:text-sm">Student</p>
-        </div>
-      </div>
-
-
+    <section className="min-h-screen bg-gray-100 mt-16">
       <div className="p-4 md:p-6 lg:p-8">
         <h1 className="text-2xl md:text-3xl font-bold">
           Welcome back, Prince!

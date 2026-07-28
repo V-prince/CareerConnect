@@ -1,8 +1,8 @@
-import { BookmarkCheck, FileText, icons, LayoutDashboard, Settings, User } from 'lucide-react'
+import { BookmarkCheck, FileText, icons, LayoutDashboard, Settings, User, X } from 'lucide-react'
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-export const Sidebar = () => {
+export const Sidebar = ({ isOpen, SetIsOpen }) => {
 
   const sideData = [
     {
@@ -34,10 +34,16 @@ export const Sidebar = () => {
   ]
 
 
-
-
   return (
-    <section className='w-72 min-h-screen border-r border-zinc-200 bg-white  '>
+    <section className={`fixed top-0 left-0 w-72 h-screen
+    border-r border-zinc-200 bg-white
+    transition-all duration-300 z-40
+    ${isOpen ? "translate-x-0" : "-translate-x-full"}
+    lg:translate-x-0`}>
+      <div onClick={() => SetIsOpen(false)} className='lg:hidden flex items-center justify-end p-3'>
+        <X />
+      </div>
+
       <div className='flex flex-col '>
         <Link to={"/"}>
           <img src="/images/logo.png" alt="" className='w-50 mx-auto py-6' />
