@@ -8,15 +8,27 @@ import { Dashboard } from "./pages/student/Dashboard";
 function App() {
   return (
     <>
+<<<<<<< HEAD
       <Routes>
         <Route element={<MainLayout />}>
+=======
+      <Dashboard />
+      {/* <Routes >
+        <Route element={<MainLayout />} >
+>>>>>>> 329615e (what)
           <Route path="/" element={<Home />} />
         </Route>
 
         <Route element={<MainSidebar />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
+<<<<<<< HEAD
       </Routes>
+=======
+
+
+      </Routes> */}
+>>>>>>> 329615e (what)
 
       {/* H ere We Define Routes of our pages */}
     </>
