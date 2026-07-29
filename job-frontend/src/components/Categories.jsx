@@ -4,92 +4,77 @@ import {
   FaPaintBrush,
   FaChartLine,
   FaUserTie,
+  FaGraduationCap,
 } from "react-icons/fa";
 
 const categories = [
   {
     icon: <FaCode />,
     title: "Development",
-    color: "bg-blue-100 text-blue-600",
+    color: "bg-indigo-100 text-indigo-600",
   },
   {
     icon: <FaBullhorn />,
     title: "Marketing",
-    color: "bg-pink-100 text-pink-600",
+    color: "bg-indigo-100 text-indigo-600",
   },
   {
     icon: <FaChartLine />,
     title: "Finance",
-    color: "bg-green-100 text-green-600",
+    color: "bg-indigo-100 text-indigo-600",
   },
   {
     icon: <FaUserTie />,
     title: "Human Resources",
-    color: "bg-yellow-100 text-yellow-600",
+    color: "bg-indigo-100 text-indigo-600",
   },
   {
     icon: <FaPaintBrush />,
     title: "Design",
-    color: "bg-purple-100 text-purple-600",
+    color: "bg-indigo-100 text-indigo-600",
+  },
+  {
+    icon: <FaGraduationCap />,
+    title: "Education",
+    color: "bg-indigo-100 text-indigo-600",
   },
 ];
 
 const Categories = () => {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="bg-gray-100 py-6 md:py-8 lg:py-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="bg-white rounded-xl shadow-md p-5 md:p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="font-semibold text-lg md:text-xl text-zinc-800">
+              Popular Categories
+            </h2>
+          </div>
 
-      <div className="max-w-7xl mx-auto px-6">
-
-
-
-        <div className="text-center mb-14">
-
-          <p className="text-blue-600 font-semibold uppercase tracking-wider">
-            Categories
-          </p>
-
-          <h2 className="text-4xl font-bold text-gray-900 mt-2">
-            Explore Popular Categories
-          </h2>
-
-          <p className="text-gray-500 mt-4 max-w-2xl mx-auto">
-            Browse thousands of opportunities across various industries and
-            find the perfect role that matches your skills.
-          </p>
-
-        </div>
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
-          {categories.map((category, index) => (
-
-            <div
-              key={index}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 group cursor-pointer border border-gray-100 hover:-translate-y-2"
-            >
-
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((category, index) => (
               <div
-                className={`w-16 h-16 rounded-xl flex items-center justify-center text-3xl mb-6 ${category.color}`}
+                key={index}
+                className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition cursor-pointer text-center"
               >
-                {category.icon}
+                <div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl mx-auto mb-4 ${category.color}`}
+                >
+                  {category.icon}
+                </div>
+
+                <h3 className="font-semibold text-zinc-800 text-sm md:text-base">
+                  {category.title}
+                </h3>
+
+                <p className="text-indigo-600 text-sm font-semibold mt-1">
+                  {category.count}
+                </p>
               </div>
-
-              <h3 className="text-xl font-semibold text-gray-800 group-hover:text-blue-600 transition">
-                {category.title}
-              </h3>
-
-              <button className="mt-6 text-blue-600 font-semibold hover:text-blue-700">
-                Explore →
-              </button>
-
-            </div>
-
-          ))}
-
+            ))}
+          </div>
         </div>
-
       </div>
-
     </section>
   );
 };

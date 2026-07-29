@@ -1,165 +1,191 @@
-import {
-  FaMapMarkerAlt,
-  FaClock,
-  FaBookmark,
-} from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 const jobs = [
   {
     id: 1,
     title: "Frontend Developer",
-    company: "Google",
+    company: "Microsoft",
     location: "Bangalore",
-    type: "Full Time",
-    salary: "₹10 - 15 LPA",
-    logo: "https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png",
+    logo: "/images/microsoft.png",
   },
   {
     id: 2,
-    title: "UI/UX Designer",
-    company: "Adobe",
-    location: "Mumbai",
-    type: "Internship",
-    salary: "₹25,000/month",
-    logo: "https://logos-world.net/wp-content/uploads/2020/07/Adobe-Logo.png",
+    title: "Backend Developer",
+    company: "TCS",
+    location: "Hyderabad",
+    logo: "/images/google.png",
   },
   {
     id: 3,
-    title: "Backend Developer",
-    company: "Amazon",
-    location: "Hyderabad",
-    type: "Full Time",
-    salary: "₹12 - 18 LPA",
-    logo: "https://logos-world.net/wp-content/uploads/2020/06/Amazon-Logo.png",
+    title: "UI/UX Designer",
+    company: "Infosys",
+    location: "Pune",
+    logo: "/images/zomato.png",
   },
   {
     id: 4,
+    title: "Digital Marketing Executive",
+    company: "Wipro",
+    location: "Chennai",
+    logo: "/images/Swiggy.png",
+  },
+  {
+    id: 5,
     title: "Data Analyst",
-    company: "Microsoft",
+    company: "Amazon",
+    location: "Bangalore",
+    logo: "/images/delloit.png",
+  },
+];
+
+const internships = [
+  {
+    id: 1,
+    title: "Web Development Intern",
+    company: "Google",
+    location: "Remote",
+    logo: "/images/google.png",
+  },
+  {
+    id: 2,
+    title: "Marketing Intern",
+    company: "Amazon",
+    location: "Bangalore",
+    logo: "/images/delloit.png",
+  },
+  {
+    id: 3,
+    title: "Data Science Intern",
+    company: "IBM",
+    location: "Remote",
+    logo: "/images/microsoft.png",
+  },
+  {
+    id: 4,
+    title: "Technical Support Intern",
+    company: "Dell",
+    location: "Hyderabad",
+    logo: "/images/zomato.png",
+  },
+  {
+    id: 5,
+    title: "Graphic Design Intern",
+    company: "Adobe",
     location: "Pune",
-    type: "Remote",
-    salary: "₹8 - 12 LPA",
-    logo: "https://logos-world.net/wp-content/uploads/2020/09/Microsoft-Logo.png",
+    logo: "/images/Swiggy.png",
   },
 ];
 
 const LatestJobs = () => {
   return (
-    <section className="bg-gray-50 py-20">
+    <section className="bg-gray-100 py-4 md:py-6 lg:py-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-5 lg:gap-8">
+          <div className="bg-white rounded-xl shadow-md p-5">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-semibold text-lg md:text-xl text-zinc-800">
+                Latest Jobs
+              </h2>
 
-      <div className="max-w-7xl mx-auto px-6">
-
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12">
-
-          <div>
-
-            <p className="text-blue-600 font-semibold uppercase tracking-wider">
-              Latest Jobs
-            </p>
-
-            <h2 className="text-4xl font-bold text-gray-900 mt-2">
-              Recent Job Openings
-            </h2>
-
-            <p className="text-gray-500 mt-3">
-              Explore newly posted opportunities from top companies.
-            </p>
-
-          </div>
-
-          <button className="mt-6 md:mt-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition">
-            View All Jobs
-          </button>
-
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-8">
-
-          {jobs.map((job) => (
-
-            <div
-              key={job.id}
-              className="bg-white rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1"
-            >
-
-              <div className="flex justify-between items-start">
-
-                <div className="flex gap-4">
-
-                  <img
-                    src={job.logo}
-                    alt={job.company}
-                    className="w-14 h-14 rounded-xl bg-gray-100 p-2"
-                  />
-
-                  <div>
-
-                    <h3 className="text-xl font-semibold text-gray-800">
-                      {job.title}
-                    </h3>
-
-                    <p className="text-gray-500">
-                      {job.company}
-                    </p>
-
-                  </div>
-
-                </div>
-
-                <button className="text-gray-400 hover:text-blue-600 transition">
-                  <FaBookmark />
-                </button>
-
-              </div>
-
-              <div className="flex flex-wrap gap-3 mt-6">
-
-                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {job.type}
-                </span>
-
-                <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm font-medium">
-                  {job.salary}
-                </span>
-
-              </div>
-
-              <div className="flex justify-between items-center mt-8">
-
-                <div className="space-y-2">
-
-                  <div className="flex items-center gap-2 text-gray-500">
-
-                    <FaMapMarkerAlt />
-
-                    <span>{job.location}</span>
-
-                  </div>
-
-                  <div className="flex items-center gap-2 text-gray-500">
-
-                    <FaClock />
-
-                    <span>Posted 2 days ago</span>
-
-                  </div>
-
-                </div>
-
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-medium transition">
-                  Apply Now
-                </button>
-
-              </div>
-
+              <button className="text-indigo-600 font-medium hover:text-indigo-700 transition text-sm">
+                View All
+              </button>
             </div>
 
-          ))}
+            {jobs.map((job, index) => (
+              <div
+                key={job.id}
+                className={`flex flex-col gap-4 ${
+                  index === jobs.length - 1 ? "border-none" : "border-b"
+                } py-5 border-zinc-200`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={job.logo}
+                      alt={job.company}
+                      className="w-10 h-10 object-contain"
+                    />
 
+                    <div>
+                      <h3 className="font-semibold text-base md:text-lg text-zinc-800">
+                        {job.title}
+                      </h3>
+
+                      <p className="text-sm text-zinc-500">
+                        {job.company}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                    <FaMapMarkerAlt />
+                    <span>{job.location}</span>
+                  </div>
+
+                  <button className="text-indigo-600 border border-indigo-600 hover:bg-indigo-600 hover:text-white px-4 py-1.5 rounded-md text-sm font-semibold transition">
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-white rounded-xl shadow-md p-5">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="font-semibold text-lg md:text-xl text-zinc-800">
+                Latest Internships
+              </h2>
+
+              <button className="text-indigo-600 font-medium hover:text-indigo-700 transition text-sm">
+                View All
+              </button>
+            </div>
+
+            {internships.map((intern, index) => (
+              <div
+                key={intern.id}
+                className={`flex flex-col gap-4 ${
+                  index === internships.length - 1 ? "border-none" : "border-b"
+                } py-5 border-zinc-200`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={intern.logo}
+                      alt={intern.company}
+                      className="w-10 h-10 object-contain"
+                    />
+
+                    <div>
+                      <h3 className="font-semibold text-base md:text-lg text-zinc-800">
+                        {intern.title}
+                      </h3>
+
+                      <p className="text-sm text-zinc-500">
+                        {intern.company}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-zinc-500 text-sm">
+                    <FaMapMarkerAlt />
+                    <span>{intern.location}</span>
+                  </div>
+
+                  <button className="text-indigo-600 border border-indigo-600 hover:bg-indigo-600 hover:text-white px-4 py-1.5 rounded-md text-sm font-semibold transition">
+                    Apply Now
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-
       </div>
-
     </section>
   );
 };
