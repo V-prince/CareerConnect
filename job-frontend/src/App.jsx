@@ -5,6 +5,7 @@ import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from './layouts/MainLayout'
 import { MainSidebar } from './layouts/MainSidebar'
 import { Dashboard } from './pages/student/Dashboard'
+import { Profile } from './pages/student/Profile'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
 
         <Route element={<MainSidebar />} >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
 
