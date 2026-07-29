@@ -48,7 +48,7 @@ export const Navbar = () => {
               ? "border-indigo-600 text-indigo-600"
               : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
             }`}>
-            Contect
+            Contact
           </NavLink>
         </ul>
 
