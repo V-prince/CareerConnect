@@ -1,6 +1,8 @@
 import { Calendar, ChevronRight, MapIcon, MapPin, Recycle, Search, X } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select from 'react-select';
+import { ApplicationDetailCard } from '../../components/ApplicationDetailCard';
+import { JobCard } from '../../components/JobCard';
 
 export const Applications = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -10,6 +12,7 @@ export const Applications = () => {
     status: "",
     sort: ""
   })
+
 
 
   const options = [
@@ -75,6 +78,7 @@ export const Applications = () => {
     },
 
   ]
+  const [filterdJobs, setFilterdJobs] = useState(JobData)
 
   const itemsPerPage = 5;
 
@@ -82,7 +86,7 @@ export const Applications = () => {
   const firstIndex = lastIndex - itemsPerPage;
 
   const currentJobs = JobData.slice(firstIndex, lastIndex);
-  const totalPages = Math.ceil(JobData.length / itemsPerPage);
+  const totalPages = Math.ceil(filterdJobs.length / itemsPerPage);
 
   const handelonChange = (e) => {
     const { name, value } = e.target;
@@ -92,9 +96,47 @@ export const Applications = () => {
     }))
   }
 
-  const handelOnSearch = () => {
-    console.log(searchDetail)
+  const SearchFilters = () => {
+    let Filterd = [...JobData];
+
+    if (searchDetail.search) {
+      Filterd = Filterd.filter((job) => (
+        job.title.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
+        job.companey.toLowerCase().includes(searchDetail.search.toLowerCase())
+      ))
+    }
+
+    if (searchDetail.status && searchDetail.status !== "all") {
+      Filterd = Filterd.filter((job) => (
+        job.status.toLowerCase().replace(/\s+/g, "_").includes(searchDetail.status)
+      ))
+
+    }
+
+    if (searchDetail.sort === "new") {
+      Filterd.reverse()
+    }
+
+    setFilterdJobs(Filterd)
   }
+
+
+  const cleanFilters = () => {
+    setsearchDetail({
+      search: "",
+      sort: "",
+      status: "all"
+    }
+    )
+
+    setFilterdJobs(JobData)
+    setCurrentPage(1)
+    setSelectDetails(null)
+  }
+
+  useEffect(() => {
+    SearchFilters()
+  }, [searchDetail])
 
 
   return (
@@ -109,17 +151,22 @@ export const Applications = () => {
 
       <div className='bg-white rounded-xl  shadow-md mt-8 p-5'>
 
+        {/*searching*/}
+
         <div className='flex flex-col justify-start gap-5 md:flex-row md:items-center lg:justify-between w-full'>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="w-full md:w-96">
               <div className="flex items-center border border-zinc-300 rounded-lg px-3 py-2">
-                <Search size={20} className="text-zinc-500 flex-shrink-0" onClick={handelOnSearch} />
+                <Search onClick={SearchFilters} size={20} className="text-zinc-500 flex-shrink-0" />
 
                 <input
                   type="text"
                   name='search'
-                  onChange={handelonChange}
+                  value={searchDetail.search}
+                  onChange={(e) => {
+                    handelonChange(e);
+                  }}
                   placeholder="Search by job title or company"
                   className="w-full ml-2 outline-none text-sm"
                 />
@@ -129,9 +176,19 @@ export const Applications = () => {
             <div className="w-full md:w-40">
               <Select
                 options={options}
-                isClearable
                 name='status'
-                onChange={handelonChange}
+                value={options.find(
+                  (option) => option.value === searchDetail.status
+                ) || null}
+                onChange={(selected) => {
+                  setsearchDetail(prev => ({
+                    ...prev,
+                    status: selected.value
+
+                  }))
+                  SearchFilters()
+                }
+                }
                 className="text-sm w-full"
                 placeholder="All Status"
                 classNamePrefix="select"
@@ -148,9 +205,17 @@ export const Applications = () => {
             <div className="w-full md:w-40">
               <Select
                 options={shortOptions}
-                isClearable
                 name='sort'
-                onChange={handelonChange}
+                value={shortOptions.find(
+                  (option) => option.value === searchDetail.status
+                ) || null}
+                onChange={(selected) => {
+                  setsearchDetail(prev => ({
+                    ...prev,
+                    sort: selected.value
+                  }))
+                  SearchFilters()
+                }}
                 className="text-sm  w-full"
                 placeholder="Short"
                 classNamePrefix="select"
@@ -166,173 +231,34 @@ export const Applications = () => {
 
           </div>
 
-          <button className="border  border-zinc-300 flex items-center justify-center gap-2 px-4 py-2 rounded-lg hover:bg-zinc-100 transition">
+          <button onClick={cleanFilters} className="border  border-zinc-300 flex items-center justify-center gap-2 px-4 py-2 rounded-lg hover:bg-zinc-100 transition">
             <Recycle size={20} />
             Clear filter
           </button>
         </div>
 
       </div>
+
       <div className="flex flex-col xl:flex-row gap-6 mt-5">
 
 
         <div className={`w-full ${!selectDetails ? "xl:w-full" : "xl:w-[45%]"} transition-all duration-300  space-y-3`}>
 
-          {currentJobs.map((job, index) => (
-            <div
-              key={index}
-              onClick={() => setSelectDetails(job)}
-              className="bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 transition cursor-pointer"
-            >
-              <div className="flex items-center justify-between p-5">
-
-                <div className="flex gap-4">
-                  <img
-                    src={job.icon}
-                    alt={job.companey}
-                    className="w-12 h-12 object-contain flex-shrink-0"
-                  />
-
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-base">
-                      {job.title}
-                    </h3>
-
-                    <p className="text-sm text-zinc-500">
-                      {job.companey}
-                    </p>
-
-                    <div className="flex items-center gap-2 text-sm text-zinc-500">
-                      <MapPin size={15} />
-                      {job.city}, {job.state}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-sm text-zinc-500">
-                      <Calendar size={15} />
-                      {job.date}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-end gap-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold
-              ${job.status.toLowerCase() === "under review"
-                        ? "bg-indigo-100 text-indigo-600"
-                        : job.status.toLowerCase() === "applied"
-                          ? "bg-orange-100 text-orange-600"
-                          : "bg-green-100 text-green-600"
-                      }`}
-                  >
-                    {job.status}
-                  </span>
-
-                  <ChevronRight
-                    size={20}
-                    className="text-zinc-500"
-                  />
-                </div>
-
-              </div>
-            </div>
+          {filterdJobs.map((job, index) => (
+            <JobCard key={index} setSelectDetails={setSelectDetails} job={job} />
           ))}
 
         </div>
 
+        {/* Application details */}
+
         {selectDetails && (<>
-
-
-          <div className={`flex-1 xl:w-[55%] transition-all duration-300 ${selectDetails
-            ? "opacity-100 translate-x-0"
-            : "opacity-0 translate-x-5 pointer-events-none"}`}>
-
-
-            <div className="bg-white border border-zinc-200 rounded-xl p-6">
-
-              <div className="flex items-center justify-between border-b pb-4">
-                <h2 className="text-xl font-semibold">
-                  Application Details
-                </h2>
-
-                <button onClick={() => setSelectDetails(null)} className='cursor-pointer'>
-                  <X size={20} />
-                </button>
-              </div>
-
-              <div className="flex items-center gap-4 py-6 border-b">
-
-                <img
-                  src={selectDetails.icon}
-                  className="w-12 h-12 object-contain"
-                />
-
-                <div>
-                  <h3 className="font-semibold text-lg">
-                    {selectDetails.title}
-                  </h3>
-
-                  <p className="text-zinc-500">
-                    {selectDetails.companey}
-                  </p>
-
-                  <div className="flex items-center gap-2 text-sm text-zinc-500 mt-1">
-                    <MapPin size={15} />
-                    {selectDetails.city}, {selectDetails.state}
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-
-                <div>
-                  <p className="text-sm text-zinc-500">
-                    Job Type
-                  </p>
-
-                  <p className="font-medium">
-                    Internship
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-zinc-500">
-                    Applied Date
-                  </p>
-
-                  <p className="font-medium">
-                    25 July 2026
-                  </p>
-                </div>
-
-                <div>
-                  <p className="text-sm text-zinc-500">
-                    Status
-                  </p>
-
-                  <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-600 text-sm font-medium">
-                    Under Review
-                  </span>
-                </div>
-
-                <div>
-                  <p className="text-sm text-zinc-500">
-                    Salary
-                  </p>
-
-                  <p className="font-medium">
-                    ₹40,000 / month
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
+          <ApplicationDetailCard selectDetails={selectDetails} />
         </>)}
       </div>
+
+      {/* Pagination */}
+      
       <div className="flex items-center justify-center gap-2 mt-6">
 
 
@@ -348,7 +274,7 @@ export const Applications = () => {
           Previous
         </button>
 
-        {/* Page Numbers */}
+
         {[...Array(totalPages)].map((_, index) => (
           <button
             key={index}
@@ -363,7 +289,7 @@ export const Applications = () => {
           </button>
         ))}
 
-        {/* Next */}
+
         <button
           onClick={() => setCurrentPage((prev) => prev + 1)}
           disabled={currentPage === totalPages}
