@@ -5,6 +5,7 @@ import { MainLayout } from './layouts/MainLayout'
 import { MainSidebar } from './layouts/MainSidebar'
 import { Dashboard } from './pages/student/Dashboard'
 import { Profile } from './pages/student/Profile'
+import { Applications } from './pages/student/Applications'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         <Route element={<MainSidebar />} >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/applications" element={<Applications />} />
         </Route>
 
 
