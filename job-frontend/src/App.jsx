@@ -4,31 +4,24 @@ import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { MainSidebar } from "./layouts/MainSidebar";
 import { Dashboard } from "./pages/student/Dashboard";
+import { Profile } from "./pages/student/Profile";
 
 function App() {
   return (
     <>
-<<<<<<< HEAD
       <Routes>
-        <Route element={<MainLayout />}>
-=======
-      <Dashboard />
-      {/* <Routes >
-        <Route element={<MainLayout />} >
->>>>>>> 329615e (what)
+        {/* <Route element={<MainLayout />} >
           <Route path="/" element={<Home />} />
-        </Route>
+        </Route> */}
 
         <Route element={<MainSidebar />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-<<<<<<< HEAD
+
+        <Route element={<MainSidebar />}>
+          <Route path="/dashboard" element={<Profile />} />
+        </Route>
       </Routes>
-=======
-
-
-      </Routes> */}
->>>>>>> 329615e (what)
 
       {/* H ere We Define Routes of our pages */}
     </>
