@@ -1,6 +1,6 @@
 import React from 'react'
 import {MapPin, X } from 'lucide-react'
-export const ApplicationDetailCard = ({selectDetails}) => {
+export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
   return (
     <div className={`flex-1 xl:w-[55%] transition-all duration-300 ${selectDetails
       ? "opacity-100 translate-x-0"

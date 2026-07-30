@@ -253,7 +253,7 @@ export const Applications = () => {
         {/* Application details */}
 
         {selectDetails && (<>
-          <ApplicationDetailCard selectDetails={selectDetails} />
+          <ApplicationDetailCard selectDetails={selectDetails} setSelectDetails={setSelectDetails} />
         </>)}
       </div>
 
