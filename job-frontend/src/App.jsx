@@ -7,6 +7,7 @@ import { MainSidebar } from './layouts/MainSidebar'
 import { Dashboard } from './pages/student/Dashboard'
 import { Profile } from './pages/student/Profile'
 import { Applications } from './pages/student/Applications'
+import { SaveJobs } from './pages/student/SaveJobs'
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
+          <Route path="/save/jobs" element={<SaveJobs />} />
         </Route>
 
 

@@ -58,7 +58,7 @@ export const Dashboard = () => {
 
 
   return (
-    <section className="min-h-screen bg-gray-100 mt-16">
+    <section className="min-h-screen bg-gray-100 mt-16 p-8">
       <div className="p-4 md:p-6 lg:p-8">
         <h1 className="text-2xl md:text-3xl font-bold">
           Welcome back, Prince!
@@ -67,6 +67,7 @@ export const Dashboard = () => {
         <p className="text-zinc-600 mt-2 text-sm md:text-base">
           Here's what's happening with your career journey
         </p>
+      
 
 
         <div className="bg-white rounded-xl shadow-md mt-8 p-5">
