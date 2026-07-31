@@ -127,28 +127,28 @@ export const Dashboard = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-8">
 
-            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-green-200 bg-green-50 hover:shadow-md transition">
+            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-green-200 shadow-xl bg-green-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-green-600 uppercase">
                 Applied
               </span>
               <p className="text-3xl font-bold text-green-700 mt-2">5</p>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-yellow-200 bg-yellow-50 hover:shadow-md transition">
+            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-yellow-200 shadow-xl bg-yellow-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-yellow-600 uppercase">
                 Pending
               </span>
               <p className="text-3xl font-bold text-yellow-700 mt-2">2</p>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-blue-200 bg-blue-50 hover:shadow-md transition">
+            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-blue-200 shadow-xl bg-blue-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-blue-600 uppercase">
                 Interview
               </span>
               <p className="text-3xl font-bold text-blue-700 mt-2">1</p>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-red-200 bg-red-50 hover:shadow-md transition">
+            <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-red-200 shadow-xl bg-red-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-red-600 uppercase">
                 Rejected
               </span>

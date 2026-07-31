@@ -2,14 +2,12 @@ import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
-
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <header className="w-full bg-white shadow-md border-b border-zinc-200 sticky top-0 z-50">
       <nav className="max-w-7xl mx-auto flex items-center justify-between h-15 px-5 sm:px-8 lg:px-10">
-
         <Link to={"/"}>
           <img
             src="/images/logo.png"
@@ -18,64 +16,83 @@ export const Navbar = () => {
           />
         </Link>
 
-
         <ul className="hidden md:flex items-center gap-8 font-medium text-gray-700">
-
-          <NavLink to={"/"} className={({ isActive }) =>
-            `pb-1 border-b-2 transition-all duration-300 ${isActive
-              ? "border-indigo-600 text-indigo-600"
-              : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
-            }`}>
+          <NavLink
+            to={"/"}
+            className={({ isActive }) =>
+              `pb-1 border-b-2 transition-all duration-300 ${
+                isActive
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              }`
+            }
+          >
             Home
           </NavLink>
 
-          <NavLink to={"/jobs"} className={({ isActive }) =>
-            `pb-1 border-b-2 transition-all duration-300 ${isActive
-              ? "border-indigo-600 text-indigo-600"
-              : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
-            }`}>
+          <NavLink
+            to={"/jobs"}
+            className={({ isActive }) =>
+              `pb-1 border-b-2 transition-all duration-300 ${
+                isActive
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              }`
+            }
+          >
             Jobs
           </NavLink>
-          <NavLink to={"/about"} className={({ isActive }) =>
-            `pb-1 border-b-2 transition-all duration-300 ${isActive
-              ? "border-indigo-600 text-indigo-600"
-              : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
-            }`}>
+          <NavLink
+            to={"/about"}
+            className={({ isActive }) =>
+              `pb-1 border-b-2 transition-all duration-300 ${
+                isActive
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              }`
+            }
+          >
             About Us
           </NavLink>
-          <NavLink to={"/contect"} className={({ isActive }) =>
-            `pb-1 border-b-2 transition-all duration-300 ${isActive
-              ? "border-indigo-600 text-indigo-600"
-              : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
-            }`}>
+          <NavLink
+            to={"/contact"}
+            className={({ isActive }) =>
+              `pb-1 border-b-2 transition-all duration-300 ${
+                isActive
+                  ? "border-indigo-600 text-indigo-600"
+                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              }`
+            }
+          >
             Contact
           </NavLink>
         </ul>
 
-
         <div className="hidden md:flex items-center gap-4">
-          <button className="px-5 py-2 border border-zinc-300 rounded-lg hover:bg-gray-100 transition-all duration-300">
+          <Link
+            to="/login"
+            className="px-5 py-2 border border-zinc-300 rounded-lg hover:bg-gray-100 transition-all duration-300"
+          >
             Login
-          </button>
+          </Link>
 
-          <button className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300">
+          <Link
+            to="/register"
+            className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300"
+          >
             Register
-          </button>
+          </Link>
         </div>
 
-
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden"
-        >
+        <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
           {isOpen ? <X size={28} /> : <Menu size={28} />}
         </button>
       </nav>
 
-
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 border-t" : "max-h-0"
-          }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isOpen ? "max-h-96 border-t" : "max-h-0"
+        }`}
       >
         <ul className="flex flex-col px-5 py-4 gap-4 font-medium bg-white">
           <li className="cursor-pointer hover:text-indigo-600">Home</li>
@@ -85,15 +102,23 @@ export const Navbar = () => {
 
           <hr />
 
-          <button className="w-full border border-zinc-300 rounded-lg py-2 hover:bg-gray-100">
+          <Link
+            to="/login"
+            onClick={() => setIsOpen(false)}
+            className="w-full border border-zinc-300 rounded-lg py-2 text-center hover:bg-gray-100"
+          >
             Login
-          </button>
+          </Link>
 
-          <button className="w-full bg-indigo-600 text-white rounded-lg py-2 hover:bg-indigo-700">
+          <Link
+            to="/register"
+            onClick={() => setIsOpen(false)}
+            className="w-full bg-indigo-600 text-white rounded-lg py-2 text-center hover:bg-indigo-700"
+          >
             Register
-          </button>
+          </Link>
         </ul>
       </div>
     </header>
   );
-}
+};
