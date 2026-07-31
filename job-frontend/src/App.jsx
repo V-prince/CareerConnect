@@ -18,10 +18,10 @@ function App() {
         </Route> */}
 
         <Route element={<MainSidebar />}>
-          <Route path="/student/dashboard" element={<Dashboard />} />
-          <Route path="/student/profile" element={<Profile />} />
-          <Route path="/student/applications" element={<Applications />} />
-          <Route path="/student/savejobs" element={<SaveJobs />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/savejobs" element={<SaveJobs />} />
         </Route>
       </Routes>
 
