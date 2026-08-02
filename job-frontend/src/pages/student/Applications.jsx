@@ -85,7 +85,7 @@ export const Applications = () => {
   const lastIndex = currentPage * itemsPerPage;
   const firstIndex = lastIndex - itemsPerPage;
 
-  const currentJobs = JobData.slice(firstIndex, lastIndex);
+  const currentJobs = filterdJobs.slice(firstIndex, lastIndex);
   const totalPages = Math.ceil(filterdJobs.length / itemsPerPage);
 
   const handelonChange = (e) => {
@@ -244,7 +244,7 @@ export const Applications = () => {
 
         <div className={`w-full ${!selectDetails ? "xl:w-full" : "xl:w-[45%]"} transition-all duration-300  space-y-3`}>
 
-          {filterdJobs.map((job, index) => (
+          {currentJobs.map((job, index) => (
             <JobCard key={index} setSelectDetails={setSelectDetails} job={job} />
           ))}
 
@@ -253,7 +253,7 @@ export const Applications = () => {
         {/* Application details */}
 
         {selectDetails && (<>
-          <ApplicationDetailCard selectDetails={selectDetails} />
+          <ApplicationDetailCard selectDetails={selectDetails} setSelectDetails={setSelectDetails} />
         </>)}
       </div>
 
@@ -303,8 +303,6 @@ export const Applications = () => {
         </button>
 
       </div>
-
-
 
     </section>
   )

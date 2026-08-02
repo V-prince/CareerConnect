@@ -25,6 +25,7 @@ function App() {
         <Route element={<MainSidebar />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
+          <Route path="/save/jobs" element={<SaveJobs />} />
         </Route>
       </Routes>
 
