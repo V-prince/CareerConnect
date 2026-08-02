@@ -8,7 +8,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <LayoutDashboard size={22} />,
       title: "Dashboard",
-      to: "/dashboard"
+      to: "/user/dashboard"
     },
     {
       icon: <User size={22} />,

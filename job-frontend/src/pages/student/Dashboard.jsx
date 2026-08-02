@@ -58,7 +58,7 @@ export const Dashboard = () => {
 
 
   return (
-    <section className="min-h-screen bg-gray-100 mt-16 p-8">
+    <section className="min-h-screen bg-gray-100 mt-16 p-2 mdp-8">
       <div className="p-4 md:p-6 lg:p-8">
         <h1 className="text-2xl md:text-3xl font-bold">
           Welcome back, Prince!

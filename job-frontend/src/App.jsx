@@ -7,8 +7,12 @@ import { Dashboard } from "./pages/student/Dashboard";
 import { Profile } from "./pages/student/Profile";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
+import { Applications } from "./pages/student/Applications";
+import { SaveJobs } from "./pages/student/SaveJobs";
+import { Setting } from "./pages/student/Setting";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
+
 
 function App() {
   return (
@@ -23,13 +27,11 @@ function App() {
         </Route>
 
         <Route element={<MainSidebar />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-
-        <Route element={<MainSidebar />}>
+          <Route path="/user/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/save/jobs" element={<SaveJobs />} />
+          <Route path="/settings" element={<Setting />} />
         </Route>
       </Routes>
 
