@@ -7,6 +7,8 @@ import { Dashboard } from "./pages/student/Dashboard";
 import { Profile } from "./pages/student/Profile";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route element={<MainSidebar />}>
