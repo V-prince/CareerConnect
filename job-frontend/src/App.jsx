@@ -10,6 +10,9 @@ import Register from "./pages/public/Register";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
 import { Setting } from "./pages/student/Setting";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+
 
 function App() {
   return (
@@ -19,6 +22,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route element={<MainSidebar />}>
