@@ -1,9 +1,9 @@
 import {
   FaCode,
   FaBullhorn,
-  FaPaintBrush,
   FaChartLine,
   FaUserTie,
+  FaPaintBrush,
   FaGraduationCap,
 } from "react-icons/fa";
 
@@ -42,37 +42,32 @@ const categories = [
 
 const Categories = () => {
   return (
-    <section className="bg-gray-100 py-6 md:py-8 lg:py-10">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow-md p-5 md:p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-semibold text-lg md:text-xl text-zinc-800">
-              Popular Categories
-            </h2>
-          </div>
+    <section className="bg-white border-b border-zinc-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12 lg:py-14">
+        <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-slate-900 mb-6 md:mb-7 lg:mb-8">
+          Popular Categories
+        </h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 lg:gap-5">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              className="rounded-xl border border-zinc-200 bg-white hover:shadow-md hover:-translate-y-0.5 transition p-5 text-center cursor-pointer"
+            >
               <div
-                key={index}
-                className="bg-white rounded-xl border border-zinc-200 p-5 hover:shadow-md transition cursor-pointer text-center"
+                className={`mx-auto mb-3 flex items-center justify-center text-2xl md:text-3xl ${category.iconColor}`}
               >
-                <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl mx-auto mb-4 ${category.color}`}
-                >
-                  {category.icon}
-                </div>
-
-                <h3 className="font-semibold text-zinc-800 text-sm md:text-base">
-                  {category.title}
-                </h3>
-
-                <p className="text-indigo-600 text-sm font-semibold mt-1">
-                  {category.count}
-                </p>
+                {category.icon}
               </div>
-            ))}
-          </div>
+
+              <h3 className="font-semibold text-sm md:text-base text-slate-900">
+                {category.title}
+              </h3>
+              <p className="text-blue-600 text-sm font-semibold mt-1">
+                {category.count}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

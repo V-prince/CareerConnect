@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import Select from "react-select";
-import heroImage from "../assets/hero.png";
+import career2 from "../assets/career2.png";
 
 const locationOptions = [
   { value: "ahmedabad", label: "Ahmedabad" },
@@ -11,6 +11,7 @@ const locationOptions = [
   { value: "bangalore", label: "Bangalore" },
   { value: "hyderabad", label: "Hyderabad" },
   { value: "pune", label: "Pune" },
+  { value: "remote", label: "Remote" },
 ];
 
 const Hero = () => {
@@ -25,84 +26,91 @@ const Hero = () => {
     setKeyword("");
     setLocation(null);
   };
+
   return (
-    <section className="bg-gray-100">
-      <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-zinc-800">
-              Find Your Dream
-              <span className="block text-indigo-600">Job & Internship</span>
+    <section className="bg-gradient-to-b from-blue-50 to-white border-b border-zinc-100">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 lg:py-16">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-slate-900">
+              Find Your Dream Job
+              <span className="block text-blue-600">& Internship</span>
             </h1>
 
-            <p className="text-zinc-600 mt-3 md:mt-5 text-sm md:text-base lg:text-lg">
+            <p className="text-slate-700 mt-4 md:mt-5 text-sm md:text-base lg:text-lg font-normal max-w-xl mx-auto lg:mx-0">
               Find the perfect opportunity and kickstart your career
             </p>
 
-            <div className="bg-white shadow-md rounded-xl p-3 mt-6 md:mt-8">
-              <div className="grid lg:grid-cols-3 gap-3">
-                <div className="flex items-center border border-zinc-200 rounded-xl px-4">
-                  <FaSearch className="text-indigo-600 mr-3" />
+            <div className="mt-7 md:mt-8 lg:mt-9 bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3">
+              <div className="grid md:grid-cols-12 gap-2.5 md:gap-3 items-stretch">
+                <div className="md:col-span-5 flex items-center border border-zinc-200 rounded-xl px-4 bg-white">
+                  <FaSearch className="text-blue-600 mr-3 shrink-0" />
                   <input
                     type="text"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
-                    placeholder="Job title"
-                    className="w-full min-w-0 h-12 outline-none bg-transparent"
+                    placeholder="Job title, keyword..."
+                    className="w-full min-w-0 h-12 outline-none bg-transparent text-sm text-slate-800"
                   />
                 </div>
 
-                <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
-                    <FaMapMarkerAlt className="text-indigo-600" />
+                <div className="md:col-span-4 relative">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-blue-600">
+                    <FaMapMarkerAlt />
                   </div>
                   <Select
                     options={locationOptions}
                     value={location}
                     onChange={setLocation}
-                    placeholder="All Locations"
-                    isClearable
-                    defaultValue={locationOptions[0]}
-                    isSearchable
                     className="text-sm"
                     styles={{
                       control: (base) => ({
                         ...base,
                         height: 48,
+                        minHeight: 48,
                         borderRadius: 12,
                         borderColor: "#e4e4e7",
                         boxShadow: "none",
-                        paddingLeft: 28,
+                        paddingLeft: 30,
                         "&:hover": {
                           borderColor: "#e4e4e7",
                         },
                       }),
-                      indicatorSeparator: () => ({
-                        display: "none",
+                      valueContainer: (base) => ({
+                        ...base,
+                        padding: "0 8px",
                       }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: "#0f172a",
+                      }),
+                      indicatorSeparator: () => ({ display: "none" }),
                       dropdownIndicator: (base) => ({
                         ...base,
-                        paddingRight: 12,
+                        paddingRight: 10,
+                        color: "#3b82f6",
                       }),
                     }}
                   />
                 </div>
 
-                <button
-                  onClick={handleSearch}
-                  className="h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition text-sm"
-                >
-                  Search
-                </button>
+                <div className="md:col-span-3">
+                  <button
+                    onClick={handleSearch}
+                    className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base font-semibold transition shadow-sm"
+                  >
+                    Search
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="flex justify-center lg:justify-end">
             <img
-              src={heroImage}
-              alt="Hero"
-              className="w-full max-w-md lg:max-w-lg"
+              src={career2}
+              alt="CareerConnect Hero"
+              className="w-full max-w-lg"
             />
           </div>
         </div>
