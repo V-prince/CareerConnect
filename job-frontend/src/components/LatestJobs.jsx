@@ -4,6 +4,7 @@ const companyLogo = (company) => {
   const logos = {
     microsoft:
       "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
+<<<<<<< HEAD
 
     google:
       "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
@@ -25,6 +26,21 @@ const companyLogo = (company) => {
       "https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg",
 
     tcs: "https://images.ctfassets.net/7xz1x21beds9/4cTq1jt8uh8jnBgvWbpKOV/663b48744791bd4e5ca178ae503d4916/Tata_Consultancy_Services_Logo.svg.png?w=1029&h=1029&q=90&fm=png",
+=======
+    google:
+      "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg",
+    amazon:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg",
+    ibm: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg",
+    dell: "https://upload.wikimedia.org/wikipedia/commons/1/18/Dell_logo_2016.svg",
+    adobe:
+      "https://upload.wikimedia.org/wikipedia/commons/7/7b/Adobe_Systems_logo_and_wordmark.svg",
+    infosys:
+      "https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg",
+    tcs: "https://images.ctfassets.net/7xz1x21beds9/4cTq1jt8uh8jnBgvWbpKOV/663b48744791bd4e5ca178ae503d4916/Tata_Consultancy_Services_Logo.svg.png?w=1029&h=1029&q=90&fm=png",
+    wipro:
+      "https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg",
+>>>>>>> prince
   };
 
   return logos[company.toLowerCase()];
@@ -103,7 +119,11 @@ const CardRow = ({ item }) => (
         <img
           src={companyLogo(item.company)}
           alt={item.company}
+<<<<<<< HEAD
           className="w-12 h-12 object-contain flex-shrink-0"
+=======
+          className="w-12 h-12 object-contain"
+>>>>>>> prince
         />
         <div className="min-w-0">
           <h3 className="font-semibold text-sm md:text-base text-slate-900 truncate">

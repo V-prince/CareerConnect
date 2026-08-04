@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Home } from "./pages/public/Home";
+import { Navbar } from "./components/Navbar";
 import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { MainSidebar } from "./layouts/MainSidebar";
@@ -9,25 +10,26 @@ import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
+import { Applications } from "./pages/student/Applications";
+import { SaveJobs } from "./pages/student/SaveJobs";
 
 function App() {
   return (
     <>
       <Routes>
-        <Route element={<MainLayout />}>
+        {/* <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-        </Route>
+        </Route> */}
 
         <Route element={<MainSidebar />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-
-        <Route element={<MainSidebar />}>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/savejobs" element={<SaveJobs />} />
         </Route>
       </Routes>
 

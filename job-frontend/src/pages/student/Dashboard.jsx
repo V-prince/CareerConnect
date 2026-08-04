@@ -58,7 +58,7 @@ export const Dashboard = () => {
 
 
   return (
-    <section className="min-h-screen bg-gray-100 mt-16">
+    <section className="min-h-screen bg-gray-100 mt-16 p-8">
       <div className="p-4 md:p-6 lg:p-8">
         <h1 className="text-2xl md:text-3xl font-bold">
           Welcome back, Prince!
@@ -67,6 +67,7 @@ export const Dashboard = () => {
         <p className="text-zinc-600 mt-2 text-sm md:text-base">
           Here's what's happening with your career journey
         </p>
+      
 
 
         <div className="bg-white rounded-xl shadow-md mt-8 p-5">
@@ -76,45 +77,47 @@ export const Dashboard = () => {
               Recent Applications
             </h2>
 
-            <button className="text-indigo-600 font-medium hover:text-indigo-700 transition">
+            <button className="text-indigo-600 font-medium cursor-pointer hover:text-indigo-700 transition">
               View All
             </button>
           </div>
 
           {JobData.map((job, index) => (
+            <div key={index} className='hover:bg-zinc-50 px-5 cursor-pointer'>
 
-            <div key={index} className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 ${index === JobData.length - 1 ? "border-none" : "border-b"} py-6 border-zinc-200`}>
+              <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 ${index === JobData.length - 1 ? "border-none" : "border-b"} py-6 border-zinc-200 `}>
 
 
-              <div className="flex items-center gap-5">
-                <img
-                  src={job.icon}
-                  alt="Google"
-                  className="w-10 h-10 object-contain"
-                />
+                <div className="flex items-center gap-5">
+                  <img
+                    src={job.icon}
+                    alt="Google"
+                    className="w-10 h-10 object-contain"
+                  />
 
-                <div>
-                  <h3 className="font-semibold text-base md:text-lg">
-                    {job.title}
-                  </h3>
+                  <div>
+                    <h3 className="font-semibold text-base md:text-lg">
+                      {job.title}
+                    </h3>
 
-                  <p className="text-sm text-zinc-500">
-                    {job.companey} • {job.city}, {job.state}
+                    <p className="text-sm text-zinc-500">
+                      {job.companey} • {job.city}, {job.state}
+                    </p>
+                  </div>
+                </div>
+
+
+                <div className="flex flex-wrap items-center gap-3 lg:gap-5">
+                  <span className={`px-3 py-1 rounded-full  ${job.status.toLocaleLowerCase() === "under review" ? "text-indigo-600 bg-indigo-100" : job.status.toLocaleLowerCase() === "applied" ? "text-orange-500 bg-amber-100" : job.status.toLocaleLowerCase() === "shortlisted" ? "text-green-600 bg-green-100" : ""}   text-sm font-semibold`}>
+                    {job.status}
+                  </span>
+
+                  <p className="text-zinc-500 text-sm">
+                    {job.date}
                   </p>
                 </div>
+
               </div>
-
-
-              <div className="flex flex-wrap items-center gap-3 lg:gap-5">
-                <span className={`px-3 py-1 rounded-full  ${job.status.toLocaleLowerCase() === "under review" ? "text-indigo-600 bg-indigo-100" : job.status.toLocaleLowerCase() === "applied" ? "text-orange-500 bg-amber-100" : job.status.toLocaleLowerCase() === "shortlisted" ? "text-green-600 bg-green-100" : ""}   text-sm font-semibold`}>
-                  {job.status}
-                </span>
-
-                <p className="text-zinc-500 text-sm">
-                  {job.date}
-                </p>
-              </div>
-
             </div>
 
           ))}
