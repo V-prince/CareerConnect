@@ -52,8 +52,8 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
 
           {sideData.map((item,index) => (
             <NavLink to={item.to} key={index} className={({ isActive }) => `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
-              ? "bg-indigo-600 text-white border-indigo-600"
-              : "text-gray-700 border-transparent hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
+              ? "bg-blue-800 text-white border-blue-800"
+              : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
               }`}   >
               {item.icon}
               <span className='text-xl hover:text-white font-medium '>{item.title}</span>

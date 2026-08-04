@@ -24,7 +24,7 @@ const contactInfo = [
   {
     icon: <FaEnvelope size={20} />,
     title: "Email",
-    lines: ["support@careerconnect.com", "info@careerconnect.com"],
+    lines: ["support@jobspark.com", "info@jobspark.com"],
   },
   {
     icon: <FaClock size={20} />,

@@ -12,6 +12,7 @@ import { SaveJobs } from "./pages/student/SaveJobs";
 import { Setting } from "./pages/student/Setting";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="/applications" element={<Applications />} />
           <Route path="/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
+           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
       </Routes>
 
