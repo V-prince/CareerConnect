@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { LogoutPopup } from '../../components/popusps/LogoutPopup';
+import { DeleteAccountPopup } from '../../components/popusps/DeleteAccountPopup';
 
 export const Setting = () => {
 
   const [isOpenPopup, SetisOpenPopup] = useState(false);
+  const [isOpenDeletePopup, SetisOpenDeletePopup] = useState(false);
 
 
 
   return (
-    <section className="relative min-h-screen bg-gray-100 mt-16 p-8">
+    <section className="relative min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8">
 
 
       <h1 className="text-3xl font-bold text-zinc-900">
@@ -53,11 +55,14 @@ export const Setting = () => {
             </p>
           </div>
 
-          <button 
+          <button onClick={() => SetisOpenDeletePopup(true)}
             className="px-5 py-2.5 rounded-lg bg-red-600 cursor-pointer text-white hover:bg-red-700 transition"
           >
             Delete
           </button>
+          {
+            isOpenDeletePopup && <DeleteAccountPopup isOpenDeletePopup={isOpenDeletePopup} SetisOpenDeletePopup={SetisOpenDeletePopup} />
+          }
         </div>
 
       </div>

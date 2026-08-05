@@ -12,6 +12,7 @@ import {
   MapPin,
   FileText,
   Pencil,
+  X,
 } from 'lucide-react'
 import React, { useState } from 'react'
 
@@ -86,10 +87,15 @@ export const Profile = () => {
 
   }
 
+  const handelOnRemoveSkill = (skill) => {
+    const updatedSkills = skills.filter((s) => s !== skill);
+    setSkills(updatedSkills);
+  }
+
 
 
   return (
-    <section className='min-h-screen bg-zinc-100 mt-16 p-8'>
+    <section className='min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8'>
       <h1 className="text-2xl md:text-3xl font-bold">
         My Profile
       </h1>
@@ -208,75 +214,60 @@ export const Profile = () => {
         </div>
       </div>
 
-      <div className="bg-white border border-zinc-200 rounded-2xl p-6 mt-8">
+      <div className="mt-8 rounded-3xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-zinc-100 overflow-hidden p-8">
 
-        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-7 border-b border-zinc-100">
+
           <div>
-            <h2 className="text-2xl font-bold text-zinc-900">Information</h2>
-            <p className="text-sm text-zinc-500 mt-1">
-              Manage your personal information.
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-900">
+              Personal Information
+            </h2>
+
+            <p className="text-zinc-500 mt-2">
+              Keep your profile updated to attract recruiters.
             </p>
           </div>
 
           {!isEdit ? (
             <button
               onClick={() => setIsEdit(true)}
-              className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-lg hover:bg-black transition cursor-pointer"
+              className="flex items-center gap-2 bg-indigo-600 cursor-pointer hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-md transition"
             >
               <Pencil size={18} />
               Edit Profile
             </button>
           ) : (
-            <div className="flex  gap-3">
+            <div className="flex gap-3">
+
               <button
                 onClick={handelOnClick}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition cursor-pointer"
+                className="px-5 py-3 rounded-xl cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition"
               >
                 Save
               </button>
 
               <button
                 onClick={() => setIsEdit(false)}
-                className="px-4 py-2 bg-zinc-200 rounded-lg hover:bg-zinc-300 transition cursor-pointer"
+                className="px-5 py-3 rounded-xl cursor-pointer bg-zinc-100 hover:bg-zinc-200 transition"
               >
                 Cancel
               </button>
+
             </div>
           )}
+
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
 
-          <div className="border border-zinc-200 rounded-xl p-5 hover:border-blue-400 transition">
+
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
-                <User size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Full Name</span>
-            </div>
-
-            {isEdit ? (
-              <input
-                type="text"
-                name="fullname"
-                placeholder='John Don'
-                value={EditData.fullname}
-                onChange={handelOnChange}
-                className="w-full border rounded-lg px-3 py-2 outline-none"
-              />
-            ) : (
-              <p className="font-semibold text-zinc-800">Prince Vadher</p>
-            )}
-          </div>
-
-
-          <div className="border border-zinc-200 rounded-xl p-5 hover:border-blue-400 transition">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <Mail size={18} />
               </span>
-              <span className="text-sm text-zinc-500">Email</span>
+              <span className="text-xs uppercase tracking-widest font-semibold text-zinc-400">Email</span>
             </div>
 
             {isEdit ? (
@@ -287,19 +278,19 @@ export const Profile = () => {
                 value={EditData.email}
                 onChange={handelOnChange}
 
-                className="w-full border rounded-lg px-3 py-2 outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
               />
             ) : (
-              <p className="font-semibold text-zinc-800">
+              <p className="text-base font-semibold text-zinc-900 mt-2">
                 vadherprince63@gmail.com
               </p>
             )}
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5 hover:border-blue-400 transition">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300 ">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <Phone size={18} />
               </span>
               <span className="text-sm text-zinc-500">Phone</span>
@@ -313,29 +304,29 @@ export const Profile = () => {
                 value={EditData.phone}
                 onChange={handelOnChange}
 
-                className="w-full border rounded-lg px-3 py-2 outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
               />
             ) : (
-              <p className="font-semibold text-zinc-800">+91 9978093258</p>
+              <p className="text-base font-semibold text-zinc-900 mt-2">+91 9978093258</p>
             )}
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <BriefcaseBusiness size={18} />
               </span>
               <span className="text-sm text-zinc-500">Role</span>
             </div>
 
-            <p className="font-semibold text-zinc-800">Student</p>
+            <p className="text-base font-semibold text-zinc-900 mt-2">Student</p>
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <GraduationCap size={18} />
               </span>
               <span className="text-sm text-zinc-500">Education</span>
@@ -349,17 +340,17 @@ export const Profile = () => {
                 value={EditData.education}
                 onChange={handelOnChange}
 
-                className="w-full border rounded-lg px-3 py-2 outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
               />
             ) : (
-              <p className="font-semibold text-zinc-800">BCA Semester 3</p>
+              <p className="text-base font-semibold text-zinc-900 mt-2">BCA Semester 3</p>
             )}
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <Building2 size={18} />
               </span>
               <span className="text-sm text-zinc-500">Company</span>
@@ -373,17 +364,17 @@ export const Profile = () => {
                 value={EditData.company}
                 onChange={handelOnChange}
 
-                className="w-full border rounded-lg px-3 py-2 outline-none"
+                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
               />
             ) : (
-              <p className="font-semibold text-zinc-800">Not Assigned</p>
+              <p className="text-base font-semibold text-zinc-900 mt-2">Not Assigned</p>
             )}
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <File size={18} />
               </span>
               <span className="text-sm text-zinc-500">Resume</span>
@@ -393,7 +384,7 @@ export const Profile = () => {
               <input
                 type="file"
                 onChange={handelOnFileChange}
-                className="w-full border rounded-lg px-3 py-2 outline-none file:mr-3 file:border-0 file:bg-blue-600 file:text-white file:px-3 file:py-2 file:rounded-lg"
+                className="text-indigo-600 font-semibold hover:text-indigo-700 transition"
               />
             ) : (
               <a
@@ -406,17 +397,17 @@ export const Profile = () => {
           </div>
 
 
-          <div className="border border-zinc-200 rounded-xl p-5">
+          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center justify-between gap-3 mb-3">
               <div className='flex items-center gap-3 mb-3'>
-                <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+                <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                   <Code2 size={18} />
                 </span>
                 <span className="text-sm text-zinc-500">Skills</span>
               </div>
 
               {isEdit &&
-                <button onClick={handelonSkillClick} className='px-5 py-1 text-white bg-indigo-600 rounded-xl cursor-pointer'>
+                <button onClick={handelonSkillClick} className='px-5 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition'>
                   add
                 </button>}
             </div>
@@ -445,18 +436,26 @@ export const Profile = () => {
                       setSkillsInput("");
                     }
                   }}
-                  className="w-full border rounded-lg px-3 py-2 outline-none"
+                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
                 />
 
                 <div className="flex flex-wrap gap-2 mt-5">
-                  {skills.map(
-                    (skill) => (
-                      <span
-                        key={skill}
-                        className="px-3 py-1 bg-zinc-100 rounded-full text-sm"
+                  {skills.filter(skill => skill.trim() !== "").map(
+                    (skill, index) => (
+                      <p
+                        key={index}
+                        className="px-4 py-2 flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 font-medium hover:bg-indigo-100 transition"
                       >
                         {skill}
-                      </span>
+
+                        <button
+                          type="button"
+                          onClick={() => handelOnRemoveSkill(skill)}
+                          className="hover:text-red-500 cursor-pointer"
+                        >
+                          <X size={18} />
+                        </button>
+                      </p>
                     )
                   )}
                 </div>
@@ -480,9 +479,9 @@ export const Profile = () => {
           </div>
 
 
-          <div className="lg:col-span-2 border border-zinc-200 rounded-xl p-5">
+          <div className="lg:col-span-2 rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
             <div className="flex items-center gap-3 mb-3">
-              <span className="bg-blue-50 text-blue-600 p-2 rounded-lg">
+              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
                 <FileText size={18} />
               </span>
               <span className="text-sm text-zinc-500">Bio</span>
@@ -495,10 +494,10 @@ export const Profile = () => {
                 value={EditData.bio}
                 placeholder='Write Yourself ...'
                 onChange={handelOnChange}
-                className="w-full border rounded-lg px-3 py-2 resize-none outline-none"
+                className="w-full rounded-xl border border-zinc-200 px-4 py-3 resize-none outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
               />
             ) : (
-              <p className="text-zinc-700 leading-7">
+              <p className="lg:col-span-2 rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-slate-50 p-6">
                 Passionate MERN Stack Developer and BCA Student. I enjoy building
                 responsive web applications using React, Node.js, Express.js and
                 MongoDB. Currently looking for internship opportunities to improve my
@@ -506,7 +505,6 @@ export const Profile = () => {
               </p>
             )}
           </div>
-
         </div>
       </div>
     </section >

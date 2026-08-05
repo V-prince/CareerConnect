@@ -115,7 +115,7 @@ export const SaveJobs = () => {
 
 
   return (
-    <section className="min-h-screen bg-gray-100 mt-16 p-8">
+    <section className="min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8">
 
       <h1 className="text-2xl md:text-3xl font-bold">
         Saved Jobs
