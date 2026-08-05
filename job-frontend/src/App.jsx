@@ -12,18 +12,20 @@ import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
+import Jobs from "./pages/public/Jobs";
 
 function App() {
   return (
     <>
       <Routes>
-        {/* <Route element={<MainLayout />}>
+        <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
-        </Route> */}
+        </Route>
 
         <Route element={<MainSidebar />}>
           <Route path="/" element={<Dashboard />} />

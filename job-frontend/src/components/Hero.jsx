@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import Select from "react-select";
-<<<<<<< HEAD
 import career from "../assets/career.png";
-=======
-import career2 from "../assets/career2.png";
->>>>>>> prince
 
 const locationOptions = [
   { value: "ahmedabad", label: "Ahmedabad" },
@@ -32,7 +28,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-gradient-to-b from-blue-50 to-white border-b border-zinc-100">
+    <section className="bg-linear-to-b from-blue-50 to-white border-b border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
@@ -112,11 +108,7 @@ const Hero = () => {
 
           <div className="flex justify-center lg:justify-end">
             <img
-<<<<<<< HEAD
               src={career}
-=======
-              src={career2}
->>>>>>> prince
               alt="CareerConnect Hero"
               className="w-full max-w-lg"
             />

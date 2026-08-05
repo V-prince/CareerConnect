@@ -149,7 +149,7 @@ export const SaveJobs = () => {
                   className="w-full ml-2 outline-none text-sm"
                 />
                 <Search size={20} onClick={filterdFunc}
-                  className="text-zinc-500 flex-shrink-0 cursor-pointer" />
+                  className="text-zinc-500 shrink-0 cursor-pointer" />
               </div>
             </div>
 
@@ -204,7 +204,7 @@ export const SaveJobs = () => {
                 <img
                   src={job.icon}
                   alt={job.companey}
-                  className="w-12 h-12 object-contain flex-shrink-0"
+                  className="w-12 h-12 object-contain shrink-0"
                 />
 
                 <div className="space-y-1">
