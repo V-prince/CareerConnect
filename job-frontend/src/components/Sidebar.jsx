@@ -47,11 +47,16 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       title: "Dashboard",
       to: "/admin/dashboard"
     },
-     {
+    {
       icon: <UsersRound size={22} />,
       title: "Users",
       to: "/admin/manage/users"
     },
+    {
+      icon: <Settings size={22} />,
+      title: "Settings",
+      to: "/settings"
+    }
   ]
 
   return (

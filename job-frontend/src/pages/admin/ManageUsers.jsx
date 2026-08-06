@@ -305,7 +305,7 @@ export const ManageUsers = () => {
             <tbody>
               {
                 filterdDetails.map((user, index) => (
-                  <tr key={index} className="border-b border-zinc-400">
+                  <tr key={index} className={`${filterdDetails.length !== index + 1 && "border-b"} border-zinc-400`}>
                     <td className="px-4 py-4">
                       <div className="flex items-center gap-3">
                         <img
@@ -337,6 +337,9 @@ export const ManageUsers = () => {
         </div>
 
       </div>
+
+
+      
 
 
     </section>
