@@ -9,7 +9,6 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import Select from "react-select";
 import { JobCard } from "../../components/JobCard";
 import { ApplicationDetailCard } from "../../components/ApplicationDetailCard";
-import JobSearch from "../../assets/JobSearch.png";
 
 const locationOptions = [
   { value: "", label: "All Locations" },
@@ -354,102 +353,95 @@ const Jobs = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-10 md:py-14 border-b border-zinc-100">
+      <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-8 md:py-10 border-b border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-10 items-center">
-            <div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-800 leading-tight">
-                Find Your Dream Job
-              </h1>
-              <p className="text-zinc-600 mt-4 text-sm md:text-base lg:text-lg">
-                Search from thousands of job opportunities
-              </p>
-
-              <div className="mt-7 md:mt-8 bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3">
-                <div className="grid md:grid-cols-12 gap-2.5 md:gap-3 items-stretch">
-                  <div className="md:col-span-5 flex items-center border border-zinc-200 rounded-xl px-4 bg-white">
-                    <FaSearch className="text-indigo-600 mr-3 shrink-0" />
-                    <input
-                      type="text"
-                      value={keyword}
-                      onChange={(e) => setKeyword(e.target.value)}
-                      onKeyDown={handleKeydown}
-                      placeholder="Job title, keyword, company..."
-                      className="w-full min-w-0 h-12 outline-none bg-transparent text-sm text-slate-800"
-                    />
-                  </div>
-
-                  <div className="md:col-span-4 relative">
-                    <div className="absolute left-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-indigo-600">
-                      <FaMapMarkerAlt />
-                    </div>
-                    <Select
-                      options={locationOptions}
-                      value={locationSelect}
-                      onChange={setLocationSelect}
-                      onKeyDown={handleKeydown}
-                      className="text-sm"
-                      placeholder="Select location"
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          height: 48,
-                          minHeight: 48,
-                          borderRadius: 12,
-                          borderColor: "#e4e4e7",
-                          boxShadow: "none",
-                          paddingLeft: 28,
-                          "&:hover": {
-                            borderColor: "#e4e4e7",
-                          },
-                        }),
-                        valueContainer: (base) => ({
-                          ...base,
-                          padding: "0 8px",
-                        }),
-                        singleValue: (base) => ({
-                          ...base,
-                          color: "#0f172a",
-                        }),
-                        placeholder: (base) => ({
-                          ...base,
-                          color: "#9ca3af",
-                        }),
-                        indicatorSeparator: () => ({ display: "none" }),
-                        dropdownIndicator: (base) => ({
-                          ...base,
-                          paddingRight: 10,
-                          color: "#4f46e5",
-                        }),
-                      }}
-                    />
-                  </div>
-
-                  <div className="md:col-span-3">
-                    <button
-                      onClick={handleSearch}
-                      className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm md:text-base font-semibold transition shadow-sm"
-                    >
-                      Search Jobs
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="hidden lg:flex justify-end">
-              <img
-                src={JobSearch}
-                alt="Job Search Illustration"
-                className="w-full max-w-md rounded-xl opacity-95"
-              />
-            </div>
+          <div className="text-center">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-800 leading-tight">
+              Find Your Dream Job
+            </h1>
+            <p className="text-zinc-600 mt-2 text-sm md:text-base">
+              Search from thousands of job opportunities
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="bg-gray-100 py-8 md:py-10">
+      <section className="bg-gray-100 py-6 md:py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
+          <div className="bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3 mb-6">
+            <div className="grid md:grid-cols-12 gap-2 md:gap-2.5 items-stretch">
+              <div className="md:col-span-5 flex items-center border border-zinc-200 rounded-xl px-3.5 bg-white">
+                <FaSearch
+                  className="text-indigo-600 mr-2.5 shrink-0"
+                  size={13}
+                />
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={(e) => setKeyword(e.target.value)}
+                  onKeyDown={handleKeydown}
+                  placeholder="Job title, keyword, company..."
+                  className="w-full min-w-0 h-10 outline-none bg-transparent text-xs md:text-sm text-slate-800"
+                />
+              </div>
+
+              <div className="md:col-span-4 relative">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-indigo-600">
+                  <FaMapMarkerAlt size={13} />
+                </div>
+                <Select
+                  options={locationOptions}
+                  value={locationSelect}
+                  onChange={setLocationSelect}
+                  onKeyDown={handleKeydown}
+                  className="text-xs md:text-sm"
+                  placeholder="All Locations"
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      height: 40,
+                      minHeight: 40,
+                      borderRadius: 12,
+                      borderColor: "#e4e4e7",
+                      boxShadow: "none",
+                      paddingLeft: 24,
+                      "&:hover": {
+                        borderColor: "#e4e4e7",
+                      },
+                    }),
+                    valueContainer: (base) => ({
+                      ...base,
+                      padding: "0 6px",
+                    }),
+                    singleValue: (base) => ({
+                      ...base,
+                      color: "#0f172a",
+                    }),
+                    placeholder: (base) => ({
+                      ...base,
+                      color: "#9ca3af",
+                    }),
+                    indicatorSeparator: () => ({ display: "none" }),
+                    dropdownIndicator: (base) => ({
+                      ...base,
+                      padding: "0 8px 0 4px",
+                      color: "#4f46e5",
+                    }),
+                  }}
+                />
+              </div>
+
+              <div className="md:col-span-3">
+                <button
+                  onClick={handleSearch}
+                  className="w-full h-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-semibold transition shadow-sm"
+                >
+                  Search Jobs
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div className="grid lg:grid-cols-4 gap-6 lg:gap-8">
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5 md:p-6 sticky top-24">
