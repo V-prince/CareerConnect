@@ -15,7 +15,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-12">
           <div>
-            <h2 className="text-3xl font-bold text-blue-500">
+            <h2 className="text-3xl font-semibold block bg-gradient-to-b from-blue-500 to-indigo-700 bg-clip-text text-transparent">
               Job<span className="text-white">Spark</span>
             </h2>
 

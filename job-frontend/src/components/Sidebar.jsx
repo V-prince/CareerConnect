@@ -36,8 +36,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       icon: <Settings size={22} />,
       title: "Settings",
       to: "/settings"
-    },
-
+    }
   ]
 
 
