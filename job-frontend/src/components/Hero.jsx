@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import Select from "react-select";
-import career from "../assets/job5.png";
+import career from "../assets/career.png";
 
 const locationOptions = [
   { value: "ahmedabad", label: "Ahmedabad" },
@@ -28,18 +28,16 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-linear-to-b from-blue-50 to-white border-b border-zinc-100">
+    <section className="bg-gradient-to-b from-blue-50 to-white border-b border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-slate-900">
               Find Your Dream Job
-              <span className="block bg-gradient-to-b from-blue-500 to-indigo-700 bg-clip-text text-transparent">
-                & Internship
-              </span>
+              <span className="block text-blue-600">& Internship</span>
             </h1>
 
-            <p className="text-slate-400 mt-4 md:mt-5 text-sm md:text-base lg:text-lg font-normal max-w-xl mx-auto lg:mx-0">
+            <p className="text-slate-700 mt-4 md:mt-5 text-sm md:text-base lg:text-lg font-normal max-w-xl mx-auto lg:mx-0">
               Find the perfect opportunity and kickstart your career
             </p>
 
@@ -99,9 +97,9 @@ const Hero = () => {
                 <div className="md:col-span-3">
                   <button
                     onClick={handleSearch}
-                    className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-500 hover:from-blue-700 hover:to-indigo-700 text-white text-sm md:text-base font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-300/50 hover:scale-[1.02]"
+                    className="w-full h-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm md:text-base font-semibold transition shadow-sm"
                   >
-                    Search Jobs
+                    Search
                   </button>
                 </div>
               </div>
@@ -112,7 +110,7 @@ const Hero = () => {
             <img
               src={career}
               alt="CareerConnect Hero"
-              className="w-full max-w-xl"
+              className="w-full max-w-lg"
             />
           </div>
         </div>

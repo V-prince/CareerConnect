@@ -10,19 +10,12 @@ import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
-<<<<<<< HEAD
-// import { Setting } from "./pages/student/Setting";
-import About from "./pages/public/About";
-import Contact from "./pages/public/Contact";
-// import { AdminDashboard } from "./pages/admin/AdminDashboard";
-=======
 import { Setting } from "./pages/student/Setting";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageUsers } from "./pages/admin/ManageUsers";
-
->>>>>>> acaef27f50d61bca6fda8261537764bc1c949e3c
+import EmpDashboard from "./pages/employer/EmpDashboard";
 
 function App() {
   return (
@@ -36,16 +29,6 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Route>
 
-<<<<<<< HEAD
-        {/* <Route element={<MainSidebar />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/savejobs" element={<SaveJobs />} />
-          <Route path="/settings" element={<Setting />} />
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        </Route> */}
-=======
         <Route element={<MainSidebar />}>
           <Route path="/user/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
@@ -53,13 +36,12 @@ function App() {
           <Route path="/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
 
-    
-            {/* Admim */}
+          {/* Employer */}
+          <Route path="/employer/dashboard" element={<EmpDashboard />} />
 
-           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-           <Route path="/admin/manage/users" element={<ManageUsers />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/manage/users" element={<ManageUsers />} />
         </Route>
->>>>>>> acaef27f50d61bca6fda8261537764bc1c949e3c
       </Routes>
     </>
   );

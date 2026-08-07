@@ -103,7 +103,7 @@ const CardRow = ({ item }) => (
         <img
           src={companyLogo(item.company)}
           alt={item.company}
-          className="w-12 h-12 object-contain shrink-0"
+          className="w-12 h-12 object-contain flex-shrink-0"
         />
         <div className="min-w-0">
           <h3 className="font-semibold text-sm md:text-base text-slate-900 truncate">

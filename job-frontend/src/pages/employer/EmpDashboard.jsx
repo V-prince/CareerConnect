@@ -1,593 +1,871 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  LayoutDashboard,
-  BriefcaseBusiness,
-  FileText,
-  Building2,
-  Settings,
-  ChevronDown,
-  ChevronRight,
-  CalendarDays,
-  Users,
-  UserCheck,
-  ClipboardList,
-  CheckCircle,
+  FaSearch,
+  FaBriefcase,
+  FaPlus,
+  FaUsers,
+  FaStar,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaArrowRight,
+  FaUserTie,
+} from "react-icons/fa";
+
+import {
   MoreVertical,
-  Bell,
-  Search,
-  Plus,
+  ChevronRight,
+  ChevronLeft,
+  ChevronDown as LDChevronDown,
 } from "lucide-react";
 
-const Emp-dashboard = () => {
-  const stats = [
-    {
-      title: "Active Jobs",
-      value: "12",
-      change: "↑ 2 this week",
-      icon: BriefcaseBusiness,
-      iconBg: "bg-blue-100",
-      iconColor: "text-blue-600",
-    },
-    {
-      title: "Total Applications",
-      value: "248",
-      change: "↑ 18 this week",
-      icon: Users,
-      iconBg: "bg-green-100",
-      iconColor: "text-green-600",
-    },
-    {
-      title: "Shortlisted",
-      value: "36",
-      change: "↑ 6 this week",
-      icon: UserCheck,
-      iconBg: "bg-purple-100",
-      iconColor: "text-purple-600",
-    },
-    {
-      title: "Interviews",
-      value: "15",
-      change: "↑ 3 this week",
-      icon: CalendarDays,
-      iconBg: "bg-orange-100",
-      iconColor: "text-orange-500",
-    },
-    {
-      title: "Hires",
-      value: "4",
-      change: "↑ 1 this week",
-      icon: CheckCircle,
-      iconBg: "bg-teal-100",
-      iconColor: "text-teal-600",
-    },
-  ];
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-  const jobs = [
-    {
-      title: "Frontend Developer",
-      type: "Full Time",
-      location: "Bengaluru",
-      applications: 45,
-      status: "Active",
-      date: "May 26, 2024",
-    },
-    {
-      title: "UI/UX Designer",
-      type: "Full Time",
-      location: "Remote",
-      applications: 32,
-      status: "Active",
-      date: "May 24, 2024",
-    },
-    {
-      title: "Backend Developer",
-      type: "Full Time",
-      location: "Hyderabad",
-      applications: 28,
-      status: "Active",
-      date: "May 22, 2024",
-    },
-    {
-      title: "DevOps Engineer",
-      type: "Full Time",
-      location: "Pune",
-      applications: 19,
-      status: "Active",
-      date: "May 21, 2024",
-    },
-    {
-      title: "Product Manager",
-      type: "Full Time",
-      location: "Mumbai",
-      applications: 14,
-      status: "Paused",
-      date: "May 19, 2024",
-    },
-  ];
+import { useNavigate } from "react-router-dom";
 
-  const applications = [
-    {
-      name: "Arjun Raj",
-      job: "Frontend Developer",
-      time: "2 min ago",
-      initials: "AR",
-    },
-    {
-      name: "Sneha Kapoor",
-      job: "UI/UX Designer",
-      time: "15 min ago",
-      initials: "SK",
-    },
-    {
-      name: "Priya Mehta",
-      job: "Backend Developer",
-      time: "1 hour ago",
-      initials: "PM",
-    },
-    {
-      name: "Rohan Singh",
-      job: "DevOps Engineer",
-      time: "2 hours ago",
-      initials: "RS",
-    },
-  ];
+// =========================
+// MONTHLY APPLICATION DATA
+// =========================
+
+const monthlyData = {
+  "May 2024": [
+    { day: "May 1", applications: 18 },
+    { day: "May 5", applications: 32 },
+    { day: "May 10", applications: 25 },
+    { day: "May 15", applications: 48 },
+    { day: "May 20", applications: 40 },
+    { day: "May 25", applications: 56 },
+    { day: "May 28", applications: 68 },
+  ],
+
+  "April 2024": [
+    { day: "Apr 1", applications: 15 },
+    { day: "Apr 5", applications: 28 },
+    { day: "Apr 10", applications: 35 },
+    { day: "Apr 15", applications: 42 },
+    { day: "Apr 20", applications: 38 },
+    { day: "Apr 25", applications: 52 },
+    { day: "Apr 30", applications: 61 },
+  ],
+
+  "March 2024": [
+    { day: "Mar 1", applications: 12 },
+    { day: "Mar 5", applications: 25 },
+    { day: "Mar 10", applications: 30 },
+    { day: "Mar 15", applications: 37 },
+    { day: "Mar 20", applications: 45 },
+    { day: "Mar 25", applications: 50 },
+    { day: "Mar 30", applications: 58 },
+  ],
+
+  "February 2024": [
+    { day: "Feb 1", applications: 10 },
+    { day: "Feb 5", applications: 22 },
+    { day: "Feb 10", applications: 29 },
+    { day: "Feb 15", applications: 34 },
+    { day: "Feb 20", applications: 41 },
+    { day: "Feb 25", applications: 46 },
+    { day: "Feb 29", applications: 54 },
+  ],
+};
+
+// =========================
+// STATS
+// =========================
+
+const stats = [
+  {
+    title: "Active Jobs",
+    value: "12",
+    change: "2 this month",
+    icon: FaBriefcase,
+    iconBg: "bg-blue-100",
+    iconColor: "text-blue-600",
+  },
+  {
+    title: "Total Applications",
+    value: "248",
+    change: "18 this month",
+    icon: FaUsers,
+    iconBg: "bg-green-100",
+    iconColor: "text-green-600",
+  },
+  {
+    title: "Shortlisted",
+    value: "36",
+    change: "6 this month",
+    icon: FaUserTie,
+    iconBg: "bg-purple-100",
+    iconColor: "text-purple-600",
+  },
+  {
+    title: "Interviews",
+    value: "15",
+    change: "3 this month",
+    icon: FaCalendarAlt,
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-600",
+  },
+  {
+    title: "Hires",
+    value: "4",
+    change: "1 this month",
+    icon: FaStar,
+    iconBg: "bg-teal-100",
+    iconColor: "text-teal-600",
+  },
+];
+
+// =========================
+// RECENT JOBS
+// =========================
+
+const recentJobs = [
+  {
+    id: 1,
+    title: "Frontend Developer",
+    type: "Full Time",
+    location: "Bengaluru",
+    applications: 45,
+    status: "Active",
+    date: "May 26, 2024",
+  },
+  {
+    id: 2,
+    title: "UI/UX Designer",
+    type: "Full Time",
+    location: "Remote",
+    applications: 32,
+    status: "Active",
+    date: "May 24, 2024",
+  },
+  {
+    id: 3,
+    title: "Backend Developer",
+    type: "Full Time",
+    location: "Hyderabad",
+    applications: 28,
+    status: "Active",
+    date: "May 22, 2024",
+  },
+  {
+    id: 4,
+    title: "DevOps Engineer",
+    type: "Full Time",
+    location: "Pune",
+    applications: 19,
+    status: "Active",
+    date: "May 21, 2024",
+  },
+  {
+    id: 5,
+    title: "Product Manager",
+    type: "Full Time",
+    location: "Mumbai",
+    applications: 14,
+    status: "Paused",
+    date: "May 19, 2024",
+  },
+];
+
+// =========================
+// RECENT APPLICATIONS
+// =========================
+
+const recentApplications = [
+  {
+    id: 1,
+    name: "Arjun Raj",
+    job: "Frontend Developer",
+    initials: "AR",
+    bg: "bg-purple-100 text-purple-600",
+    date: "2 min ago",
+    status: "New",
+    featured: true,
+  },
+  {
+    id: 2,
+    name: "Sneha Kapoor",
+    job: "UI/UX Designer",
+    initials: "SK",
+    bg: "bg-green-100 text-green-600",
+    date: "15 min ago",
+    status: "New",
+    featured: true,
+  },
+  {
+    id: 3,
+    name: "Priya Mehta",
+    job: "Backend Developer",
+    initials: "PM",
+    bg: "bg-orange-100 text-orange-600",
+    date: "1 hour ago",
+    status: "Shortlisted",
+    featured: false,
+  },
+  {
+    id: 4,
+    name: "Rohan Singh",
+    job: "DevOps Engineer",
+    initials: "RS",
+    bg: "bg-pink-100 text-pink-600",
+    date: "2 hours ago",
+    status: "New",
+    featured: false,
+  },
+];
+
+// =========================
+// QUICK ACTIONS
+// =========================
+
+const quickActions = [
+  {
+    title: "Post a New Job",
+    desc: "Create a new job listing",
+    icon: FaPlus,
+    iconBg: "bg-blue-100 text-blue-600",
+    path: "/employer/post-job",
+  },
+  {
+    title: "View All Applications",
+    desc: "Review all job applications",
+    icon: FaUsers,
+    iconBg: "bg-green-100 text-green-600",
+    path: "/employer/applications",
+  },
+  {
+    title: "Shortlisted Candidates",
+    desc: "View shortlisted candidates",
+    icon: FaStar,
+    iconBg: "bg-orange-100 text-orange-600",
+    path: "/employer/applications",
+  },
+  {
+    title: "Schedule Interview",
+    desc: "Schedule an interview",
+    icon: FaCalendarAlt,
+    iconBg: "bg-purple-100 text-purple-600",
+    path: "/employer/applications",
+  },
+];
+
+// =========================
+// COMPONENT
+// =========================
+
+export const EmpDashboard = () => {
+  const navigate = useNavigate();
+
+  // MONTH SELECTOR
+  const [period, setPeriod] = useState("May 2024");
+  const [showPeriod, setShowPeriod] = useState(false);
+
+  const periods = ["May 2024", "April 2024", "March 2024", "February 2024"];
+
+  // =========================
+  // STATUS COLORS
+  // =========================
+
+  const statusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "active":
+        return "bg-green-50 text-green-700 border border-green-100";
+
+      case "paused":
+        return "bg-orange-50 text-orange-700 border border-orange-100";
+
+      case "closed":
+        return "bg-zinc-50 text-zinc-600 border border-zinc-200";
+
+      default:
+        return "bg-blue-50 text-blue-700";
+    }
+  };
+
+  const appStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "new":
+        return "bg-green-50 text-green-700 border border-green-100";
+
+      case "shortlisted":
+        return "bg-blue-50 text-blue-700 border border-blue-100";
+
+      case "interview":
+        return "bg-purple-50 text-purple-700 border border-purple-100";
+
+      default:
+        return "bg-zinc-50 text-zinc-600 border border-zinc-200";
+    }
+  };
+
+  // =========================
+  // CURRENT CHART DATA
+  // =========================
+
+  const currentData = monthlyData[period] || monthlyData["May 2024"];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-blue-50">
+      {/* =========================
+          TOP HEADER
+      ========================= */}
 
-      {/* ================= TOP HEADER ================= */}
-      <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-5 lg:px-7 sticky top-0 z-40">
-
-        {/* Logo */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <BriefcaseBusiness
-              size={22}
-              className="text-white"
+      <header className="bg-white border-b border-zinc-200 sticky top-0 z-30">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 h-16 flex items-center gap-4">
+          {/* LOGO */}
+          <div className="flex items-center gap-3">
+            <img
+              src="/images/logo.png"
+              alt="JobSpark"
+              className="w-40 h-auto object-contain"
             />
+
+            <div className="border-l border-zinc-200 pl-3">
+              <p className="text-sm font-semibold text-zinc-800">JobSpark</p>
+              <p className="text-[11px] text-zinc-500">Employer Portal</p>
+            </div>
           </div>
 
-          <div className="leading-tight">
-            <h1 className="text-xl font-bold text-slate-900">
-              Career<span className="text-blue-600">Connect</span>
-            </h1>
+          {/* SEARCH */}
+          <div className="flex-1 max-w-2xl mx-auto">
+            <div className="relative">
+              <FaSearch
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                size={13}
+              />
 
-            <p className="text-[10px] text-slate-500">
-              Employer Portal
-            </p>
+              <input
+                type="text"
+                placeholder="Search for candidates, jobs, applications..."
+                className="w-full h-10 rounded-xl bg-zinc-50 border border-zinc-200 pl-10 pr-4 text-xs md:text-sm text-zinc-700 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Search */}
-        <div className="hidden md:flex items-center w-[360px] lg:w-[430px] bg-slate-50 border border-slate-200 rounded-lg px-4 h-10">
-          <Search
-            size={18}
-            className="text-slate-400"
-          />
-
-          <input
-            type="text"
-            placeholder="Search for candidates, jobs, applications..."
-            className="ml-3 w-full bg-transparent outline-none text-sm text-slate-700 placeholder:text-slate-400"
-          />
-        </div>
-
-        {/* Right */}
-        <div className="flex items-center gap-5">
-
-          {/* Notification */}
-          <button className="relative text-slate-600 hover:text-blue-600 transition">
-            <Bell size={21} />
-
-            <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-
-          {/* Profile */}
-          <button className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center font-semibold">
+          {/* PROFILE ONLY */}
+          <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-zinc-100">
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
               T
             </div>
 
-            <div className="hidden sm:block text-left">
-              <p className="text-sm font-semibold text-slate-900">
+            <div className="hidden sm:block leading-tight">
+              <h2 className="text-sm font-bold text-zinc-800">
                 TechSolutions Inc.
-              </p>
+              </h2>
 
-              <p className="text-xs text-slate-500">
-                Employer
-              </p>
+              <p className="text-[11px] text-zinc-500">Employer</p>
             </div>
-
-            <ChevronDown
-              size={17}
-              className="text-slate-500"
-            />
-          </button>
+          </div>
         </div>
       </header>
 
-      <div className="flex">
+      {/* =========================
+          HERO
+      ========================= */}
 
-        {/* ================= SIDEBAR ================= */}
-        <aside className="hidden lg:block w-60 bg-white border-r border-slate-200 min-h-[calc(100vh-64px)]">
+      <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-7 md:py-9 border-b border-zinc-100">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
+          <div className="text-center md:text-left">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-800 leading-tight">
+              Welcome back, TechSolutions Inc.! 👋
+            </h1>
 
-          <nav className="p-4 space-y-2">
-
-            {/* Dashboard */}
-            <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-blue-50 text-blue-700 font-semibold text-sm">
-              <LayoutDashboard size={19} />
-              Dashboard
-            </button>
-
-            {/* Jobs */}
-            <div className="pt-3">
-
-              <p className="px-4 mb-2 text-xs font-semibold text-slate-400 uppercase">
-                Jobs
-              </p>
-
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 text-sm">
-                <BriefcaseBusiness size={18} />
-                All Jobs
-              </button>
-
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 text-sm">
-                <Plus size={18} />
-                Post New Job
-              </button>
-            </div>
-
-            {/* Applications */}
-            <div className="pt-3">
-
-              <p className="px-4 mb-2 text-xs font-semibold text-slate-400 uppercase">
-                Applications
-              </p>
-
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 text-sm">
-                <FileText size={18} />
-                All Applications
-              </button>
-            </div>
-
-            {/* Company */}
-            <div className="pt-3">
-
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 text-sm">
-                <Building2 size={18} />
-                Company Profile
-              </button>
-
-              <button className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-700 hover:bg-slate-50 text-sm">
-                <Settings size={18} />
-                Settings
-              </button>
-
-            </div>
-
-          </nav>
-        </aside>
-
-        {/* ================= MAIN CONTENT ================= */}
-        <main className="flex-1 min-w-0 p-5 md:p-7 lg:p-8">
-
-          {/* Welcome */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-7">
-
-            <div>
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900">
-                Welcome back, TechSolutions Inc.! 👋
-              </h2>
-
-              <p className="text-slate-600 mt-2 text-sm md:text-base">
-                Here's what's happening with your hiring today.
-              </p>
-            </div>
-
-            {/* Date */}
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:border-blue-400 transition">
-              <CalendarDays size={17} />
-
-              May 22 – May 28, 2024
-
-              <ChevronDown size={16} />
-            </button>
-
+            <p className="text-zinc-600 mt-2 text-sm md:text-base">
+              Here's what's happening with your hiring today.
+            </p>
           </div>
+        </div>
+      </section>
 
-          {/* ================= STATS ================= */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-7">
+      {/* =========================
+          DASHBOARD BODY
+      ========================= */}
 
-            {stats.map((stat, index) => {
+      <section className="py-6 md:py-8">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
+          {/* =========================
+              STATS
+          ========================= */}
 
+          <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-7">
+            {stats.map((stat) => {
               const Icon = stat.icon;
 
               return (
                 <div
-                  key={index}
-                  className="bg-white border border-slate-200 rounded-xl p-5 hover:shadow-md transition"
+                  key={stat.title}
+                  className="bg-white rounded-xl border border-zinc-200 p-4 md:p-5 shadow-sm hover:shadow-md transition"
                 >
-
-                  <div className="flex items-center gap-4">
-
-                    <div
-                      className={`w-12 h-12 rounded-full ${stat.iconBg} flex items-center justify-center`}
-                    >
-                      <Icon
-                        size={22}
-                        className={stat.iconColor}
-                      />
-                    </div>
-
-                    <div>
-                      <p className="text-xs text-slate-500 font-medium">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-xs md:text-sm text-zinc-500 truncate">
                         {stat.title}
                       </p>
 
-                      <p className="text-2xl font-bold text-slate-900 mt-1">
+                      <h2 className="text-2xl md:text-3xl font-bold text-zinc-800 mt-1.5 md:mt-2">
                         {stat.value}
+                      </h2>
+
+                      <p className="text-[11px] md:text-xs text-green-600 font-medium mt-1.5 flex items-center gap-1">
+                        <FaArrowRight size={9} className="-rotate-45" />↑{" "}
+                        {stat.change}
                       </p>
                     </div>
 
+                    <div
+                      className={`w-11 h-11 md:w-12 md:h-12 rounded-xl ${stat.iconBg} flex items-center justify-center shrink-0`}
+                    >
+                      <Icon size={20} className={stat.iconColor} />
+                    </div>
                   </div>
-
-                  <p className="text-xs text-emerald-600 font-medium mt-4">
-                    {stat.change}
-                  </p>
-
                 </div>
               );
             })}
-
           </div>
 
-          {/* ================= LOWER CONTENT ================= */}
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+          {/* =========================
+              APPLICATION OVERVIEW
+              KEEP THIS CHART
+          ========================= */}
 
-            {/* Recent Jobs */}
-            <section className="xl:col-span-2 bg-white border border-slate-200 rounded-xl overflow-hidden">
+          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5 mb-6 md:mb-7">
+            <div className="flex items-center justify-between mb-5 md:mb-6">
+              <div>
+                <h2 className="text-base md:text-lg font-bold text-zinc-800">
+                  Applications Overview
+                </h2>
 
-              {/* Header */}
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+                <p className="text-xs md:text-sm text-zinc-500 mt-0.5">
+                  Monthly application trends
+                </p>
+              </div>
 
-                <h3 className="font-bold text-slate-900">
-                  Recent Job Postings
-                </h3>
+              {/* MONTH DROPDOWN */}
 
-                <button className="flex items-center gap-1 text-sm font-semibold text-blue-600 hover:text-blue-700">
+              <div className="relative">
+                <button
+                  onClick={() => setShowPeriod(!showPeriod)}
+                  className="h-9 px-3 rounded-lg bg-white border border-zinc-200 text-xs md:text-sm font-medium text-zinc-700 flex items-center gap-2 hover:bg-zinc-50"
+                >
+                  {period}
+
+                  <LDChevronDown size={14} className="text-zinc-400" />
+                </button>
+
+                {showPeriod && (
+                  <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg border border-zinc-200 shadow-md py-1 z-20">
+                    {periods.map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => {
+                          setPeriod(p);
+                          setShowPeriod(false);
+                        }}
+                        className={`w-full text-left px-3.5 py-2 text-xs md:text-sm transition ${
+                          period === p
+                            ? "bg-indigo-50 text-indigo-700 font-semibold"
+                            : "text-zinc-700 hover:bg-zinc-50"
+                        }`}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* CHART */}
+
+            <div className="h-[260px] md:h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={currentData}
+                  margin={{
+                    top: 10,
+                    right: 10,
+                    left: -10,
+                    bottom: 0,
+                  }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="applicationsGrad"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop
+                        offset="0%"
+                        stopColor="#4F46E5"
+                        stopOpacity={0.25}
+                      />
+
+                      <stop offset="100%" stopColor="#4F46E5" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="#E4E4E7"
+                    vertical={false}
+                  />
+
+                  <XAxis
+                    dataKey="day"
+                    tick={{
+                      fontSize: 11,
+                      fill: "#71717a",
+                    }}
+                    axisLine={{
+                      stroke: "#E4E4E7",
+                    }}
+                    tickLine={false}
+                  />
+
+                  <YAxis
+                    tick={{
+                      fontSize: 11,
+                      fill: "#71717a",
+                    }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: 12,
+                      border: "1px solid #e4e4e7",
+                      boxShadow:
+                        "0 10px 25px -5px rgba(0,0,0,0.07), 0 4px 10px rgba(0,0,0,0.04)",
+                      fontSize: 12,
+                    }}
+                  />
+
+                  <Area
+                    type="monotone"
+                    dataKey="applications"
+                    stroke="#4F46E5"
+                    strokeWidth={3}
+                    fill="url(#applicationsGrad)"
+                    activeDot={{
+                      r: 5,
+                      fill: "#4F46E5",
+                    }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* =========================
+              QUICK ACTIONS
+          ========================= */}
+
+          <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5 mb-6 md:mb-7">
+            <div className="mb-4 md:mb-5">
+              <h2 className="text-base md:text-lg font-bold text-zinc-800">
+                Quick Actions
+              </h2>
+
+              <p className="text-xs md:text-sm text-zinc-500 mt-0.5">
+                Frequently used actions
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-2">
+              {quickActions.map((act) => {
+                const Icon = act.icon;
+
+                return (
+                  <button
+                    key={act.title}
+                    onClick={() => navigate(act.path)}
+                    className="w-full flex items-center gap-3 md:gap-4 p-3 md:p-3.5 rounded-xl border border-zinc-200 hover:border-indigo-200 hover:bg-indigo-50/40 transition group text-left"
+                  >
+                    <div
+                      className={`w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center shrink-0 ${act.iconBg}`}
+                    >
+                      <Icon size={18} />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm md:text-[15px] font-semibold text-zinc-800 group-hover:text-indigo-700 transition">
+                        {act.title}
+                      </p>
+
+                      <p className="text-xs md:text-[12px] text-zinc-500 mt-0.5">
+                        {act.desc}
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={17}
+                      className="text-zinc-300 group-hover:text-indigo-500 transition"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* =========================
+              RECENT JOBS + APPLICATIONS
+          ========================= */}
+
+          <div className="grid xl:grid-cols-3 gap-5 md:gap-6">
+            {/* =========================
+                RECENT JOB POSTINGS
+            ========================= */}
+
+            <div className="xl:col-span-2 bg-white rounded-xl border border-zinc-200 shadow-sm">
+              <div className="flex items-center justify-between p-4 md:p-5 border-b border-zinc-100">
+                <div>
+                  <h2 className="text-base md:text-lg font-bold text-zinc-800">
+                    Recent Job Postings
+                  </h2>
+
+                  <p className="text-xs md:text-sm text-zinc-500 mt-0.5">
+                    Manage your recently posted jobs
+                  </p>
+                </div>
+
+                <button
+                  onClick={() => navigate("/employer/manage-jobs")}
+                  className="flex items-center gap-1 text-xs md:text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition"
+                >
                   View All Jobs
                   <ChevronRight size={16} />
                 </button>
-
               </div>
 
-              {/* Desktop table */}
+              {/* DESKTOP TABLE */}
+
               <div className="hidden md:block overflow-x-auto">
-
                 <table className="w-full">
-
                   <thead>
-                    <tr className="border-b border-slate-100">
-
-                      <th className="text-left px-5 py-3 text-xs font-semibold text-slate-500">
+                    <tr className="border-b border-zinc-100 bg-zinc-50/50">
+                      <th className="text-left px-5 py-3 text-[11px] font-semibold uppercase text-zinc-500">
                         Job Title
                       </th>
 
-                      <th className="text-center px-4 py-3 text-xs font-semibold text-slate-500">
+                      <th className="text-left px-5 py-3 text-[11px] font-semibold uppercase text-zinc-500">
                         Applications
                       </th>
 
-                      <th className="text-center px-4 py-3 text-xs font-semibold text-slate-500">
+                      <th className="text-left px-5 py-3 text-[11px] font-semibold uppercase text-zinc-500">
                         Status
                       </th>
 
-                      <th className="text-left px-4 py-3 text-xs font-semibold text-slate-500">
+                      <th className="text-left px-5 py-3 text-[11px] font-semibold uppercase text-zinc-500">
                         Posted On
                       </th>
 
-                      <th></th>
-
+                      <th className="px-5 py-3 text-right text-[11px] font-semibold uppercase text-zinc-500">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
 
                   <tbody>
-
-                    {jobs.map((job, index) => (
-
+                    {recentJobs.map((job) => (
                       <tr
-                        key={index}
-                        className="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition"
+                        key={job.id}
+                        className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 transition"
                       >
+                        <td className="px-5 py-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                              <FaBriefcase size={13} />
+                            </div>
+
+                            <div>
+                              <p className="font-semibold text-sm md:text-[15px] text-zinc-800">
+                                {job.title}
+                              </p>
+
+                              <p className="text-[11px] md:text-xs text-zinc-500 mt-0.5 flex items-center gap-1">
+                                {job.type} •
+                                <FaMapMarkerAlt size={9} />
+                                {job.location}
+                              </p>
+                            </div>
+                          </div>
+                        </td>
 
                         <td className="px-5 py-4">
+                          <div className="flex items-center gap-2">
+                            <FaUsers size={12} className="text-zinc-400" />
 
-                          <p className="font-semibold text-sm text-slate-900">
-                            {job.title}
-                          </p>
-
-                          <p className="text-xs text-slate-500 mt-1">
-                            {job.type} • {job.location}
-                          </p>
-
+                            <span className="font-medium text-sm text-zinc-700">
+                              {job.applications}
+                            </span>
+                          </div>
                         </td>
 
-                        <td className="text-center px-4 py-4">
-                          <span className="font-semibold text-sm text-slate-700">
-                            {job.applications}
-                          </span>
-                        </td>
-
-                        <td className="text-center px-4 py-4">
-
+                        <td className="px-5 py-4">
                           <span
-                            className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
-                              job.status === "Active"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-orange-100 text-orange-700"
-                            }`}
+                            className={`inline-flex px-3 py-1 rounded-full text-[11px] font-semibold ${statusColor(
+                              job.status,
+                            )}`}
                           >
                             {job.status}
                           </span>
-
                         </td>
 
-                        <td className="px-4 py-4 text-sm text-slate-600">
+                        <td className="px-5 py-4 text-xs md:text-sm text-zinc-500">
                           {job.date}
                         </td>
 
-                        <td className="px-4 py-4">
-
-                          <button className="text-slate-500 hover:text-slate-900">
-                            <MoreVertical size={18} />
+                        <td className="px-5 py-4 text-right">
+                          <button className="p-1.5 rounded-lg hover:bg-zinc-100 transition">
+                            <MoreVertical size={18} className="text-zinc-400" />
                           </button>
-
                         </td>
-
                       </tr>
-
                     ))}
-
                   </tbody>
-
                 </table>
-
               </div>
 
-              {/* Mobile cards */}
-              <div className="md:hidden divide-y divide-slate-100">
+              {/* MOBILE */}
 
-                {jobs.map((job, index) => (
+              <div className="md:hidden divide-y divide-zinc-100">
+                {recentJobs.map((job) => (
+                  <div key={job.id} className="p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                          <FaBriefcase size={13} />
+                        </div>
 
-                  <div
-                    key={index}
-                    className="p-4"
-                  >
+                        <div>
+                          <h3 className="font-semibold text-sm text-zinc-800">
+                            {job.title}
+                          </h3>
 
-                    <div className="flex justify-between gap-3">
-
-                      <div>
-                        <h4 className="font-semibold text-sm text-slate-900">
-                          {job.title}
-                        </h4>
-
-                        <p className="text-xs text-slate-500 mt-1">
-                          {job.type} • {job.location}
-                        </p>
+                          <p className="text-[11px] text-zinc-500 mt-0.5">
+                            {job.type} • {job.location}
+                          </p>
+                        </div>
                       </div>
 
-                      <button>
-                        <MoreVertical size={18} />
+                      <button className="p-1.5 rounded-lg hover:bg-zinc-100">
+                        <MoreVertical size={17} className="text-zinc-400" />
                       </button>
-
                     </div>
 
-                    <div className="flex items-center justify-between mt-4">
+                    <div className="flex items-center justify-between mt-3.5">
+                      <div className="flex items-center gap-2">
+                        <FaUsers size={12} className="text-zinc-400" />
 
-                      <span className="text-xs text-slate-500">
-                        {job.applications} Applications
-                      </span>
+                        <span className="text-xs text-zinc-600">
+                          {job.applications} Applications
+                        </span>
+                      </div>
 
                       <span
-                        className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                          job.status === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-orange-100 text-orange-700"
-                        }`}
+                        className={`px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColor(
+                          job.status,
+                        )}`}
                       >
                         {job.status}
                       </span>
-
                     </div>
 
+                    <p className="text-[11px] text-zinc-400 mt-2.5">
+                      Posted on {job.date}
+                    </p>
                   </div>
-
                 ))}
-
               </div>
+            </div>
 
-            </section>
+            {/* =========================
+                RECENT APPLICATIONS
+            ========================= */}
 
-            {/* ================= RECENT APPLICATIONS ================= */}
-            <section className="bg-white border border-slate-200 rounded-xl overflow-hidden">
+            <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5">
+              <div className="flex items-center justify-between mb-4 md:mb-5">
+                <div>
+                  <h2 className="text-base md:text-lg font-bold text-zinc-800">
+                    Recent Applications
+                  </h2>
 
-              <div className="flex items-center justify-between px-5 py-4 border-b border-slate-200">
+                  <p className="text-xs md:text-sm text-zinc-500 mt-0.5">
+                    Latest candidates
+                  </p>
+                </div>
 
-                <h3 className="font-bold text-slate-900">
-                  Recent Applications
-                </h3>
-
-                <button className="text-sm font-semibold text-blue-600 hover:text-blue-700">
+                <button
+                  onClick={() => navigate("/employer/applications")}
+                  className="flex items-center gap-1 text-xs md:text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition"
+                >
                   View All
+                  <ChevronRight size={16} />
                 </button>
-
               </div>
 
-              <div className="divide-y divide-slate-100">
-
-                {applications.map((application, index) => (
-
+              <div className="space-y-2 md:space-y-2.5">
+                {recentApplications.map((app) => (
                   <div
-                    key={index}
-                    className="flex items-center gap-3 px-5 py-4 hover:bg-slate-50 transition"
+                    key={app.id}
+                    onClick={() => navigate("/employer/applications")}
+                    className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
                   >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div
+                        className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${app.bg}`}
+                      >
+                        {app.initials}
+                      </div>
 
-                    {/* Avatar */}
-                    <div
-                      className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm ${
-                        index % 3 === 0
-                          ? "bg-purple-100 text-purple-700"
-                          : index % 3 === 1
-                          ? "bg-green-100 text-green-700"
-                          : "bg-orange-100 text-orange-700"
-                      }`}
-                    >
-                      {application.initials}
+                      <div className="min-w-0">
+                        <p className="text-sm md:text-[15px] font-semibold text-zinc-800 truncate flex items-center gap-1">
+                          {app.name}
+
+                          {app.featured && (
+                            <span className="text-indigo-500 text-[10px]">
+                              <FaStar />
+                            </span>
+                          )}
+                        </p>
+
+                        <p className="text-[11px] md:text-xs text-zinc-500 truncate">
+                          {app.job}
+                        </p>
+
+                        <p className="text-[10px] md:text-[11px] text-zinc-400 mt-0.5">
+                          {app.date}
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Details */}
-                    <div className="min-w-0 flex-1">
-
-                      <p className="text-sm font-semibold text-slate-900">
-                        {application.name}
-                      </p>
-
-                      <p className="text-xs text-slate-600 truncate">
-                        {application.job}
-                      </p>
-
-                      <p className="text-[11px] text-slate-400 mt-0.5">
-                        {application.time}
-                      </p>
-
-                    </div>
-
-                    {/* Status */}
                     <span
-                      className={`hidden sm:inline-flex px-2.5 py-1 rounded-full text-xs font-medium ${
-                        index === 2
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
+                      className={`inline-flex px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-semibold whitespace-nowrap ${appStatusColor(
+                        app.status,
+                      )}`}
                     >
-                      {index === 2 ? "Shortlisted" : "New"}
+                      {app.status}
                     </span>
-
                   </div>
-
                 ))}
-
               </div>
-
-            </section>
-
+            </div>
           </div>
-
-        </main>
-
-      </div>
-
+        </div>
+      </section>
     </div>
   );
 };
 
-export default Emp-dashboard;
+export default EmpDashboard;
