@@ -8,11 +8,12 @@ import { Dashboard } from "./pages/student/Dashboard";
 import { Profile } from "./pages/student/Profile";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
-import About from "./pages/public/About";
-import Contact from "./pages/public/Contact";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
-import Jobs from "./pages/public/Jobs";
+// import { Setting } from "./pages/student/Setting";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+// import { AdminDashboard } from "./pages/admin/AdminDashboard";
 
 function App() {
   return (
@@ -22,17 +23,18 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/jobs" element={<Jobs />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
 
-        <Route element={<MainSidebar />}>
-          <Route path="/" element={<Dashboard />} />
+        {/* <Route element={<MainSidebar />}>
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/savejobs" element={<SaveJobs />} />
-        </Route>
+          <Route path="/settings" element={<Setting />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        </Route> */}
       </Routes>
 
       {/* H ere We Define Routes of our pages */}
