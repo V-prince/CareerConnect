@@ -124,7 +124,7 @@ const Footer = () => {
 
               <div className="flex gap-4">
                 <FaEnvelope className="text-blue-500 mt-1" />
-                <p>careerconnect@gmail.com</p>
+                <p>jobspark@gmail.com</p>
               </div>
 
               <div className="flex gap-4">
@@ -138,7 +138,7 @@ const Footer = () => {
       <div className="border-t border-slate-800 py-6">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400">
-            © {new Date().getFullYear()} CareerConnect. All rights reserved.
+            © {new Date().getFullYear()} JobSpark. All rights reserved.
           </p>
         </div>
       </div>

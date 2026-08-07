@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 import Select from "react-select";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const roleOptions = [
   { value: "jobseeker", label: "Jobseeker" },
@@ -40,6 +41,11 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+
+    if(formData.password !== formData.confirmPassword) {
+      toast.error("Passwords do not match!");
+      return;
+    }
 
     console.log({
       ...formData,

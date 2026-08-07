@@ -10,10 +10,19 @@ import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
+<<<<<<< HEAD
 // import { Setting } from "./pages/student/Setting";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 // import { AdminDashboard } from "./pages/admin/AdminDashboard";
+=======
+import { Setting } from "./pages/student/Setting";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { ManageUsers } from "./pages/admin/ManageUsers";
+
+>>>>>>> acaef27f50d61bca6fda8261537764bc1c949e3c
 
 function App() {
   return (
@@ -27,6 +36,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Route>
 
+<<<<<<< HEAD
         {/* <Route element={<MainSidebar />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
@@ -35,9 +45,22 @@ function App() {
           <Route path="/settings" element={<Setting />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route> */}
-      </Routes>
+=======
+        <Route element={<MainSidebar />}>
+          <Route path="/user/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/save/jobs" element={<SaveJobs />} />
+          <Route path="/settings" element={<Setting />} />
 
-      {/* H ere We Define Routes of our pages */}
+    
+            {/* Admim */}
+
+           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+           <Route path="/admin/manage/users" element={<ManageUsers />} />
+        </Route>
+>>>>>>> acaef27f50d61bca6fda8261537764bc1c949e3c
+      </Routes>
     </>
   );
 }

@@ -1,12 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+
+    const handelScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    }
+
+    window.addEventListener("scroll", handelScroll)
+
+    return () => window.removeEventListener("scroll", handelScroll)
+
+  }, [])
 
   return (
-    <header className="w-full bg-white shadow-md border-b border-zinc-200 sticky top-0 z-50">
+    <header className={`w-full bg-gradient-to-b from-white/50 to-blue-50  backdrop-blur-xl  sticky top-0 z-50 ${isScrolled ? "shadow-lg border-b border-gray-200" : "border-b border-transparent shadow-none"}`}>
       <nav className="max-w-7xl mx-auto flex items-center justify-between h-15 px-5 sm:px-8 lg:px-10">
         <Link to={"/"}>
           <img
@@ -20,10 +33,9 @@ export const Navbar = () => {
           <NavLink
             to={"/"}
             className={({ isActive }) =>
-              `pb-1 border-b-2 transition-all duration-300 ${
-                isActive
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              `pb-1 border-b-2 transition-all duration-300 ${isActive
+                ? "border-indigo-600 text-indigo-600"
+                : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
               }`
             }
           >
@@ -33,10 +45,9 @@ export const Navbar = () => {
           <NavLink
             to={"/jobs"}
             className={({ isActive }) =>
-              `pb-1 border-b-2 transition-all duration-300 ${
-                isActive
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              `pb-1 border-b-2 transition-all duration-300 ${isActive
+                ? "border-indigo-600 text-indigo-600"
+                : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
               }`
             }
           >
@@ -45,10 +56,9 @@ export const Navbar = () => {
           <NavLink
             to={"/about"}
             className={({ isActive }) =>
-              `pb-1 border-b-2 transition-all duration-300 ${
-                isActive
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              `pb-1 border-b-2 transition-all duration-300 ${isActive
+                ? "border-indigo-600 text-indigo-600"
+                : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
               }`
             }
           >
@@ -57,10 +67,9 @@ export const Navbar = () => {
           <NavLink
             to={"/contact"}
             className={({ isActive }) =>
-              `pb-1 border-b-2 transition-all duration-300 ${
-                isActive
-                  ? "border-indigo-600 text-indigo-600"
-                  : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
+              `pb-1 border-b-2 transition-all duration-300 ${isActive
+                ? "border-indigo-600 text-indigo-600"
+                : "border-transparent text-gray-700 hover:border-indigo-600 hover:text-indigo-600"
               }`
             }
           >
@@ -90,9 +99,8 @@ export const Navbar = () => {
       </nav>
 
       <div
-        className={`md:hidden overflow-hidden transition-all duration-300 ${
-          isOpen ? "max-h-96 border-t" : "max-h-0"
-        }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ${isOpen ? "max-h-96 border-t" : "max-h-0"
+          }`}
       >
         <ul className="flex flex-col px-5 py-4 gap-4 font-medium bg-white">
           <li className="cursor-pointer hover:text-indigo-600">Home</li>

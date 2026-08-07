@@ -1,14 +1,21 @@
-import { BookmarkCheck, FileText, icons, LayoutDashboard, Settings, User, X } from 'lucide-react'
-import React from 'react'
+import { BookmarkCheck, FileText, icons, LayoutDashboard, Settings, User, UsersRound, X } from 'lucide-react'
+import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
+
+  const [user, SetUser] = useState(
+    {
+      id: 1,
+      role: "admin"
+    }
+  )
 
   const sideData = [
     {
       icon: <LayoutDashboard size={22} />,
       title: "Dashboard",
-      to: "/dashboard"
+      to: "/user/dashboard"
     },
     {
       icon: <User size={22} />,
@@ -34,6 +41,24 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
   ]
 
 
+  const AdminSideData = [
+    {
+      icon: <LayoutDashboard size={22} />,
+      title: "Dashboard",
+      to: "/admin/dashboard"
+    },
+    {
+      icon: <UsersRound size={22} />,
+      title: "Users",
+      to: "/admin/manage/users"
+    },
+    {
+      icon: <Settings size={22} />,
+      title: "Settings",
+      to: "/settings"
+    }
+  ]
+
   return (
     <section className={`fixed top-0 left-0 w-72 h-screen
     border-r border-zinc-200 bg-white
@@ -49,16 +74,31 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
           <img src="/images/logo.png" alt="" className='w-50 mx-auto py-6' />
         </Link>
         <div className='px-3 space-y-2'>
+          {
 
-          {sideData.map((item,index) => (
-            <NavLink to={item.to} key={index} className={({ isActive }) => `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
-              ? "bg-indigo-600 text-white border-indigo-600"
-              : "text-gray-700 border-transparent hover:bg-indigo-600 hover:text-white hover:border-indigo-600"
-              }`}   >
-              {item.icon}
-              <span className='text-xl hover:text-white font-medium '>{item.title}</span>
-            </NavLink>
-          ))}
+            user.role === "admin" ?
+
+              AdminSideData.map((item, index) => (
+                <NavLink to={item.to} key={index} className={({ isActive }) => `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
+                  ? "bg-blue-800 text-white border-blue-800"
+                  : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                  }`}   >
+                  {item.icon}
+                  <span className='text-xl hover:text-white font-medium '>{item.title}</span>
+                </NavLink>
+
+              ))
+              :
+
+              sideData.map((item, index) => (
+                <NavLink to={item.to} key={index} className={({ isActive }) => `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
+                  ? "bg-blue-800 text-white border-blue-800"
+                  : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                  }`}   >
+                  {item.icon}
+                  <span className='text-xl hover:text-white font-medium '>{item.title}</span>
+                </NavLink>
+              ))}
         </div>
       </div>
     </section>

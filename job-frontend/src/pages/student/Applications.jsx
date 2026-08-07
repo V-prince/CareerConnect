@@ -134,13 +134,15 @@ export const Applications = () => {
     setSelectDetails(null)
   }
 
+  
+
   useEffect(() => {
     SearchFilters()
   }, [searchDetail])
 
 
   return (
-    <section className='min-h-screen bg-zinc-100 mt-16 p-8'>
+    <section className='min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white  mt-16 p-8'>
       <h1 className="text-2xl md:text-3xl font-bold">
         My Applications
       </h1>
