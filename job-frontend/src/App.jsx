@@ -16,6 +16,7 @@ import Contact from "./pages/public/Contact";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageUsers } from "./pages/admin/ManageUsers";
 import EmpDashboard from "./pages/employer/EmpDashboard";
+import Jobs from "./pages/public/Jobs";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />

@@ -16,7 +16,7 @@ import { Link, NavLink } from "react-router-dom";
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
   const [user, SetUser] = useState({
     id: 1,
-    role: "employer",
+    role: "user",
   });
 
   const sideData = [
