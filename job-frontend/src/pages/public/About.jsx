@@ -2,8 +2,8 @@ import Choose from "../../components/Choose";
 
 const About = () => {
   return (
-    <div className="bg-gray-100">
-      <section className="bg-gray-100 py-6 md:py-8 lg:py-10">
+    <div className="bg-gradient-to-b from-white via-blue-50/70 to-white border-t border-zinc-200">
+      <section className="py-6 md:py-8 lg:py-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-zinc-800">
@@ -20,7 +20,7 @@ const About = () => {
         </div>
       </section>
 
-      <section className="bg-gray-100 py-4 md:py-6 lg:py-8">
+      <section className=" py-4 md:py-6 lg:py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-xl md:text-2xl font-bold text-zinc-800">

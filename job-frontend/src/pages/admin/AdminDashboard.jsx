@@ -1,4 +1,4 @@
-import { Users } from 'lucide-react'
+import { Briefcase, Building2, FileUser, Users } from 'lucide-react'
 import React from 'react'
 import  {AdminAreaChart}  from '../../components/charts/AreaChart';
 
@@ -12,25 +12,27 @@ export const AdminDashboard = () => {
       bgColor: "bg-purple-500"
     },
     {
-      icon: <Users />,
+      icon: <Briefcase  />,
       title: "Total Jobs",
       count: 12450,
       bgColor: "bg-blue-500"
     },
     {
-      icon: <Users />,
+      icon: <FileUser />,
       title: "Total Applications",
       count: 12450,
       bgColor: "bg-green-500"
     },
     {
-      icon: <Users />,
+      icon: <Building2  />,
       title: "Total Companes",
       count: 12450,
       bgColor: "bg-orange-500"
     }
 
   ]
+
+  
 
   const Chartdata = [
     { day: "Mon", users: 1200, jobs: 200, applications: 450 },
@@ -64,7 +66,7 @@ export const AdminDashboard = () => {
             </div>
             <div className="flex flex-col gap-1">
               <span className='text-zinc-600 text-md'>{data.title}</span>
-              <span className='text-2xl font-bold'>{data.count}</span>
+              <span className='text-2xl font-bold'>{data.count.toLocaleString("en-IN")}</span>
             </div>
           </div>
         ))}

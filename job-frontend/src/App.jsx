@@ -15,6 +15,7 @@ import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
 import Jobs from "./pages/public/Jobs";
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
+import { ManageUsers } from "./pages/admin/ManageUsers";
 
 
 function App() {
@@ -37,11 +38,14 @@ function App() {
           <Route path="/applications" element={<Applications />} />
           <Route path="/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
+
+    
+            {/* Admim */}
+
            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+           <Route path="/admin/manage/users" element={<ManageUsers />} />
         </Route>
       </Routes>
-
-      {/* H ere We Define Routes of our pages */}
     </>
   );
 }
