@@ -30,9 +30,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-// =========================
 // MONTHLY APPLICATION DATA
-// =========================
 
 const monthlyData = {
   "May 2024": [
@@ -76,9 +74,7 @@ const monthlyData = {
   ],
 };
 
-// =========================
 // STATS
-// =========================
 
 const stats = [
   {
@@ -123,9 +119,7 @@ const stats = [
   },
 ];
 
-// =========================
 // RECENT JOBS
-// =========================
 
 const recentJobs = [
   {
@@ -175,9 +169,7 @@ const recentJobs = [
   },
 ];
 
-// =========================
 // RECENT APPLICATIONS
-// =========================
 
 const recentApplications = [
   {
@@ -222,9 +214,7 @@ const recentApplications = [
   },
 ];
 
-// =========================
 // QUICK ACTIONS
-// =========================
 
 const quickActions = [
   {
@@ -257,22 +247,12 @@ const quickActions = [
   },
 ];
 
-// =========================
-// COMPONENT
-// =========================
-
 export const EmpDashboard = () => {
   const navigate = useNavigate();
-
-  // MONTH SELECTOR
   const [period, setPeriod] = useState("May 2024");
   const [showPeriod, setShowPeriod] = useState(false);
 
   const periods = ["May 2024", "April 2024", "March 2024", "February 2024"];
-
-  // =========================
-  // STATUS COLORS
-  // =========================
 
   const statusColor = (status) => {
     switch (status.toLowerCase()) {
@@ -305,71 +285,41 @@ export const EmpDashboard = () => {
         return "bg-zinc-50 text-zinc-600 border border-zinc-200";
     }
   };
-
-  // =========================
   // CURRENT CHART DATA
-  // =========================
 
   const currentData = monthlyData[period] || monthlyData["May 2024"];
 
   return (
-    <div className="min-h-screen bg-blue-50">
+    <div className="min-h-screen bg-zinc-50">
       {/* =========================
           TOP HEADER
       ========================= */}
 
       <header className="bg-white border-b border-zinc-200 sticky top-0 z-30">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 h-16 flex items-center gap-4">
-          {/* LOGO */}
-          <div className="flex items-center gap-3">
-            <img
-              src="/images/logo.png"
-              alt="JobSpark"
-              className="w-40 h-auto object-contain"
-            />
-
-            <div className="border-l border-zinc-200 pl-3">
-              <p className="text-sm font-semibold text-zinc-800">JobSpark</p>
-              <p className="text-[11px] text-zinc-500">Employer Portal</p>
-            </div>
-          </div>
-
-          {/* SEARCH */}
-          <div className="flex-1 max-w-2xl mx-auto">
-            <div className="relative">
-              <FaSearch
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
-                size={13}
-              />
-
-              <input
-                type="text"
-                placeholder="Search for candidates, jobs, applications..."
-                className="w-full h-10 rounded-xl bg-zinc-50 border border-zinc-200 pl-10 pr-4 text-xs md:text-sm text-zinc-700 outline-none transition focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100"
-              />
-            </div>
-          </div>
-
-          {/* PROFILE ONLY */}
-          <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-zinc-100">
-            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 h-16 flex items-center justify-end">
+          {/* PROFILE */}
+          <div
+            onClick={() => navigate("/employer/profile")}
+            className="flex items-center gap-2 md:gap-3 cursor-pointer rounded-xl px-2 py-1.5 hover:bg-zinc-50 transition"
+          >
+            {/* Profile Avatar */}
+            <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-sm shrink-0">
               T
             </div>
 
+            {/* Profile Details */}
             <div className="hidden sm:block leading-tight">
-              <h2 className="text-sm font-bold text-zinc-800">
+              <p className="text-sm font-semibold text-zinc-800">
                 TechSolutions Inc.
-              </h2>
+              </p>
 
-              <p className="text-[11px] text-zinc-500">Employer</p>
+              <p className="text-[11px] text-zinc-500 mt-0.5">Employer</p>
             </div>
           </div>
         </div>
       </header>
 
-      {/* =========================
-          HERO
-      ========================= */}
+      {/* HERO */}
 
       <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-7 md:py-9 border-b border-zinc-100">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
@@ -385,15 +335,11 @@ export const EmpDashboard = () => {
         </div>
       </section>
 
-      {/* =========================
-          DASHBOARD BODY
-      ========================= */}
+      {/* DASHBOARD BODY */}
 
       <section className="py-6 md:py-8">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
-          {/* =========================
-              STATS
-          ========================= */}
+          {/* STATS */}
 
           <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3 md:gap-4 mb-6 md:mb-7">
             {stats.map((stat) => {
@@ -431,10 +377,8 @@ export const EmpDashboard = () => {
             })}
           </div>
 
-          {/* =========================
-              APPLICATION OVERVIEW
-              KEEP THIS CHART
-          ========================= */}
+          {/* APPLICATION OVERVIEW
+              KEEP THIS CHART*/}
 
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5 mb-6 md:mb-7">
             <div className="flex items-center justify-between mb-5 md:mb-6">
@@ -567,9 +511,7 @@ export const EmpDashboard = () => {
             </div>
           </div>
 
-          {/* =========================
-              QUICK ACTIONS
-          ========================= */}
+          {/* QUICK ACTIONS */}
 
           <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5 mb-6 md:mb-7">
             <div className="mb-4 md:mb-5">
@@ -618,14 +560,8 @@ export const EmpDashboard = () => {
             </div>
           </div>
 
-          {/* =========================
-              RECENT JOBS + APPLICATIONS
-          ========================= */}
-
           <div className="grid xl:grid-cols-3 gap-5 md:gap-6">
-            {/* =========================
-                RECENT JOB POSTINGS
-            ========================= */}
+            {/* RECENT JOB POSTINGS*/}
 
             <div className="xl:col-span-2 bg-white rounded-xl border border-zinc-200 shadow-sm">
               <div className="flex items-center justify-between p-4 md:p-5 border-b border-zinc-100">
@@ -648,9 +584,7 @@ export const EmpDashboard = () => {
                 </button>
               </div>
 
-              {/* DESKTOP TABLE */}
-
-              <div className="hidden md:block overflow-x-auto">
+              <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-zinc-100 bg-zinc-50/50">
@@ -736,63 +670,9 @@ export const EmpDashboard = () => {
                   </tbody>
                 </table>
               </div>
-
-              {/* MOBILE */}
-
-              <div className="md:hidden divide-y divide-zinc-100">
-                {recentJobs.map((job) => (
-                  <div key={job.id} className="p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-3">
-                        <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
-                          <FaBriefcase size={13} />
-                        </div>
-
-                        <div>
-                          <h3 className="font-semibold text-sm text-zinc-800">
-                            {job.title}
-                          </h3>
-
-                          <p className="text-[11px] text-zinc-500 mt-0.5">
-                            {job.type} • {job.location}
-                          </p>
-                        </div>
-                      </div>
-
-                      <button className="p-1.5 rounded-lg hover:bg-zinc-100">
-                        <MoreVertical size={17} className="text-zinc-400" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-between mt-3.5">
-                      <div className="flex items-center gap-2">
-                        <FaUsers size={12} className="text-zinc-400" />
-
-                        <span className="text-xs text-zinc-600">
-                          {job.applications} Applications
-                        </span>
-                      </div>
-
-                      <span
-                        className={`px-2.5 py-1 rounded-full text-[11px] font-semibold ${statusColor(
-                          job.status,
-                        )}`}
-                      >
-                        {job.status}
-                      </span>
-                    </div>
-
-                    <p className="text-[11px] text-zinc-400 mt-2.5">
-                      Posted on {job.date}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
 
-            {/* =========================
-                RECENT APPLICATIONS
-            ========================= */}
+            {/* RECENT APPLICATIONS */}
 
             <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5">
               <div className="flex items-center justify-between mb-4 md:mb-5">
