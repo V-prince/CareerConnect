@@ -267,6 +267,7 @@ const Jobs = () => {
     }
 
     const selectedJobTypes = Object.keys(jobTypes).filter((k) => jobTypes[k]);
+    
     if (selectedJobTypes.length > 0) {
       result = result.filter((j) => selectedJobTypes.includes(j.jobType));
     }

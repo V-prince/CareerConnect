@@ -13,10 +13,16 @@ import { SaveJobs } from "./pages/student/SaveJobs";
 import { Setting } from "./pages/student/Setting";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
+<<<<<<< HEAD
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageUsers } from "./pages/admin/ManageUsers";
 import EmpDashboard from "./pages/employer/EmpDashboard";
 import Jobs from "./pages/public/Jobs";
+=======
+import Jobs from "./pages/public/Jobs";
+import { AdminDashboard } from "./pages/admin/AdminDashboard";
+
+>>>>>>> origin/rishi
 
 function App() {
   return (
@@ -32,17 +38,25 @@ function App() {
         </Route>
 
         <Route element={<MainSidebar />}>
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/rishi
           <Route path="/user/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
+<<<<<<< HEAD
 
           {/* Employer */}
           <Route path="/employer/dashboard" element={<EmpDashboard />} />
 
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/manage/users" element={<ManageUsers />} />
+=======
+           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+>>>>>>> origin/rishi
         </Route>
       </Routes>
     </>
