@@ -17,16 +17,12 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
-
   const [user, SetUser] = useState({
     id: 1,
-    role: "employer",
+    role: "admin",
   });
 
-<<<<<<< HEAD
   const [showJobs, setShowJobs] = useState(false);
-=======
->>>>>>> e22f882477a226a4f298bf3e638a8ec7ef993d53
 
   const sideData = [
     {
@@ -37,25 +33,24 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <User />,
       title: "Profile",
-      to: "/user/Profile"
+      to: "/user/Profile",
     },
     {
       icon: <FileText />,
       title: "Applications",
-      to: "/user/applications"
+      to: "/user/applications",
     },
     {
       icon: <BookmarkCheck />,
       title: "Saved Jobs",
-      to: "/user/save/jobs"
+      to: "/user/save/jobs",
     },
     {
       icon: <Settings />,
       title: "Settings",
-      to: "/settings"
-    }
-  ]
-
+      to: "/settings",
+    },
+  ];
 
   const AdminSideData = [
     {
@@ -111,7 +106,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       ${isOpen ? "translate-x-0" : "-translate-x-full"}
       lg:translate-x-0`}
     >
-   
       <div
         onClick={() => SetIsOpen(false)}
         className="lg:hidden flex items-center justify-end p-3"
@@ -120,7 +114,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       </div>
 
       <div className="flex flex-col">
-        
         <Link to={"/"}>
           <img
             src="/images/logo.png"
@@ -130,7 +123,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
         </Link>
 
         <div className="px-3 space-y-2">
-         
           {user.role === "admin"
             ? AdminSideData.map((item, index) => (
                 <NavLink
@@ -151,8 +143,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                   </span>
                 </NavLink>
               ))
-            : 
-              user.role === "employer"
+            : user.role === "employer"
               ? EmployerSideData.map((item, index) =>
                   item.title === "Jobs" ? (
                     <div key={index}>
@@ -163,7 +154,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                       >
                         {item.icon}
 
-<<<<<<< HEAD
                         <span className="text-xl hover:text-white font-medium flex-1 text-left">
                           {item.title}
                         </span>
@@ -229,14 +219,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                   ),
                 )
               : /* NORMAL USER */
-=======
-                    <span className="text-xl hover:text-white font-medium">
-                      {item.title}
-                    </span>
-                  </NavLink>
-                ))
-              : 
->>>>>>> e22f882477a226a4f298bf3e638a8ec7ef993d53
                 sideData.map((item, index) => (
                   <NavLink
                     to={item.to}
