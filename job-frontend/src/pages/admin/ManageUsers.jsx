@@ -109,9 +109,20 @@ export const ManageUsers = () => {
   const [details, setDetails] = useState({
     search: "",
     role: "",
+
     sort: "",
   });
   const [filterdDetails, setFilterdDetails] = useState(users);
+    sort: ""
+  })
+
+  const [filterdDetails, setFilterdDetails] = useState(users)
+
+  const [isOpenPopup, setIsOpenPopUp] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
+
+
+
 
   const Roleoptions = [
     { value: "all", label: "All Roles" },
@@ -331,6 +342,7 @@ export const ManageUsers = () => {
                     </div>
                   </td>
 
+<<<<<<< HEAD
                   <td className="text-center">{user.role}</td>
                   <td className="text-center">{user.email}</td>
                   <td className="text-center">{user.phone}</td>
@@ -340,10 +352,97 @@ export const ManageUsers = () => {
                   </td>
                 </tr>
               ))}
+=======
+                    <td className="text-center">{user.role}</td>
+                    <td className="text-center">{user.email}</td>
+                    <td className="text-center">{user.phone}</td>
+                    <td className="text-center">{user.joinedOn}</td>
+
+                    <td className="relative text-center">
+                      <EllipsisVertical
+                        size={18}
+                        className="mx-auto cursor-pointer text-zinc-600 hover:text-zinc-900"
+                        onClick={() => {
+                          setSelectedUser(user.id)
+                          setIsOpenPopUp(prev => !prev);
+                        }}
+                      />
+
+                      {isOpenPopup && selectedUser === user.id && (
+                        <div
+                          className="
+                          right-2
+                          top-10
+                          z-50
+                          w-36
+                          sm:w-40
+                          bg-white
+                          border border-zinc-200
+                          rounded-lg
+                          shadow-lg
+                          p-1
+                          flex 
+                          flex-col
+                          overflow-hidden
+                          absolute
+                          "
+                        >
+                        
+
+                          <button
+                            className="
+                            text-left
+                            px-3
+                            py-2.5
+                            text-xs
+                            sm:text-sm
+                            text-zinc-700
+                            rounded-md
+                            hover:bg-zinc-100
+                            transition
+                            whitespace-nowrap
+                            w-full
+                            "
+                          >
+                            Block User
+                          </button>
+
+                          <button
+                            className="
+                            text-left
+                            px-3
+                            py-2.5
+                            text-xs
+                            sm:text-sm
+                            text-red-600
+                            rounded-md
+                            hover:bg-red-50
+                            transition
+                            whitespace-nowrap
+                            w-full
+                            "
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </td>
+
+                  </tr>
+                ))
+              }
+>>>>>>> prince
             </tbody>
           </table>
         </div>
       </div>
+<<<<<<< HEAD
     </section>
   );
 };
+=======
+
+    </section >
+  )
+}
+>>>>>>> prince

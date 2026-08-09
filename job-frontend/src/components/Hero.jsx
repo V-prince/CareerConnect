@@ -3,6 +3,7 @@ import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 import Select from "react-select";
 import career from "../assets/career.png";
 
+
 const locationOptions = [
   { value: "ahmedabad", label: "Ahmedabad" },
   { value: "mumbai", label: "Mumbai" },
@@ -28,7 +29,9 @@ const Hero = () => {
   };
 
   return (
-    <section className="bg-zinc-50 from-blue-50 to-white border-b border-zinc-100">
+
+    <section className="relative min-h-screen " >
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 lg:py-16">
         <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
@@ -110,12 +113,13 @@ const Hero = () => {
             <img
               src={career}
               alt="CareerConnect Hero"
-              className="w-full max-w-lg"
+              className=" w-full md:h-[60vh] max-w-xl"
             />
           </div>
         </div>
       </div>
     </section>
+
   );
 };
 
