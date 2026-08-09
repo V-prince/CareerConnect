@@ -4,21 +4,18 @@ import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
 import About from "./pages/public/About";
 import Contact from "./pages/public/Contact";
-
 import { Dashboard } from "./pages/student/Dashboard";
 import { Profile } from "./pages/student/Profile";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
 import { Setting } from "./pages/student/Setting";
-
 import EmpDashboard from "./pages/employer/EmpDashboard";
-
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageUsers } from "./pages/admin/ManageUsers";
-
 import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { MainSidebar } from "./layouts/MainSidebar";
+import EmpPostJob from "./pages/employer/EmpPostJob";
 
 function App() {
   return (
@@ -44,6 +41,7 @@ function App() {
 
           {/* Employer */}
           <Route path="/employer/dashboard" element={<EmpDashboard />} />
+          <Route path="/employer/post/job" element={<EmpPostJob />} />
 
           {/* Admin */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
