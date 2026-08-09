@@ -353,7 +353,7 @@ const Jobs = () => {
   const anyExpSelected = Object.values(experience).some(Boolean);
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-zinc-100 min-h-screen">
       <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-8 md:py-10 border-b border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center">
@@ -367,7 +367,7 @@ const Jobs = () => {
         </div>
       </section>
 
-      <section className="bg-gray-100 py-6 md:py-8">
+      <section className="bg-gray-50/50 py-6 md:py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3 mb-6">
             <div className="grid md:grid-cols-12 gap-2 md:gap-2.5 items-stretch">
