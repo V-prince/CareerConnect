@@ -40,7 +40,7 @@ const companies = [
 
 const CompanyMarquee = () => {
   return (
-    <div className="relative w-full h-25 flex items-center overflow-hidden shadow-xl bg-white-50/50 backdrop-blur-2xl py-5">
+    <div className="relative w-full h-25 flex items-center overflow-hidden shadow-xl bg-zinc-50/50 backdrop-blur-2xl py-5">
       {/* Left fade */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 h-full w-16 bg-gradient-to-r from-blue-50 to-transparent md:w-28" />
 
