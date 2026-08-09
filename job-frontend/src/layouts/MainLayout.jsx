@@ -13,7 +13,7 @@ export const MainLayout = () => {
     <>
       {isHome ? (
         <div
-          className="bg-cover bg-right bg-no-repeat"
+          className="bg-none md:bg-contain  bg-no-repeat"
           style={{
             backgroundImage: "url('/hero-2.png')",
             
