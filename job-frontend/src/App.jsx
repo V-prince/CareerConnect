@@ -1,49 +1,53 @@
-import { useState } from "react";
 import { Home } from "./pages/public/Home";
-import { Navbar } from "./components/Navbar";
-import { Route, Routes } from "react-router-dom";
-import { MainLayout } from "./layouts/MainLayout";
-import { MainSidebar } from "./layouts/MainSidebar";
-import { Dashboard } from "./pages/student/Dashboard";
-import { Profile } from "./pages/student/Profile";
+import Jobs from "./pages/public/Jobs";
 import Login from "./pages/public/Login";
 import Register from "./pages/public/Register";
+import About from "./pages/public/About";
+import Contact from "./pages/public/Contact";
+
+import { Dashboard } from "./pages/student/Dashboard";
+import { Profile } from "./pages/student/Profile";
 import { Applications } from "./pages/student/Applications";
 import { SaveJobs } from "./pages/student/SaveJobs";
 import { Setting } from "./pages/student/Setting";
-import About from "./pages/public/About";
-import Contact from "./pages/public/Contact";
-import Jobs from "./pages/public/Jobs";
+
+import EmpDashboard from "./pages/employer/EmpDashboard";
+
 import { AdminDashboard } from "./pages/admin/AdminDashboard";
 import { ManageUsers } from "./pages/admin/ManageUsers";
 
+import { Route, Routes } from "react-router-dom";
+import { MainLayout } from "./layouts/MainLayout";
+import { MainSidebar } from "./layouts/MainSidebar";
 
 function App() {
   return (
     <>
       <Routes>
+        {/* Public Pages */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/jobs" element={<Jobs />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/jobs" element={<Jobs />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
         </Route>
 
         <Route element={<MainSidebar />}>
-
+          {/* Student */}
           <Route path="/user/dashboard" element={<Dashboard />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
 
-    
-            {/* Admim */}
+          {/* Employer */}
+          <Route path="/employer/dashboard" element={<EmpDashboard />} />
 
-           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-           <Route path="/admin/manage/users" element={<ManageUsers />} />
+          {/* Admin */}
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/manage/users" element={<ManageUsers />} />
         </Route>
       </Routes>
     </>
