@@ -14,7 +14,7 @@ export const MainLayout = () => {
       <main
         className={
           isHome
-            ? "relative min-h-screen w-full bg-gradient-to-b from-blue-50 bg-no-repeat"
+            ? "relative min-h-screen w-full  bg-gradient-to-b from-blue-50 bg-no-repeat md:bg-contain  lg:bg-contain"
             : "relative min-h-screen w-full bg-white"
         }
         style={
@@ -25,7 +25,7 @@ export const MainLayout = () => {
             : undefined
         }
       >
-        <Navbar/>
+        <Navbar />
         <Outlet />
       </main>
       <Footer />

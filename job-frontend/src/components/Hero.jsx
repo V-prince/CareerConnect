@@ -30,14 +30,14 @@ const Hero = () => {
 
   return (
 
-    <section className="relative min-h-screen " >
+    <section className=" relative  " >
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 lg:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
+        <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10 lg:gap-12 items-center">
           <div className="text-center lg:text-left">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold leading-[1.1] text-slate-900">
               Find Your Dream Job
-              <span className="block text-blue-600">& Internship</span>
+              <span className="block bg-gradient-to-b from-blue-500 to-indigo-700 bg-clip-text text-transparent">& Internship</span>
             </h1>
 
             <p className="text-slate-700 mt-4 md:mt-5 text-sm md:text-base lg:text-lg font-normal max-w-xl mx-auto lg:mx-0">
@@ -109,7 +109,7 @@ const Hero = () => {
             </div>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
+          <div className=" md:hidden lg:flex flex justify-center lg:justify-end">
             <img
               src={career}
               alt="CareerConnect Hero"

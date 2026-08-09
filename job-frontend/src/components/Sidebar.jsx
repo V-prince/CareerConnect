@@ -104,7 +104,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       ${isOpen ? "translate-x-0" : "-translate-x-full"}
       lg:translate-x-0`}
     >
-      {/* Close Button */}
+   
       <div
         onClick={() => SetIsOpen(false)}
         className="lg:hidden flex items-center justify-end p-3"
@@ -113,7 +113,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       </div>
 
       <div className="flex flex-col">
-        {/* Logo */}
+        
         <Link to={"/"}>
           <img
             src="/images/logo.png"
@@ -123,7 +123,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
         </Link>
 
         <div className="px-3 space-y-2">
-          {/* ADMIN */}
+         
           {user.role === "admin"
             ? AdminSideData.map((item, index) => (
                 <NavLink
@@ -144,7 +144,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                   </span>
                 </NavLink>
               ))
-            : /* EMPLOYER */
+            : 
               user.role === "employer"
               ? EmployerSideData.map((item, index) => (
                   <NavLink
@@ -165,7 +165,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                     </span>
                   </NavLink>
                 ))
-              : /* NORMAL USER */
+              : 
                 sideData.map((item, index) => (
                   <NavLink
                     to={item.to}
