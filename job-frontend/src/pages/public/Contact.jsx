@@ -10,6 +10,10 @@ import {
   FaPencilAlt,
 } from "react-icons/fa";
 
+import emailjs from '@emailjs/browser';
+import toast from "react-hot-toast";
+import { Loader } from "lucide-react";
+
 const contactInfo = [
   {
     icon: <FaMapMarkerAlt size={20} />,
@@ -40,6 +44,7 @@ const Contact = () => {
     subject: "",
     message: "",
   });
+  const [loading, SetLoading] = useState(false)
 
   const handleChange = (e) => {
     setContact({
@@ -48,9 +53,29 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(contact);
+
+    SetLoading(true)
+    const data = await emailjs.send(
+      "service_mckbk8s",
+      "template_inwl8nh",
+      {
+        name: contact.name,
+        email: contact.email,
+        subject: contact.subject,
+        message: contact.message,
+      },
+      "s_ju_136k7wXHzHtf"
+    )
+    if (!data) {
+      return toast.error("Error Not Send")
+    }
+    SetLoading(false)
+
+    toast.success("Email Send Successfully")
+
     setContact({
       name: "",
       email: "",
@@ -186,10 +211,17 @@ const Contact = () => {
 
                   <button
                     type="submit"
+                    disabled={loading}
                     className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition text-white text-sm md:text-base font-semibold flex items-center justify-center gap-2 shadow-sm"
                   >
-                    <FaPaperPlane size={14} />
-                    Send Message
+
+                    {
+
+                      loading ? <Loader className=" animate-spin" /> :
+                        (<><FaPaperPlane size={14} />
+                          Send Message</>)
+
+                    }
                   </button>
                 </form>
               </div>
