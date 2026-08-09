@@ -109,104 +109,109 @@ export const ManageUsers = () => {
   const [details, setDetails] = useState({
     search: "",
     role: "",
-
     sort: "",
   });
-  const [filterdDetails, setFilterdDetails] = useState(users);
-    sort: ""
-  })
 
-  const [filterdDetails, setFilterdDetails] = useState(users)
 
-  const [isOpenPopup, setIsOpenPopUp] = useState(false)
-  const [selectedUser, setSelectedUser] = useState(null)
+const [filterdDetails, setFilterdDetails] = useState(users)
+
+const [isOpenPopup, setIsOpenPopUp] = useState(false)
+const [selectedUser, setSelectedUser] = useState(null)
 
 
 
 
-  const Roleoptions = [
-    { value: "all", label: "All Roles" },
-    { value: "admin", label: "Admin" },
-    { value: "employer", label: "Employeer" },
-    { value: "candidate", label: "Candidate" },
-  ];
+const Roleoptions = [
+  { value: "all", label: "All Roles" },
+  { value: "admin", label: "Admin" },
+  { value: "employer", label: "Employeer" },
+  { value: "candidate", label: "Candidate" },
+];
 
-  const shortOptions = [
-    { value: "old", label: "Old" },
-    { value: "new", label: "New" },
-  ];
+const shortOptions = [
+  { value: "old", label: "Old" },
+  { value: "new", label: "New" },
+];
 
-  const handelOnChange = (e) => {
-    const { name, value } = e.target;
-    setDetails((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+const handelOnChange = (e) => {
+  const { name, value } = e.target;
+  setDetails((prev) => ({
+    ...prev,
+    [name]: value,
+  }));
+};
 
-  console.log(details);
-  const handelOnFielterd = () => {
-    let Fielterd = [...users];
+console.log(details);
+const handelOnFielterd = () => {
+  let Fielterd = [...users];
 
-    if (details.search.trim()) {
-      Fielterd = Fielterd.filter(
-        (user) =>
-          user.name
-            .replace(/\s+/g, "")
-            .toLowerCase()
-            .includes(details.search.replace(/\s+/g, "").toLowerCase()) ||
-          user.email.toLowerCase().includes(details.search.toLowerCase()) ||
-          user.phone.includes(details.search),
-      );
-    }
+  if (details.search.trim()) {
+    Fielterd = Fielterd.filter(
+      (user) =>
+        user.name
+          .replace(/\s+/g, "")
+          .toLowerCase()
+          .includes(details.search.replace(/\s+/g, "").toLowerCase()) ||
+        user.email.toLowerCase().includes(details.search.toLowerCase()) ||
+        user.phone.includes(details.search),
+    );
+  }
 
-    if (details.role && details.role !== "all") {
-      Fielterd = Fielterd.filter((user) =>
-        user.role.toLowerCase().includes(details.role.toLowerCase()),
-      );
-    }
+  if (details.role && details.role !== "all") {
+    Fielterd = Fielterd.filter((user) =>
+      user.role.toLowerCase().includes(details.role.toLowerCase()),
+    );
+  }
 
-    if (details.sort === "new") {
-      Fielterd.reverse();
-    }
+  if (details.sort === "new") {
+    Fielterd.reverse();
+  }
 
-    setFilterdDetails(Fielterd);
-  };
+  setFilterdDetails(Fielterd);
+};
 
-  const handelOnClear = () => {
-    setDetails({
-      search: "",
-      role: "",
-      sort: "",
-    });
-  };
+const handelOnClear = () => {
+  setDetails({
+    search: "",
+    role: "",
+    sort: "",
+  });
+};
 
-  useEffect(() => {
-    handelOnFielterd();
-  }, [details]);
+useEffect(() => {
+  handelOnFielterd();
+}, [details]);
 
-  return (
-    <section className="min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8">
-      <h1 className="text-2xl md:text-3xl font-bold">Manage Users</h1>
+return (
+  <section className="w-full px-4 sm:px-6 lg:px-8 py-6">
+    <div className="max-w-7xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold text-zinc-900">
+        Manage Users
+      </h1>
 
-      <p className="text-zinc-600 mt-2 text-sm md:text-base">
-        View search and manage all users on platform.
+      <p className="text-zinc-600 mt-2 text-sm sm:text-base">
+        View, search and manage all users on platform.
       </p>
 
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6">
+      {/* Stats */}
+      <div className="mt-6 sm:mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {UserCounts.map((data, index) => (
           <div
             key={index}
-            className="bg-white rounded-xl hover:shadow-2xl shadow-md p-6 flex items-center gap-4"
+            className="bg-white rounded-xl shadow-md hover:shadow-lg p-4 sm:p-6 flex items-center gap-4 transition"
           >
             <div
-              className={`flex h-12 w-12 rounded-full ${data.bgColor} text-white items-center justify-center gap-4`}
+              className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 rounded-full ${data.bgColor} text-white items-center justify-center`}
             >
               {data.icon}
             </div>
+
             <div className="flex flex-col gap-1">
-              <span className="text-zinc-600 text-md">{data.title}</span>
-              <span className="text-2xl font-bold">
+              <span className="text-zinc-600 text-sm sm:text-base">
+                {data.title}
+              </span>
+
+              <span className="text-xl sm:text-2xl font-bold text-zinc-900">
                 {data.count.toLocaleString("en-IN")}
               </span>
             </div>
@@ -214,13 +219,22 @@ export const ManageUsers = () => {
         ))}
       </div>
 
-      <div className="bg-white rounded-xl   shadow-md mt-8 p-5">
-        {/*searching*/}
+      {/* Filters + Table */}
+      <div className="bg-white rounded-xl shadow-md mt-6 sm:mt-8 p-4 sm:p-5">
 
-        <div className="flex flex-col justify-start gap-5 md:flex-row md:items-center lg:justify-between w-full">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="w-full md:w-96">
-              <div className="flex items-center border border-zinc-300 rounded-lg px-3 py-2">
+        {/* Filters */}
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:items-center gap-3 w-full lg:w-auto">
+
+            {/* Search */}
+            <div className="w-full sm:col-span-2 lg:w-80">
+              <div className="flex items-center border border-zinc-300 rounded-lg px-3 py-2 focus-within:border-blue-500">
+                <Search
+                  size={19}
+                  className="text-zinc-500 shrink-0"
+                />
+
                 <input
                   type="text"
                   name="search"
@@ -231,18 +245,14 @@ export const ManageUsers = () => {
                       handelOnFielterd();
                     }
                   }}
-                  placeholder="Search by job title or company"
-                  className="w-full ml-2 outline-none text-sm"
-                />
-                <Search
-                  size={20}
-                  onClick={handelOnFielterd}
-                  className="text-zinc-500 flex-shrink-0 cursor-pointer"
+                  placeholder="Search by name, email or phone"
+                  className="w-full ml-2 outline-none text-sm min-w-0"
                 />
               </div>
             </div>
 
-            <div className="w-full md:w-40">
+            {/* Role */}
+            <div className="w-full lg:w-40">
               <Select
                 options={Roleoptions}
                 name="role"
@@ -250,13 +260,14 @@ export const ManageUsers = () => {
                 placeholder="All Roles"
                 classNamePrefix="select"
                 value={
-                  Roleoptions.find((option) => option.value === details.role) ||
-                  null
+                  Roleoptions.find(
+                    (option) => option.value === details.role
+                  ) || null
                 }
                 onChange={(selected) => {
                   setDetails((prev) => ({
                     ...prev,
-                    role: selected.value,
+                    role: selected?.value || "",
                   }));
                 }}
                 styles={{
@@ -264,27 +275,29 @@ export const ManageUsers = () => {
                     ...base,
                     outline: "none",
                     boxShadow: "none",
+                    minHeight: "42px",
                   }),
                 }}
               />
             </div>
 
-            <div className="w-full md:w-40">
+            {/* Sort */}
+            <div className="w-full lg:w-40">
               <Select
                 options={shortOptions}
                 name="sort"
-                className="text-sm  w-full"
+                className="text-sm w-full"
                 placeholder="Sort"
+                classNamePrefix="select"
                 value={
                   shortOptions.find(
-                    (option) => option.value === details.sort,
+                    (option) => option.value === details.sort
                   ) || null
                 }
-                classNamePrefix="select"
                 onChange={(selected) => {
                   setDetails((prev) => ({
                     ...prev,
-                    sort: selected.value,
+                    sort: selected?.value || "",
                   }));
                 }}
                 styles={{
@@ -292,157 +305,147 @@ export const ManageUsers = () => {
                     ...base,
                     outline: "none",
                     boxShadow: "none",
+                    minHeight: "42px",
                   }),
                 }}
               />
             </div>
           </div>
 
+          {/* Clear */}
           <button
             onClick={handelOnClear}
-            className="border  border-zinc-300 flex items-center justify-center gap-2 px-4 py-2 rounded-lg hover:bg-zinc-100 transition"
+            className="w-full lg:w-auto border border-zinc-300 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg hover:bg-zinc-100 transition text-sm"
           >
-            <Recycle size={20} />
+            <Recycle size={18} />
             Clear filter
           </button>
         </div>
 
-        <div className="overflow-auto  mt-10 round-xl ">
+        {/* Table */}
+        <div className="overflow-x-auto mt-8 rounded-lg border border-zinc-200">
           <table className="min-w-[900px] w-full whitespace-nowrap">
             <thead className="bg-zinc-100">
               <tr>
-                <th className="px-4 py-3 text-left">Name</th>
-                <th className="px-4 py-3 text-center">Role</th>
-                <th className="px-4 py-3 text-center">Email</th>
-                <th className="px-4 py-3 text-center">Phone</th>
-                <th className="px-4 py-3 text-center">Joined On</th>
-                <th className="px-4 py-3 text-center">Action</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold">
+                  Name
+                </th>
+
+                <th className="px-4 py-3 text-center text-sm font-semibold">
+                  Role
+                </th>
+
+                <th className="px-4 py-3 text-center text-sm font-semibold">
+                  Email
+                </th>
+
+                <th className="px-4 py-3 text-center text-sm font-semibold">
+                  Phone
+                </th>
+
+                <th className="px-4 py-3 text-center text-sm font-semibold">
+                  Joined On
+                </th>
+
+                <th className="px-4 py-3 text-center text-sm font-semibold">
+                  Action
+                </th>
               </tr>
             </thead>
 
             <tbody>
               {filterdDetails.map((user, index) => (
                 <tr
-                  key={index}
-                  className={`${filterdDetails.length !== index + 1 && "border-b"} border-zinc-400`}
+                  key={user.id}
+                  className={
+                    filterdDetails.length !== index + 1
+                      ? "border-b border-zinc-200"
+                      : ""
+                  }
                 >
+                  {/* Name */}
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-3">
                       <img
                         src={user.avatar}
-                        className="w-10 h-10 rounded-full"
+                        alt={user.name}
+                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shrink-0"
                       />
 
-                      <div>
-                        <h1 className="font-semibold">{user.name}</h1>
-                        <span className="text-sm text-zinc-500">
+                      <div className="min-w-0">
+                        <h1 className="font-semibold text-sm sm:text-base truncate max-w-[180px]">
+                          {user.name}
+                        </h1>
+
+                        <span className="text-xs sm:text-sm text-zinc-500">
                           ID: {user.id}
                         </span>
                       </div>
                     </div>
                   </td>
 
-<<<<<<< HEAD
-                  <td className="text-center">{user.role}</td>
-                  <td className="text-center">{user.email}</td>
-                  <td className="text-center">{user.phone}</td>
-                  <td className="text-center">{user.joinedOn}</td>
-                  <td className="text-center">
-                    <EllipsisVertical size={15} className="mx-auto" />
+                  <td className="text-center text-sm">
+                    {user.role}
+                  </td>
+
+                  <td className="text-center text-sm">
+                    {user.email}
+                  </td>
+
+                  <td className="text-center text-sm">
+                    {user.phone}
+                  </td>
+
+                  <td className="text-center text-sm">
+                    {user.joinedOn}
+                  </td>
+
+                  {/* Action */}
+                  <td className="relative text-center px-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedUser(user.id);
+                        setIsOpenPopUp((prev) => !prev);
+                      }}
+                      className="p-2 rounded-md hover:bg-zinc-100 transition"
+                    >
+                      <EllipsisVertical
+                        size={18}
+                        className="text-zinc-600"
+                      />
+                    </button>
+
+                    {isOpenPopup && selectedUser === user.id && (
+                      <div className="absolute right-2 top-12 z-50 w-36 sm:w-40 bg-white border border-zinc-200 rounded-lg shadow-lg p-1">
+                        <button
+                          className="w-full text-left px-3 py-2.5 text-xs sm:text-sm text-zinc-700 rounded-md hover:bg-zinc-100 transition"
+                        >
+                          Block User
+                        </button>
+
+                        <button
+                          className="w-full text-left px-3 py-2.5 text-xs sm:text-sm text-red-600 rounded-md hover:bg-red-50 transition"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
                   </td>
                 </tr>
               ))}
-=======
-                    <td className="text-center">{user.role}</td>
-                    <td className="text-center">{user.email}</td>
-                    <td className="text-center">{user.phone}</td>
-                    <td className="text-center">{user.joinedOn}</td>
-
-                    <td className="relative text-center">
-                      <EllipsisVertical
-                        size={18}
-                        className="mx-auto cursor-pointer text-zinc-600 hover:text-zinc-900"
-                        onClick={() => {
-                          setSelectedUser(user.id)
-                          setIsOpenPopUp(prev => !prev);
-                        }}
-                      />
-
-                      {isOpenPopup && selectedUser === user.id && (
-                        <div
-                          className="
-                          right-2
-                          top-10
-                          z-50
-                          w-36
-                          sm:w-40
-                          bg-white
-                          border border-zinc-200
-                          rounded-lg
-                          shadow-lg
-                          p-1
-                          flex 
-                          flex-col
-                          overflow-hidden
-                          absolute
-                          "
-                        >
-                        
-
-                          <button
-                            className="
-                            text-left
-                            px-3
-                            py-2.5
-                            text-xs
-                            sm:text-sm
-                            text-zinc-700
-                            rounded-md
-                            hover:bg-zinc-100
-                            transition
-                            whitespace-nowrap
-                            w-full
-                            "
-                          >
-                            Block User
-                          </button>
-
-                          <button
-                            className="
-                            text-left
-                            px-3
-                            py-2.5
-                            text-xs
-                            sm:text-sm
-                            text-red-600
-                            rounded-md
-                            hover:bg-red-50
-                            transition
-                            whitespace-nowrap
-                            w-full
-                            "
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </td>
-
-                  </tr>
-                ))
-              }
->>>>>>> prince
             </tbody>
           </table>
         </div>
-      </div>
-<<<<<<< HEAD
-    </section>
-  );
-};
-=======
 
-    </section >
-  )
+        {/* No users */}
+        {filterdDetails.length === 0 && (
+          <div className="py-10 text-center text-sm text-zinc-500">
+            No users found.
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+)
 }
->>>>>>> prince
