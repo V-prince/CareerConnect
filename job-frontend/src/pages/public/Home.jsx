@@ -4,13 +4,15 @@ import Choose from '../../components/Choose'
 import Categories from '../../components/Categories'
 import LatestJobs from '../../components/LatestJobs'
 
+
 export const Home = () => {
   return (
     <>
-      <Hero/>
-      <Categories/>
-      <LatestJobs/>
-      <Choose/>
+        <Hero />
+        <Categories />
+        <LatestJobs />
+        <Choose />
+  
     </>
   )
 }

@@ -30,16 +30,16 @@ function App() {
 
         <Route element={<MainSidebar />}>
           <Route path="/user/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/applications" element={<Applications />} />
-          <Route path="/save/jobs" element={<SaveJobs />} />
+          <Route path="/user/profile" element={<Profile />} />
+          <Route path="/user/applications" element={<Applications />} />
+          <Route path="/user/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
 
-    
-            {/* Admim */}
 
-           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-           <Route path="/admin/manage/users" element={<ManageUsers />} />
+          {/* Admim */}
+
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/manage/users" element={<ManageUsers />} />
         </Route>
       </Routes>
     </>

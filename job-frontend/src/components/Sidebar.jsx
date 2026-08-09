@@ -7,7 +7,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
   const [user, SetUser] = useState(
     {
       id: 1,
-      role: "admin"
+      role: "candidate"
     }
   )
 
@@ -20,17 +20,17 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <User size={22} />,
       title: "Profile",
-      to: "/Profile"
+      to: "/user/Profile"
     },
     {
       icon: <FileText size={22} />,
       title: "Applications",
-      to: "/applications"
+      to: "/user/applications"
     },
     {
       icon: <BookmarkCheck size={22} />,
       title: "Saved Jobs",
-      to: "/save/jobs"
+      to: "/user/save/jobs"
     },
     {
       icon: <Settings size={22} />,

@@ -19,7 +19,7 @@ export const Navbar = () => {
   }, [])
 
   return (
-    <header className={`w-full bg-gradient-to-b from-white/50 to-blue-50  backdrop-blur-xl  sticky top-0 z-50 ${isScrolled ? "shadow-lg border-b border-gray-200" : "border-b border-transparent shadow-none"}`}>
+    <header className={`w-full sticky top-0 z-50 ${isScrolled ? "bg-white/70 shadow-lg border-b border-gray-200  backdrop-blur-xl" : "bg-white md:bg-transparent border-b border-transparent shadow-none"}`}>
       <nav className="max-w-7xl mx-auto flex items-center justify-between h-15 px-5 sm:px-8 lg:px-10">
         <Link to={"/"}>
           <img
