@@ -9,12 +9,16 @@ import CompanyMarquee from '../../components/CompanyMarquee'
 export const Home = () => {
   return (
     <>
-        <Hero />
-        <CompanyMarquee/>
+      
+      <Hero />
+
+     
+      <div className="bg-white">
+        <CompanyMarquee />
+        <Choose />
         <Categories />
         <LatestJobs />
-        <Choose />
-  
+      </div>
     </>
   )
 }

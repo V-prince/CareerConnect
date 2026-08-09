@@ -11,23 +11,23 @@ export const MainLayout = () => {
 
   return (
     <>
-      <main
-        className={
-          isHome
-            ? "relative min-h-screen w-full bg-gradient-to-b from-blue-50 md:bg-contain bg-no-repeat"
-            : "relative min-h-screen w-full bg-white"
-        }
-        style={
-          isHome
-            ? {
-              backgroundImage: "url('/hero-2.png')",
-            }
-            : undefined
-        }
-      >
-        <Navbar />
-        <Outlet />
-      </main>
+      {isHome ? (
+        <div
+          className="bg-cover bg-right bg-no-repeat"
+          style={{
+            backgroundImage: "url('/hero-2.png')",
+            
+          }}
+        >
+          <Navbar />
+          <Outlet />
+        </div>
+      ) : (
+        <>
+          <Navbar />
+          <Outlet />
+        </>
+      )}
       <Footer />
     </>
   )
