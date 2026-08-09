@@ -222,7 +222,7 @@ const quickActions = [
     desc: "Create a new job listing",
     icon: FaPlus,
     iconBg: "bg-blue-100 text-blue-600",
-    path: "/employer/post-job",
+    path: "/employer/post/job",
   },
   {
     title: "View All Applications",

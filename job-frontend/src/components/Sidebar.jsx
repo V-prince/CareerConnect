@@ -9,60 +9,62 @@ import {
   BriefcaseBusiness,
   ClipboardList,
   Building2,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
+
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
-
   const [user, SetUser] = useState({
     id: 1,
-    role: "employer",
+    role: "admin",
   });
 
+  const [showJobs, setShowJobs] = useState(false);
 
   const sideData = [
     {
-      icon: <LayoutDashboard size={22} />,
+      icon: <LayoutDashboard />,
       title: "Dashboard",
       to: "/user/dashboard",
     },
     {
-      icon: <User size={22} />,
+      icon: <User />,
       title: "Profile",
-      to: "/user/Profile"
+      to: "/user/Profile",
     },
     {
-      icon: <FileText size={22} />,
+      icon: <FileText />,
       title: "Applications",
-      to: "/user/applications"
+      to: "/user/applications",
     },
     {
-      icon: <BookmarkCheck size={22} />,
+      icon: <BookmarkCheck />,
       title: "Saved Jobs",
-      to: "/user/save/jobs"
+      to: "/user/save/jobs",
     },
     {
-      icon: <Settings size={22} />,
+      icon: <Settings />,
       title: "Settings",
-      to: "/settings"
-    }
-  ]
-
+      to: "/settings",
+    },
+  ];
 
   const AdminSideData = [
     {
-      icon: <LayoutDashboard size={22} />,
+      icon: <LayoutDashboard />,
       title: "Dashboard",
       to: "/admin/dashboard",
     },
     {
-      icon: <UsersRound size={22} />,
+      icon: <UsersRound />,
       title: "Users",
       to: "/admin/manage/users",
     },
     {
-      icon: <Settings size={22} />,
+      icon: <Settings />,
       title: "Settings",
       to: "/settings",
     },
@@ -70,27 +72,27 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
 
   const EmployerSideData = [
     {
-      icon: <LayoutDashboard size={22} />,
+      icon: <LayoutDashboard />,
       title: "Dashboard",
       to: "/employer/dashboard",
     },
     {
-      icon: <BriefcaseBusiness size={22} />,
+      icon: <BriefcaseBusiness />,
       title: "Jobs",
       to: "/employer/jobs",
     },
     {
-      icon: <ClipboardList size={22} />,
+      icon: <ClipboardList />,
       title: "Applications",
       to: "/employer/applications",
     },
     {
-      icon: <Building2 size={22} />,
+      icon: <Building2 />,
       title: "Company Profile",
       to: "/employer/company-profile",
     },
     {
-      icon: <Settings size={22} />,
+      icon: <Settings />,
       title: "Settings",
       to: "/employer/settings",
     },
@@ -104,16 +106,14 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       ${isOpen ? "translate-x-0" : "-translate-x-full"}
       lg:translate-x-0`}
     >
-   
       <div
         onClick={() => SetIsOpen(false)}
         className="lg:hidden flex items-center justify-end p-3"
       >
-        <X size={24} className="text-gray-600 cursor-pointer" />
+        <X size={24} />
       </div>
 
       <div className="flex flex-col">
-        
         <Link to={"/"}>
           <img
             src="/images/logo.png"
@@ -123,7 +123,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
         </Link>
 
         <div className="px-3 space-y-2">
-         
           {user.role === "admin"
             ? AdminSideData.map((item, index) => (
                 <NavLink
@@ -144,28 +143,82 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                   </span>
                 </NavLink>
               ))
-            : 
-              user.role === "employer"
-              ? EmployerSideData.map((item, index) => (
-                  <NavLink
-                    to={item.to}
-                    key={index}
-                    className={({ isActive }) =>
-                      `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${
-                        isActive
-                          ? "bg-blue-800 text-white border-blue-800"
-                          : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
-                      }`
-                    }
-                  >
-                    {item.icon}
+            : user.role === "employer"
+              ? EmployerSideData.map((item, index) =>
+                  item.title === "Jobs" ? (
+                    <div key={index}>
+                      {/* JOBS */}
+                      <button
+                        onClick={() => setShowJobs(!showJobs)}
+                        className="w-full flex items-center gap-6 px-10 py-3 rounded-xl border border-transparent transition-all duration-300 text-gray-700 hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                      >
+                        {item.icon}
 
-                    <span className="text-xl hover:text-white font-medium">
-                      {item.title}
-                    </span>
-                  </NavLink>
-                ))
-              : 
+                        <span className="text-xl hover:text-white font-medium flex-1 text-left">
+                          {item.title}
+                        </span>
+
+                        {showJobs ? (
+                          <ChevronDown size={18} />
+                        ) : (
+                          <ChevronRight size={18} />
+                        )}
+                      </button>
+
+                      {/* JOBS DROPDOWN */}
+                      {showJobs && (
+                        <div className="ml-14 mt-1 space-y-1">
+                          {/* ALL JOBS */}
+                          <NavLink
+                            to="/employer/jobs"
+                            className={({ isActive }) =>
+                              `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                                isActive
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "text-gray-600 hover:bg-gray-100"
+                              }`
+                            }
+                          >
+                            All Jobs
+                          </NavLink>
+
+                          {/* POST NEW JOB */}
+                          <NavLink
+                            to="/employer/post/job"
+                            className={({ isActive }) =>
+                              `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                                isActive
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "text-gray-600 hover:bg-gray-100"
+                              }`
+                            }
+                          >
+                            Post New Job
+                          </NavLink>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <NavLink
+                      to={item.to}
+                      key={index}
+                      className={({ isActive }) =>
+                        `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${
+                          isActive
+                            ? "bg-blue-800 text-white border-blue-800"
+                            : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                        }`
+                      }
+                    >
+                      {item.icon}
+
+                      <span className="text-xl hover:text-white font-medium">
+                        {item.title}
+                      </span>
+                    </NavLink>
+                  ),
+                )
+              : /* NORMAL USER */
                 sideData.map((item, index) => (
                   <NavLink
                     to={item.to}
