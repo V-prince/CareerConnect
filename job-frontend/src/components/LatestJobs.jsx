@@ -148,7 +148,7 @@ const ListCard = ({ title, items }) => (
 
 const LatestJobs = () => {
   return (
-    <section className="bg-zinc-50 py-10 md:py-12 border-b border-zinc-100">
+    <section className="bg-zinc-50/50 py-10 md:py-7 border-b  border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-10 md:py-12 lg:py-14">
         <div className="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-10">
           <ListCard title="Latest Jobs" items={jobs} />
