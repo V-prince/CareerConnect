@@ -243,15 +243,6 @@ export const EmpPostJob = () => {
 
             <ChevronRight size={14} className="text-zinc-400" />
 
-            <button
-              onClick={() => navigate("/employer/jobs")}
-              className="text-blue-600 font-medium hover:text-blue-700"
-            >
-              Jobs
-            </button>
-
-            <ChevronRight size={14} className="text-zinc-400" />
-
             <span className="text-zinc-500">Post New Job</span>
           </div>
 
@@ -355,13 +346,7 @@ export const EmpPostJob = () => {
                     value={formData.jobType}
                     onChange={handleChange}
                     required
-                    options={[
-                      "Full Time",
-                      "Part Time",
-                      "Internship",
-                      "Contract",
-                      "Freelance",
-                    ]}
+                    options={["Full Time", "Part Time", "Internship"]}
                     placeholder="Select job type"
                   />
 
@@ -371,7 +356,7 @@ export const EmpPostJob = () => {
                     value={formData.employmentType}
                     onChange={handleChange}
                     required
-                    options={["Permanent", "Temporary", "Contractual"]}
+                    options={["Permanent", "Temporary"]}
                     placeholder="Select employment type"
                   />
                 </div>

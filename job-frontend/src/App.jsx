@@ -16,6 +16,7 @@ import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "./layouts/MainLayout";
 import { MainSidebar } from "./layouts/MainSidebar";
 import EmpPostJob from "./pages/employer/EmpPostJob";
+import EmpJobs from "./pages/employer/EmpJobs";
 
 function App() {
   return (
@@ -39,13 +40,10 @@ function App() {
           <Route path="/user/save/jobs" element={<SaveJobs />} />
           <Route path="/settings" element={<Setting />} />
 
-
           {/* Employer */}
           <Route path="/employer/dashboard" element={<EmpDashboard />} />
           <Route path="/employer/post/job" element={<EmpPostJob />} />
-
-         
-
+          <Route path="/employer/jobs" element={<EmpJobs />} />
 
           {/* Admim */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
