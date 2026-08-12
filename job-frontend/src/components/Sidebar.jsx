@@ -89,12 +89,12 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <Building2 />,
       title: "Company Profile",
-      to: "/employer/company-profile",
+      to: "/employer/company/profile",
     },
     {
       icon: <Settings />,
       title: "Settings",
-      to: "/employer/settings",
+      to: "/settings",
     },
   ];
 
