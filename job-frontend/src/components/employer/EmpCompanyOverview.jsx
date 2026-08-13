@@ -5,7 +5,6 @@ const EmpCompanyOverview = ({ company = {} }) => {
   return (
     <div className="bg-white border border-zinc-200 rounded-xl p-5 md:p-6">
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Company Logo */}
         <div className="w-32 h-32 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0">
           {company.logo ? (
             <img
@@ -19,8 +18,6 @@ const EmpCompanyOverview = ({ company = {} }) => {
             </span>
           )}
         </div>
-
-        {/* Company Information */}
         <div className="flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <h2 className="text-2xl font-bold text-zinc-900">
