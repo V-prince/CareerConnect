@@ -579,10 +579,10 @@ export const EmpPostJob = () => {
                     value={formData.responsibilities}
                     onChange={handleChange}
                     placeholder={`Example:
-• Develop and maintain web applications
-• Work with the development team
-• Write clean and reusable code
-• Debug and fix application issues`}
+                      • Develop and maintain web applications
+                      • Work with the development team
+                      • Write clean and reusable code
+                      • Debug and fix application issues`}
                     className="w-full px-4 py-3 rounded-lg border border-zinc-200 text-sm text-zinc-700 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 resize-none"
                   />
                 </div>
@@ -739,9 +739,8 @@ export const EmpPostJob = () => {
                     label="Salary"
                     value={
                       formData.minSalary || formData.maxSalary
-                        ? `₹${formData.minSalary || "0"} - ₹${
-                            formData.maxSalary || "0"
-                          } ${formData.salaryPeriod}`
+                        ? `₹${formData.minSalary || "0"} - ₹${formData.maxSalary || "0"
+                        } ${formData.salaryPeriod}`
                         : "Not specified"
                     }
                   />
@@ -888,20 +887,18 @@ const StepItem = ({ number, title, description, currentStep, line }) => {
     <div className="flex-1">
       <div className="flex items-center">
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-            currentStep >= number
-              ? "bg-blue-600 text-white"
-              : "bg-zinc-200 text-zinc-600"
-          }`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${currentStep >= number
+            ? "bg-blue-600 text-white"
+            : "bg-zinc-200 text-zinc-600"
+            }`}
         >
           {number}
         </div>
 
         {line && (
           <div
-            className={`h-0.5 flex-1 mx-3 ${
-              currentStep > number ? "bg-blue-600" : "bg-zinc-200"
-            }`}
+            className={`h-0.5 flex-1 mx-3 ${currentStep > number ? "bg-blue-600" : "bg-zinc-200"
+              }`}
           />
         )}
       </div>
