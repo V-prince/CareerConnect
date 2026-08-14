@@ -1,26 +1,78 @@
 import React, { useEffect, useState } from "react";
-import { X, Save } from "lucide-react";
+import { X } from "lucide-react";
+
+import EmpProfileLogo from "../employer/Popup/EmpProfileLogo";
+import EmpProfileForm from "../employer/Popup/EmpProfileForm";
+
+const emptyCompany = {
+  name: "",
+  industry: "",
+  location: "",
+  founded: "",
+  employees: "",
+  companyType: "",
+  registrationNumber: "",
+  phone: "",
+  email: "",
+  website: "",
+  description: "",
+  about: "",
+  companyDescription: "",
+  specializations: "",
+  logo: "",
+  culture: [],
+};
 
 const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    industry: "",
-    companyType: "",
-  });
+  const [formData, setFormData] = useState(emptyCompany);
+  const [logoPreview, setLogoPreview] = useState("");
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (isOpen) {
-      setFormData({
-        name: company?.name || "",
-        industry: company?.industry || "",
-        companyType: company?.companyType || "",
-      });
-    }
+    if (!isOpen) return;
+
+    const existingCompany = company || {};
+
+    const data = {
+      ...emptyCompany,
+      ...existingCompany,
+
+      name: existingCompany.name || "",
+      industry: existingCompany.industry || "",
+      location: existingCompany.location || "",
+      founded: existingCompany.founded || "",
+      employees: existingCompany.employees || "",
+      companyType: existingCompany.companyType || "",
+      registrationNumber: existingCompany.registrationNumber || "",
+      phone: existingCompany.phone || "",
+      email: existingCompany.email || "",
+      website: existingCompany.website || "",
+      description: existingCompany.description || "",
+      about: existingCompany.about || "",
+      companyDescription: existingCompany.companyDescription || "",
+      specializations: existingCompany.specializations || "",
+      logo: existingCompany.logo || "",
+
+      culture: Array.isArray(existingCompany.culture)
+        ? existingCompany.culture
+        : [],
+    };
+
+    setFormData(data);
+    setLogoPreview(existingCompany.logo || "");
+    setErrors({});
   }, [isOpen, company]);
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
+
+  const isEditing = Boolean(
+    company?.name ||
+    company?.industry ||
+    company?.location ||
+    company?.email ||
+    company?.companyType ||
+    company?.employees,
+  );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,16 +81,128 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
       ...prev,
       [name]: value,
     }));
+
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
   };
 
-  const handleSave = (e) => {
-    e.preventDefault();
+  const handleLogoChange = (file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrors((prev) => ({
+        ...prev,
+        logo: "Please select an image file.",
+      }));
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setErrors((prev) => ({
+        ...prev,
+        logo: "Logo size must be less than 2MB.",
+      }));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      const result = reader.result;
+
+      setLogoPreview(result);
+
+      setFormData((prev) => ({
+        ...prev,
+        logo: result,
+      }));
+
+      setErrors((prev) => ({
+        ...prev,
+        logo: "",
+      }));
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveLogo = () => {
+    setLogoPreview("");
+
+    setFormData((prev) => ({
+      ...prev,
+      logo: "",
+    }));
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Company name is required.";
+    }
+
+    if (!formData.industry.trim()) {
+      newErrors.industry = "Industry is required.";
+    }
+
+    if (!formData.location.trim()) {
+      newErrors.location = "Company location is required.";
+    }
+
+    if (!formData.companyType.trim()) {
+      newErrors.companyType = "Company type is required.";
+    }
+
+    if (!formData.employees.trim()) {
+      newErrors.employees = "Company size is required.";
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Company email is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    if (formData.website.trim()) {
+      const websitePattern = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+
+      if (!websitePattern.test(formData.website.trim())) {
+        newErrors.website = "Enter a valid website.";
+      }
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSave = () => {
+    if (!validateForm()) return;
 
     const updatedCompany = {
-      ...company,
-      name: formData.name,
-      industry: formData.industry,
-      companyType: formData.companyType,
+      ...formData,
+
+      name: formData.name.trim(),
+      industry: formData.industry.trim(),
+      location: formData.location.trim(),
+      founded: formData.founded.trim(),
+      employees: formData.employees.trim(),
+      companyType: formData.companyType.trim(),
+      registrationNumber: formData.registrationNumber.trim(),
+      phone: formData.phone.trim(),
+      email: formData.email.trim(),
+      website: formData.website.trim(),
+      description: formData.description.trim(),
+      about: formData.about.trim(),
+      companyDescription: formData.companyDescription.trim(),
+      specializations: formData.specializations.trim(),
+
+      culture: Array.isArray(formData.culture) ? formData.culture : [],
     };
 
     if (onSave) {
@@ -49,98 +213,65 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-3xl bg-white rounded-xl shadow-xl overflow-hidden">
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-6">
+      <div className="w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl bg-white shadow-2xl">
+        {/* Header */}
+        <div className="flex items-center justify-between border-b border-zinc-200 px-5 md:px-6 py-4">
           <div>
-            <h2 className="text-xl font-semibold text-zinc-900">
-              Complete Company Profile
+            <h2 className="text-lg md:text-xl font-semibold text-zinc-900">
+              {isEditing ? "Edit Company Profile" : "Complete Company Profile"}
             </h2>
 
             <p className="text-sm text-zinc-500 mt-1">
-              Update your company information
+              {isEditing
+                ? "Update your company information."
+                : "Complete your company information to get started."}
             </p>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-700 transition"
+            className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition"
           >
             <X size={20} />
           </button>
         </div>
-        <form onSubmit={handleSave}>
-          <div className="p-6">
-            <h3 className="text-lg font-semibold text-zinc-900 mb-5">
-              Basic Information
-            </h3>
 
-            <div className="space-y-5">
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
-                  Company Name
-                </label>
+        {/* Body */}
+        <div className="overflow-y-auto max-h-[calc(92vh-145px)] px-5 md:px-6 py-6">
+          <EmpProfileLogo
+            logoPreview={logoPreview}
+            error={errors.logo}
+            onLogoChange={handleLogoChange}
+            onRemoveLogo={handleRemoveLogo}
+          />
 
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Enter company name"
-                  className="w-full h-12 px-4 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
-                  Industry
-                </label>
+          <EmpProfileForm
+            formData={formData}
+            errors={errors}
+            onChange={handleChange}
+          />
+        </div>
 
-                <input
-                  type="text"
-                  name="industry"
-                  value={formData.industry}
-                  onChange={handleChange}
-                  placeholder="Enter industry"
-                  className="w-full h-12 px-4 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-2">
-                  Company Type
-                </label>
+        {/* Footer */}
+        <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-zinc-200 bg-white px-5 md:px-6 py-4">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 py-2.5 rounded-lg border border-zinc-300 bg-white text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition"
+          >
+            Cancel
+          </button>
 
-                <select
-                  name="companyType"
-                  value={formData.companyType}
-                  onChange={handleChange}
-                  className="w-full h-12 px-4 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-800 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                >
-                  <option value="">Select company type</option>
-                  <option value="Private Limited">Private Limited</option>
-                  <option value="Public Limited">Public Limited</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-zinc-200 bg-zinc-50">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-5 py-2.5 rounded-lg border border-zinc-300 bg-white text-sm font-medium text-zinc-700 hover:bg-zinc-100 transition"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="submit"
-              className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
-            >
-              <Save size={16} />
-              Save Profile
-            </button>
-          </div>
-        </form>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+          >
+            {isEditing ? "Save Changes" : "Save Profile"}
+          </button>
+        </div>
       </div>
     </div>
   );
