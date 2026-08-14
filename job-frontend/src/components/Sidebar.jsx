@@ -84,7 +84,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <ClipboardList />,
       title: "Applications",
-      to: "/employer/applications",
+      to: "/employer/applicants",
     },
     {
       icon: <Building2 />,

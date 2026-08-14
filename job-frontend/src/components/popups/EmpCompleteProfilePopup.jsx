@@ -215,7 +215,6 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 py-6">
       <div className="w-full max-w-4xl max-h-[92vh] overflow-hidden rounded-2xl bg-white shadow-2xl">
-        {/* Header */}
         <div className="flex items-center justify-between border-b border-zinc-200 px-5 md:px-6 py-4">
           <div>
             <h2 className="text-lg md:text-xl font-semibold text-zinc-900">
@@ -237,8 +236,6 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
             <X size={20} />
           </button>
         </div>
-
-        {/* Body */}
         <div className="overflow-y-auto max-h-[calc(92vh-145px)] px-5 md:px-6 py-6">
           <EmpProfileLogo
             logoPreview={logoPreview}
@@ -254,7 +251,6 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
           />
         </div>
 
-        {/* Footer */}
         <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-zinc-200 bg-white px-5 md:px-6 py-4">
           <button
             type="button"
