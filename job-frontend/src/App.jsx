@@ -18,6 +18,7 @@ import { MainSidebar } from "./layouts/MainSidebar";
 import EmpPostJob from "./pages/employer/EmpPostJob";
 import EmpJobs from "./pages/employer/EmpJobs";
 import EmpCompanyProfile from "./pages/employer/EmpCompanyProfile";
+import EmpApplicants from "./pages/employer/EmpApplicants";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           />
           <Route path="/employer/post/job" element={<EmpPostJob />} />
           <Route path="/employer/jobs" element={<EmpJobs />} />
+          <Route path="/employer/applicants" element={<EmpApplicants />} />
 
           {/* Admim */}
           <Route path="/admin/dashboard" element={<AdminDashboard />} />

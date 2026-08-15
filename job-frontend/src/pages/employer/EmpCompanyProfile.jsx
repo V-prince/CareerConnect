@@ -50,11 +50,6 @@ const EmpCompanyProfile = () => {
     setShowCompleteProfile(false);
   };
 
-  /*
-   * Company details are created from the current companyData state.
-   * Therefore, when the popup saves new information,
-   * these values automatically update on the page.
-   */
   const companyDetails = [
     {
       label: "Founded",
@@ -93,7 +88,6 @@ const EmpCompanyProfile = () => {
       <EmpHeader />
 
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
-        {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm mb-7">
           <button
             onClick={() => navigate("/employer/dashboard")}
@@ -106,8 +100,6 @@ const EmpCompanyProfile = () => {
 
           <span className="text-zinc-800 font-medium">Company Profile</span>
         </div>
-
-        {/* Page Heading */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-7">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-zinc-900">
@@ -127,8 +119,6 @@ const EmpCompanyProfile = () => {
             Edit Profile
           </button>
         </div>
-
-        {/* Company Overview */}
         <EmpCompanyOverview company={companyData} />
 
         <div className="grid lg:grid-cols-2 gap-5 md:gap-6 mt-5">
