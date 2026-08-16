@@ -202,21 +202,21 @@ const quickActions = [
     desc: "Review all job applications",
     icon: FaUsers,
     iconBg: "bg-green-100 text-green-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
   {
     title: "Shortlisted Candidates",
     desc: "View shortlisted candidates",
     icon: FaStar,
     iconBg: "bg-orange-100 text-orange-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
   {
     title: "Schedule Interview",
     desc: "Schedule an interview",
     icon: FaCalendarAlt,
     iconBg: "bg-purple-100 text-purple-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
 ];
 export const EmpDashboard = () => {
