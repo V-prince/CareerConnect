@@ -33,7 +33,6 @@ const EmpAppFilter = ({
   return (
     <div className="p-4 md:p-5 border-b border-zinc-200">
       <div className="flex flex-col xl:flex-row gap-3">
-        {/* Search */}
         <div className="relative flex-1">
           <Search
             size={19}
@@ -49,7 +48,6 @@ const EmpAppFilter = ({
           />
         </div>
 
-        {/* Experience */}
         <SelectBox value={experienceFilter} onChange={onExperienceChange}>
           <option>All Experience</option>
           <option>0-1 Years</option>
@@ -58,7 +56,6 @@ const EmpAppFilter = ({
           <option>5+ Years</option>
         </SelectBox>
 
-        {/* Location */}
         <SelectBox value={locationFilter} onChange={onLocationChange}>
           <option>All Location</option>
           <option>Bengaluru, KA</option>
@@ -72,7 +69,6 @@ const EmpAppFilter = ({
           <option>Vadodara, GJ</option>
         </SelectBox>
 
-        {/* Sort */}
         <SelectBox value={sortBy} onChange={onSortChange}>
           <option value="Newest">Newest</option>
           <option value="Oldest">Oldest</option>

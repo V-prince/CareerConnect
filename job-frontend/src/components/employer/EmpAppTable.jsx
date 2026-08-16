@@ -148,7 +148,6 @@ const ApplicantRow = ({
         </div>
       </td>
 
-      {/* Applied On */}
       <td className="px-4 py-5">
         <p className="text-sm text-zinc-700 whitespace-nowrap">
           {applicant.appliedOn}
@@ -163,7 +162,6 @@ const ApplicantRow = ({
         </p>
       </td>
 
-      {/* Status */}
       <td className="px-4 py-5">
         <div className="relative inline-block">
           <button
@@ -198,7 +196,6 @@ const ApplicantRow = ({
         </div>
       </td>
 
-      {/* Actions */}
       <td className="px-4 py-5">
         <button
           type="button"
