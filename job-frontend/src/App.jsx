@@ -19,6 +19,7 @@ import EmpPostJob from "./pages/employer/EmpPostJob";
 import EmpJobs from "./pages/employer/EmpJobs";
 import EmpCompanyProfile from "./pages/employer/EmpCompanyProfile";
 import EmpApplicants from "./pages/employer/EmpApplicants";
+import JobDetail from "./pages/public/JobDetail";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/jobs" element={<Jobs />} />
+          <Route path="/jobs/:id" element={<JobDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />
