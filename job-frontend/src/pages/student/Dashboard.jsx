@@ -1,6 +1,7 @@
 import { icons } from 'lucide-react'
 import React from 'react'
 import { TopHeader } from '../../components/TopHeader'
+import { Link } from 'react-router-dom'
 
 export const Dashboard = () => {
 
@@ -77,9 +78,9 @@ export const Dashboard = () => {
               Recent Applications
             </h2>
 
-            <button className="text-indigo-600 font-medium cursor-pointer hover:text-indigo-700 transition">
+            <Link to={"/user/applications"} className="text-indigo-600 font-medium cursor-pointer hover:text-indigo-700 transition">
               View All
-            </button>
+            </Link>
           </div>
 
           {JobData.map((job, index) => (

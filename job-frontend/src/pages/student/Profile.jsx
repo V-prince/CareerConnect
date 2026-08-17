@@ -15,9 +15,10 @@ import {
   X,
 } from 'lucide-react'
 import React, { useState } from 'react'
+import ProfileSetupModal from '../../components/ProfileSetupModel';
 
 export const Profile = () => {
-
+  const [showProfileModal, setShowProfileModal] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [skillsInput, setSkillsInput] = useState("");
   const [skills, setSkills] = useState([]);
@@ -507,6 +508,12 @@ export const Profile = () => {
           </div>
         </div>
       </div>
+
+      {showProfileModal && (
+        <ProfileSetupModal
+          onComplete={() => setShowProfileModal(false)}
+        />
+      )}
     </section >
   )
 }
