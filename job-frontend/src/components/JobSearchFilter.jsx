@@ -13,62 +13,130 @@ const locationOptions = [
 ];
 
 const JobSearchFilter = ({
-  keyword,
+  keyword = "",
   setKeyword,
-  locationSelect,
+  locationSelect = locationOptions[0],
   setLocationSelect,
-  location,
+  location = "",
   setLocation,
-  sortBy,
+  sortBy = "newest",
   setSortBy,
-  category,
+  category = "All Categories",
   setCategory,
-  jobTypes,
+  jobTypes = {},
   setJobTypes,
-  experience,
+  experience = {},
   setExperience,
   onSearch,
   onKeyDown,
-  filteredJobsLength,
-  firstIndex,
-  lastIndex,
+  filteredJobsLength = 0,
+  firstIndex = 0,
+  lastIndex = 0,
 }) => {
   const [showFilters, setShowFilters] = useState(false);
 
-  const anyJobTypeSelected = Object.values(jobTypes).some(Boolean);
-  const anyExpSelected = Object.values(experience).some(Boolean);
+  /* =========================================================
+     SAFE VALUES
+  ========================================================= */
+
+  const safeJobTypes = jobTypes || {};
+  const safeExperience = experience || {};
+
+  const safeKeyword = keyword || "";
+  const safeLocation = location || "";
+  const safeCategory = category || "All Categories";
+
+  const anyJobTypeSelected = Object.values(safeJobTypes).some(Boolean);
+  const anyExpSelected = Object.values(safeExperience).some(Boolean);
+
+  /* =========================================================
+     REMOVE JOB TYPE
+  ========================================================= */
 
   const removeJobType = (key) => {
+    if (!setJobTypes) return;
+
     setJobTypes({
-      ...jobTypes,
+      ...safeJobTypes,
       [key]: false,
     });
   };
 
+  /* =========================================================
+     REMOVE EXPERIENCE
+  ========================================================= */
+
   const removeExperience = (key) => {
+    if (!setExperience) return;
+
     setExperience({
-      ...experience,
+      ...safeExperience,
       [key]: false,
     });
+  };
+
+  /* =========================================================
+     LOCATION CHANGE
+  ========================================================= */
+
+  const handleLocationChange = (selected) => {
+    if (setLocationSelect) {
+      setLocationSelect(selected);
+    }
+
+    if (setLocation) {
+      setLocation(selected?.value || "");
+    }
+  };
+
+  /* =========================================================
+     CLEAR LOCATION
+  ========================================================= */
+
+  const clearLocation = () => {
+    if (setLocation) {
+      setLocation("");
+    }
+
+    if (setLocationSelect) {
+      setLocationSelect(locationOptions[0]);
+    }
+  };
+
+  /* =========================================================
+     SEARCH
+  ========================================================= */
+
+  const handleSearch = () => {
+    if (onSearch) {
+      onSearch();
+    }
   };
 
   return (
     <>
-      {/* SEARCH */}
+      {/* =========================================================
+          SEARCH
+      ========================================================= */}
+
       <div className="bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3 mb-6">
         <div className="grid md:grid-cols-12 gap-2 md:gap-2.5 items-stretch">
+          {/* KEYWORD */}
+
           <div className="md:col-span-5 flex items-center border border-zinc-200 rounded-xl px-3.5 bg-white">
             <FaSearch className="text-indigo-600 mr-2.5 shrink-0" size={13} />
 
             <input
               type="text"
-              value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              value={safeKeyword}
+              onChange={(e) => setKeyword && setKeyword(e.target.value)}
               onKeyDown={onKeyDown}
               placeholder="Job title, keyword, company..."
               className="w-full min-w-0 h-10 outline-none bg-transparent text-xs md:text-sm text-slate-800"
             />
           </div>
+
+          {/* LOCATION */}
 
           <div className="md:col-span-4 relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-indigo-600">
@@ -77,8 +145,8 @@ const JobSearchFilter = ({
 
             <Select
               options={locationOptions}
-              value={locationSelect}
-              onChange={setLocationSelect}
+              value={locationSelect || locationOptions[0]}
+              onChange={handleLocationChange}
               onKeyDown={onKeyDown}
               className="text-xs md:text-sm"
               placeholder="All Locations"
@@ -91,25 +159,31 @@ const JobSearchFilter = ({
                   borderColor: "#e4e4e7",
                   boxShadow: "none",
                   paddingLeft: 24,
+
                   "&:hover": {
                     borderColor: "#e4e4e7",
                   },
                 }),
+
                 valueContainer: (base) => ({
                   ...base,
                   padding: "0 6px",
                 }),
+
                 singleValue: (base) => ({
                   ...base,
                   color: "#0f172a",
                 }),
+
                 placeholder: (base) => ({
                   ...base,
                   color: "#9ca3af",
                 }),
+
                 indicatorSeparator: () => ({
                   display: "none",
                 }),
+
                 dropdownIndicator: (base) => ({
                   ...base,
                   padding: "0 8px 0 4px",
@@ -119,9 +193,11 @@ const JobSearchFilter = ({
             />
           </div>
 
+          {/* SEARCH BUTTON */}
+
           <div className="md:col-span-3">
             <button
-              onClick={onSearch}
+              onClick={handleSearch}
               className="w-full h-10 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs md:text-sm font-semibold transition shadow-sm"
             >
               Search Jobs
@@ -130,7 +206,10 @@ const JobSearchFilter = ({
         </div>
       </div>
 
-      {/* LIST HEADER */}
+      {/* =========================================================
+          LIST HEADER
+      ========================================================= */}
+
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <p className="text-sm md:text-base text-zinc-600">
           Showing{" "}
@@ -149,6 +228,8 @@ const JobSearchFilter = ({
           jobs
         </p>
 
+        {/* SORT */}
+
         <div className="flex items-center gap-2">
           <label className="text-sm text-zinc-600 hidden sm:inline">
             Sort by:
@@ -157,7 +238,7 @@ const JobSearchFilter = ({
           <div className="relative">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => setSortBy && setSortBy(e.target.value)}
               className="h-10 rounded-lg border border-zinc-200 px-3 pr-9 text-sm text-zinc-700 bg-white outline-none transition focus:border-indigo-500 appearance-none"
             >
               <option value="newest">Newest First</option>
@@ -174,61 +255,91 @@ const JobSearchFilter = ({
         </div>
       </div>
 
-      {/* ACTIVE FILTER TAGS */}
+      {/* =========================================================
+          ACTIVE FILTER TAGS
+      ========================================================= */}
+
       {(anyJobTypeSelected ||
         anyExpSelected ||
-        category !== "All Categories" ||
-        location.trim() ||
-        keyword.trim()) && (
+        safeCategory !== "All Categories" ||
+        safeLocation.trim() ||
+        safeKeyword.trim()) && (
         <div className="flex flex-wrap items-center gap-2 mb-5">
+          {/* JOB TYPE TAGS */}
+
           {anyJobTypeSelected &&
-            Object.keys(jobTypes)
-              .filter((key) => jobTypes[key])
+            Object.keys(safeJobTypes)
+              .filter((key) => safeJobTypes[key])
               .map((key) => (
                 <span
                   key={key}
                   className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-lg text-xs font-medium"
                 >
                   Job: {key}
-                  <button onClick={() => removeJobType(key)}>×</button>
+                  <button
+                    type="button"
+                    onClick={() => removeJobType(key)}
+                    className="hover:text-indigo-900"
+                  >
+                    ×
+                  </button>
                 </span>
               ))}
 
+          {/* EXPERIENCE TAGS */}
+
           {anyExpSelected &&
-            Object.keys(experience)
-              .filter((key) => experience[key])
+            Object.keys(safeExperience)
+              .filter((key) => safeExperience[key])
               .map((key) => (
                 <span
                   key={key}
                   className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg text-xs font-medium"
                 >
                   Exp: {key}
-                  <button onClick={() => removeExperience(key)}>×</button>
+                  <button
+                    type="button"
+                    onClick={() => removeExperience(key)}
+                    className="hover:text-blue-900"
+                  >
+                    ×
+                  </button>
                 </span>
               ))}
 
-          {category !== "All Categories" && (
+          {/* CATEGORY TAG */}
+
+          {safeCategory !== "All Categories" && (
             <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-medium">
-              {category}
+              {safeCategory}
 
-              <button onClick={() => setCategory("All Categories")}>×</button>
-            </span>
-          )}
-
-          {keyword.trim() && (
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-medium">
-              "{keyword}"
-            </span>
-          )}
-
-          {location.trim() && (
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-medium">
-              Loc: {location}
               <button
-                onClick={() => {
-                  setLocation("");
-                  setLocationSelect(locationOptions[0]);
-                }}
+                type="button"
+                onClick={() => setCategory && setCategory("All Categories")}
+                className="hover:text-purple-900"
+              >
+                ×
+              </button>
+            </span>
+          )}
+
+          {/* KEYWORD TAG */}
+
+          {safeKeyword.trim() && (
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-medium">
+              "{safeKeyword}"
+            </span>
+          )}
+
+          {/* LOCATION TAG */}
+
+          {safeLocation.trim() && (
+            <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-medium">
+              Loc: {safeLocation}
+              <button
+                type="button"
+                onClick={clearLocation}
+                className="hover:text-amber-900"
               >
                 ×
               </button>

@@ -1,23 +1,27 @@
-import { Calendar, ChevronRight, EllipsisVertical, MapPin, Recycle, Search, Trash } from 'lucide-react';
-import React, { useEffect, useState } from 'react'
-import Select from 'react-select';
-import { JobCard } from '../../components/JobCard';
-
-
+import {
+  Calendar,
+  ChevronRight,
+  EllipsisVertical,
+  MapPin,
+  Recycle,
+  Search,
+  Trash,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
 
 export const SaveJobs = () => {
-
   const [currentPage, SetcurrentPage] = useState(1);
   const [searchDetail, SetsearchDetail] = useState({
     search: "",
-    sort: ""
-  })
+    sort: "",
+  });
   const [openMenu, setOpenMenu] = useState(null);
 
   const option = [
     { value: "new", label: "New" },
     { value: "old", label: "Old" },
-  ]
+  ];
 
   const JobData = [
     {
@@ -27,7 +31,7 @@ export const SaveJobs = () => {
       city: "Bangaluru",
       state: "Karnataka",
       status: "Under Review",
-      date: "2 days ago"
+      date: "2 days ago",
     },
     {
       icon: "/images/microsoft.png",
@@ -36,7 +40,7 @@ export const SaveJobs = () => {
       city: "Hydrabad",
       state: "Telangana",
       status: "Shortlisted",
-      date: "2 days ago"
+      date: "2 days ago",
     },
     {
       icon: "/images/Swiggy.png",
@@ -45,7 +49,7 @@ export const SaveJobs = () => {
       city: "Bangaluru",
       state: "Karnataka",
       status: "Applied",
-      date: "2 days ago"
+      date: "2 days ago",
     },
     {
       icon: "/images/zomato.png",
@@ -54,7 +58,7 @@ export const SaveJobs = () => {
       city: "Gurugram",
       state: "Haryana",
       status: "Under Review",
-      date: "2 days ago"
+      date: "2 days ago",
     },
     {
       icon: "/images/delloit.png",
@@ -63,12 +67,11 @@ export const SaveJobs = () => {
       city: "Bangaluru",
       state: "Karnataka",
       status: "Under Review",
-      date: "2 days ago"
+      date: "2 days ago",
     },
+  ];
 
-  ]
-
-  const [filterdItems, SetfilterdItems] = useState(JobData)
+  const [filterdItems, SetfilterdItems] = useState(JobData);
 
   const itemsPerpages = 5;
 
@@ -80,95 +83,87 @@ export const SaveJobs = () => {
 
   const totalPages = Math.ceil(filterdItems.length / itemsPerpages);
 
-
   const handelOnChange = (e) => {
     const { name, value } = e.target;
     SetsearchDetail((prev) => ({
       ...prev,
-      [name]: value
-    }))
-  }
-
+      [name]: value,
+    }));
+  };
 
   const filterdFunc = () => {
     let Fielterd = [...JobData];
 
     if (searchDetail.search) {
-      Fielterd = Fielterd.filter((job) =>
-        job.title.toLowerCase().includes(searchDetail.search.toLowerCase()) || job.companey.toLowerCase().includes(searchDetail.search.toLowerCase())
-      )
+      Fielterd = Fielterd.filter(
+        (job) =>
+          job.title.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
+          job.companey
+            .toLowerCase()
+            .includes(searchDetail.search.toLowerCase()),
+      );
     }
 
     if (searchDetail.sort === "new") {
-      Fielterd = Fielterd.reverse()
+      Fielterd = Fielterd.reverse();
     }
 
-    SetfilterdItems(Fielterd)
-  }
+    SetfilterdItems(Fielterd);
+  };
 
   useEffect(() => {
-    filterdFunc()
-  }, [searchDetail])
-
-
-
-
+    filterdFunc();
+  }, [searchDetail]);
 
   return (
     <section className="min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8">
-
-      <h1 className="text-2xl md:text-3xl font-bold">
-        Saved Jobs
-      </h1>
+      <h1 className="text-2xl md:text-3xl font-bold">Saved Jobs</h1>
 
       <p className="text-zinc-600 mt-2 text-sm md:text-base">
         Jobs you've saved for later. You can apply anytime
       </p>
 
-
-      <div className='bg-white rounded-xl  shadow-md mt-8 p-4 '>
-
+      <div className="bg-white rounded-xl  shadow-md mt-8 p-4 ">
         {/*searching*/}
 
-        <div className='flex flex-col justify-start gap-5 md:flex-row md:items-center lg:justify-between w-full'>
-
+        <div className="flex flex-col justify-start gap-5 md:flex-row md:items-center lg:justify-between w-full">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="w-full md:w-96">
               <div className="flex items-center border border-zinc-300 rounded-lg px-3 py-2">
-
                 <input
                   type="text"
-                  name='search'
+                  name="search"
                   onChange={handelOnChange}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
-                      filterdFunc()
+                      filterdFunc();
                     }
                   }}
                   placeholder="Search by job title or company"
                   className="w-full ml-2 outline-none text-sm"
                 />
-                <Search size={20} onClick={filterdFunc}
-                  className="text-zinc-500 shrink-0 cursor-pointer" />
+                <Search
+                  size={20}
+                  onClick={filterdFunc}
+                  className="text-zinc-500 shrink-0 cursor-pointer"
+                />
               </div>
             </div>
-
           </div>
 
-          <div className='flex flex-col md:flex-row items-center gap-2'>
-
+          <div className="flex flex-col md:flex-row items-center gap-2">
             <div className="w-full cursor-pointer md:w-40">
               <Select
                 options={option}
-                name='sort'
+                name="sort"
                 className="text-sm  w-full cursor-pointer"
                 placeholder="Short"
                 onChange={(selectd) => {
                   SetsearchDetail((prev) => ({
                     ...prev,
-                    sort: selectd.value
-                  }))
-                  filterdFunc()
+                    sort: selectd.value,
+                  }));
+                  filterdFunc();
                 }}
                 classNamePrefix="select"
                 styles={{
@@ -186,9 +181,7 @@ export const SaveJobs = () => {
               Clear All
             </button>
           </div>
-
         </div>
-
       </div>
 
       <div className="w-full mt-5 space-y-3">
@@ -198,8 +191,6 @@ export const SaveJobs = () => {
             className="bg-white border border-zinc-200 rounded-xl hover:bg-zinc-50 transition"
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 p-5">
-
-
               <div className="flex items-center gap-10">
                 <img
                   src={job.icon}
@@ -208,13 +199,9 @@ export const SaveJobs = () => {
                 />
 
                 <div className="space-y-1">
-                  <h3 className="font-semibold text-base">
-                    {job.title}
-                  </h3>
+                  <h3 className="font-semibold text-base">{job.title}</h3>
 
-                  <p className="text-sm text-zinc-500">
-                    {job.companey}
-                  </p>
+                  <p className="text-sm text-zinc-500">{job.companey}</p>
 
                   <div className="flex items-center gap-2 text-sm text-zinc-500">
                     <MapPin size={15} />
@@ -229,7 +216,6 @@ export const SaveJobs = () => {
                   </div>
                 </div>
               </div>
-
 
               <div className="flex items-center justify-between md:justify-end gap-3">
                 <button className="border border-indigo-500 text-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-50 font-semibold text-sm cursor-pointer">
@@ -261,21 +247,20 @@ export const SaveJobs = () => {
                   )}
                 </div>
               </div>
-
             </div>
           </div>
         ))}
       </div>
       <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
-
         <button
           onClick={() => SetcurrentPage((prev) => prev - 1)}
           disabled={currentPage === 1}
           className={`px-3 md:px-4 py-2 rounded-lg border text-sm transition
-      ${currentPage === 1
-              ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
-              : "hover:bg-indigo-600 hover:text-white"
-            }`}
+      ${
+        currentPage === 1
+          ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
+          : "hover:bg-indigo-600 hover:text-white"
+      }`}
         >
           Previous
         </button>
@@ -285,10 +270,11 @@ export const SaveJobs = () => {
             key={index}
             onClick={() => SetcurrentPage(index + 1)}
             className={`w-9 h-9 md:w-10 md:h-10 rounded-lg border text-sm font-medium transition
-        ${currentPage === index + 1
-                ? "bg-indigo-600 text-white border-indigo-600"
-                : "hover:bg-zinc-100"
-              }`}
+        ${
+          currentPage === index + 1
+            ? "bg-indigo-600 text-white border-indigo-600"
+            : "hover:bg-zinc-100"
+        }`}
           >
             {index + 1}
           </button>
@@ -298,17 +284,15 @@ export const SaveJobs = () => {
           onClick={() => SetcurrentPage((prev) => prev + 1)}
           disabled={currentPage === totalPages}
           className={`px-3 md:px-4 py-2 rounded-lg border text-sm transition
-      ${currentPage === totalPages
-              ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
-              : "hover:bg-indigo-600 hover:text-white"
-            }`}
+      ${
+        currentPage === totalPages
+          ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
+          : "hover:bg-indigo-600 hover:text-white"
+      }`}
         >
           Next
         </button>
-
       </div>
-
-
     </section>
-  )
-}
+  );
+};

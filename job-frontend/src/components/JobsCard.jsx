@@ -1,60 +1,170 @@
-const JobsCard = ({ job, onApply }) => {
+import { useEffect, useState } from "react";
+import {
+  FaMapMarkerAlt,
+  FaBriefcase,
+  FaMoneyBillWave,
+  FaClock,
+  FaBookmark,
+  FaRegBookmark,
+  FaBuilding,
+  FaCheckCircle,
+} from "react-icons/fa";
+
+const JobsCard = ({ job, onClick }) => {
+  const [isSaved, setIsSaved] = useState(false);
+
+  const jobId = job?.id || job?._id;
+
+  const companyName = job?.company || job?.companey || "Company";
+
+  useEffect(() => {
+    const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
+
+    const alreadySaved = savedJobs.some(
+      (savedJob) => String(savedJob?.id || savedJob?._id) === String(jobId),
+    );
+
+    setIsSaved(alreadySaved);
+  }, [jobId]);
+
+  const handleSave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const savedJobs = JSON.parse(localStorage.getItem("savedJobs")) || [];
+
+    if (isSaved) {
+      const updatedJobs = savedJobs.filter(
+        (savedJob) => String(savedJob?.id || savedJob?._id) !== String(jobId),
+      );
+
+      localStorage.setItem("savedJobs", JSON.stringify(updatedJobs));
+
+      setIsSaved(false);
+    } else {
+      const alreadySaved = savedJobs.some(
+        (savedJob) => String(savedJob?.id || savedJob?._id) === String(jobId),
+      );
+
+      if (!alreadySaved) {
+        localStorage.setItem("savedJobs", JSON.stringify([...savedJobs, job]));
+      }
+
+      setIsSaved(true);
+    }
+  };
+
+  const skills = Array.isArray(job?.skills)
+    ? job.skills
+    : job?.skills
+      ? String(job.skills)
+          .split(",")
+          .map((skill) => skill.trim())
+          .filter(Boolean)
+      : [];
+
   return (
-    <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5 md:p-6 hover:shadow-md transition">
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="w-14 h-14 rounded-xl border border-zinc-200 bg-white flex items-center justify-center shrink-0 overflow-hidden">
-          <img
-            src={job.icon}
-            alt={job.companey}
-            className="w-10 h-10 object-contain"
-          />
+    <div
+      onClick={onClick}
+      className="relative bg-white border border-zinc-200 rounded-xl p-5 shadow-sm hover:shadow-md hover:border-indigo-200 transition cursor-pointer"
+    >
+      <button
+        type="button"
+        onClick={handleSave}
+        className={`absolute top-4 right-4 z-10 w-9 h-9 rounded-lg flex items-center justify-center transition ${
+          isSaved
+            ? "bg-indigo-50 text-indigo-600"
+            : "bg-white text-zinc-400 border border-zinc-200 hover:text-indigo-600"
+        }`}
+      >
+        {isSaved ? <FaBookmark size={15} /> : <FaRegBookmark size={15} />}
+      </button>
+
+      <div className="flex items-start gap-4 pr-12">
+        <div className="w-14 h-14 rounded-xl border border-zinc-200 bg-white flex items-center justify-center overflow-hidden shrink-0">
+          {job?.icon ? (
+            <img
+              src={job.icon}
+              alt={companyName}
+              className="w-full h-full object-contain p-2"
+            />
+          ) : (
+            <FaBuilding className="text-indigo-500 text-xl" />
+          )}
         </div>
 
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-bold text-zinc-800">{job.title}</h2>
+        <div className="min-w-0">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-base md:text-lg font-bold text-zinc-900">
+              {job?.title || "Job Title"}
+            </h3>
 
-              <p className="text-sm text-zinc-600 mt-1">
-                {job.companey} • {job.city}, {job.state}
-              </p>
-            </div>
-
-            <span className="w-fit px-2.5 py-1 rounded-lg bg-green-50 text-green-600 text-xs font-medium">
-              {job.status}
-            </span>
+            {job?.status === "Verified" && (
+              <span className="inline-flex items-center gap-1 text-xs text-blue-600">
+                <FaCheckCircle />
+                Verified
+              </span>
+            )}
           </div>
 
-          <div className="flex flex-wrap gap-2 mt-4">
-            <span className="px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-700 text-xs">
-              {job.jobType}
+          <p className="text-sm text-zinc-500 mt-1">{companyName}</p>
+
+          <div className="flex items-center gap-1.5 mt-2 text-xs text-zinc-500">
+            <FaMapMarkerAlt className="text-zinc-400" />
+
+            <span>
+              {job?.city || "Location"}
+              {job?.state ? `, ${job.state}` : ""}
             </span>
-
-            <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-600 text-xs">
-              {job.experience}
-            </span>
-
-            <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-600 text-xs">
-              {job.workMode}
-            </span>
-
-            <span className="px-2.5 py-1 rounded-lg bg-zinc-100 text-zinc-600 text-xs">
-              {job.salaryLabel}
-            </span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
-            <span className="text-xs text-zinc-400">Posted {job.date}</span>
-
-            <button
-              onClick={onApply}
-              className="w-full sm:w-auto px-5 h-10 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition"
-            >
-              Apply Now
-            </button>
           </div>
         </div>
       </div>
+
+      <div className="flex flex-wrap gap-2 mt-5">
+        {job?.jobType && (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-green-50 border border-green-100 text-green-600 text-xs font-medium">
+            <FaBriefcase size={11} />
+            {job.jobType}
+          </span>
+        )}
+
+        {job?.experience && (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium">
+            <FaClock size={11} />
+            {job.experience}
+          </span>
+        )}
+
+        {job?.workMode && (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-purple-50 border border-purple-100 text-purple-600 text-xs font-medium">
+            {job.workMode}
+          </span>
+        )}
+
+        {(job?.salaryLabel || job?.salary) && (
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-600 text-xs font-medium">
+            <FaMoneyBillWave size={11} />
+            {job.salaryLabel || `₹${job.salary} LPA`}
+          </span>
+        )}
+      </div>
+
+      <p className="text-sm text-zinc-600 leading-6 mt-4 line-clamp-2">
+        {job?.description || "No job description has been provided."}
+      </p>
+
+      {skills.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-4">
+          {skills.slice(0, 5).map((skill, index) => (
+            <span
+              key={index}
+              className="px-2.5 py-1 rounded-full bg-zinc-50 border border-zinc-200 text-zinc-600 text-xs"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
