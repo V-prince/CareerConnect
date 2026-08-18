@@ -148,23 +148,6 @@ const JobsCard = ({ job, onClick }) => {
           </span>
         )}
       </div>
-
-      <p className="text-sm text-zinc-600 leading-6 mt-4 line-clamp-2">
-        {job?.description || "No job description has been provided."}
-      </p>
-
-      {skills.length > 0 && (
-        <div className="flex flex-wrap gap-2 mt-4">
-          {skills.slice(0, 5).map((skill, index) => (
-            <span
-              key={index}
-              className="px-2.5 py-1 rounded-full bg-zinc-50 border border-zinc-200 text-zinc-600 text-xs"
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      )}
     </div>
   );
 };
