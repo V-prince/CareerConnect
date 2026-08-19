@@ -84,10 +84,11 @@ const EmpCompanyProfile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <EmpHeader />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white ">
 
-      <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
+
+      <main className="max-w-[1400px] mx-auto mt-16 px-4 md:px-6 lg:px-8 py-6 md:py-8">
+        {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm mb-7">
           <button
             onClick={() => navigate("/employer/dashboard")}

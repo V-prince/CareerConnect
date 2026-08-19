@@ -202,21 +202,21 @@ const quickActions = [
     desc: "Review all job applications",
     icon: FaUsers,
     iconBg: "bg-green-100 text-green-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
   {
     title: "Shortlisted Candidates",
     desc: "View shortlisted candidates",
     icon: FaStar,
     iconBg: "bg-orange-100 text-orange-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
   {
     title: "Schedule Interview",
     desc: "Schedule an interview",
     icon: FaCalendarAlt,
     iconBg: "bg-purple-100 text-purple-600",
-    path: "/employer/applications",
+    path: "/employer/applicants",
   },
 ];
 export const EmpDashboard = () => {
@@ -230,8 +230,8 @@ export const EmpDashboard = () => {
   const currentData = monthlyData[period] || monthlyData["May 2024"];
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      <EmpHeader />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16">
+      
       <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-7 md:py-9 border-b border-zinc-100">
         <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center md:text-left">
