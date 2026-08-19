@@ -353,7 +353,7 @@ const Jobs = () => {
   const anyExpSelected = Object.values(experience).some(Boolean);
 
   return (
-    <div className="bg-zinc-100 min-h-screen">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen">
       <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-8 md:py-10 border-b border-zinc-100">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="text-center">
