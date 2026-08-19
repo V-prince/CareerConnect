@@ -13,18 +13,15 @@ import {
   FaGlobe,
   FaPaperPlane,
   FaArrowLeft,
-  FaLinkedinIn,
-  FaTwitter,
-  FaFacebookF,
-  FaEnvelope,
 } from "react-icons/fa";
-import LoginRequire from "../../components/LoginRequire";
+
+import ApplicationReview from "../../components/popups/ApplicationReview";
 
 const JobDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [showLoginAlert, setShowLoginAlert] = useState(false);
+  const [showApplicationReview, setShowApplicationReview] = useState(false);
 
   const job = location.state?.job;
 
@@ -61,29 +58,19 @@ const JobDetail = () => {
           .filter(Boolean)
       : [];
 
-  const isUserLoggedIn = () => {
-    const token = localStorage.getItem("token");
-    const authToken = localStorage.getItem("authToken");
-
-    const user = localStorage.getItem("user");
-    const loggedInUser = localStorage.getItem("loggedInUser");
-    const currentUser = localStorage.getItem("currentUser");
-
-    return !!(token || authToken || user || loggedInUser || currentUser);
-  };
-
   const handleApply = () => {
-    if (!isUserLoggedIn()) {
-      setShowLoginAlert(true);
-      return;
-    }
-
-    alert(`Application started for ${job.title}`);
+    setShowApplicationReview(true);
   };
 
-  const handleLoginNow = () => {
-    setShowLoginAlert(false);
-    navigate("/login");
+  const handleSubmitApplication = () => {
+    setShowApplicationReview(false);
+
+    navigate("/applications", {
+      state: {
+        job,
+        applicationSubmitted: true,
+      },
+    });
   };
 
   return (
@@ -111,6 +98,7 @@ const JobDetail = () => {
           <span className="text-zinc-600 truncate">{job.title}</span>
         </div>
       </div>
+
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="grid lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2">
@@ -158,6 +146,7 @@ const JobDetail = () => {
                             {job.state ? `, ${job.state}` : ""}
                           </span>
                         </div>
+
                         <div className="flex flex-wrap gap-2 mt-4">
                           {job.jobType && (
                             <Tag
@@ -194,6 +183,7 @@ const JobDetail = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex items-center gap-2 text-xs md:text-sm text-zinc-500">
                       <FaCalendarAlt />
@@ -224,6 +214,7 @@ const JobDetail = () => {
               </div>
 
               <div className="border-t border-zinc-100" />
+
               <div className="p-5 md:p-7">
                 <Section title="Job Description">
                   <p className="text-sm md:text-[15px] text-zinc-600 leading-7 whitespace-pre-line">
@@ -308,6 +299,7 @@ const JobDetail = () => {
               </div>
             </div>
           </div>
+
           <div className="space-y-5">
             <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-5">
               <h3 className="font-bold text-zinc-800 mb-5">About Company</h3>
@@ -385,13 +377,12 @@ const JobDetail = () => {
         </div>
       </main>
 
-      {showLoginAlert && (
-        <LoginRequire
-          show={true}
-          onClose={() => setShowLoginAlert(false)}
-          onLogin={handleLoginNow}
-        />
-      )}
+      <ApplicationReview
+        show={showApplicationReview}
+        onClose={() => setShowApplicationReview(false)}
+        onSubmit={handleSubmitApplication}
+        job={job}
+      />
     </div>
   );
 };
@@ -399,8 +390,11 @@ const JobDetail = () => {
 const Tag = ({ icon, text, color }) => {
   const colors = {
     green: "bg-green-50 text-green-600 border-green-100",
+
     blue: "bg-blue-50 text-blue-600 border-blue-100",
+
     purple: "bg-purple-50 text-purple-600 border-purple-100",
+
     emerald: "bg-emerald-50 text-emerald-600 border-emerald-100",
   };
 

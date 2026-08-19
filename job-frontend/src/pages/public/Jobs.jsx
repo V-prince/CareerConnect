@@ -6,10 +6,6 @@ import JobSearchFilter from "../../components/JobSearchFilter";
 import JobPagination from "../../components/JobPagination";
 import JobsCard from "../../components/JobsCard";
 
-/* =========================================================
-   JOB DATA
-========================================================= */
-
 const JobData = [
   {
     id: 1,
