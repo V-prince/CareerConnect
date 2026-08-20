@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { ApplicationDetailCard } from "../../components/ApplicationDetailCard";
-import JobCard from "../../components/JobCard";
+import { JobCard } from "../../components/JobCard";
 
 export const Applications = () => {
   const [currentPage, setCurrentPage] = useState(1);
