@@ -9,6 +9,7 @@ import { ChevronRight, ChevronLeft } from "lucide-react";
 import Select from "react-select";
 import { JobCard } from "../../components/JobCard";
 import { ApplicationDetailCard } from "../../components/ApplicationDetailCard";
+import { useSearchParams } from "react-router-dom";
 
 const locationOptions = [
   { value: "", label: "All Locations" },
@@ -55,7 +56,7 @@ const JobData = [
     icon: "/images/Swiggy.png",
     title: "Frontend Developer",
     companey: "Swiggy",
-    city: "Bengaluru",
+    city: "Banglore",
     state: "Karnataka",
     status: "Verified",
     date: "1 day ago",
@@ -222,6 +223,10 @@ const Jobs = () => {
   const [filteredJobs, setFilteredJobs] = useState(JobData);
   const itemsPerPage = 5;
 
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+
   const handleSearch = () => {
     setSearch(keyword);
     setLocation(locationSelect?.value || "");
@@ -267,7 +272,7 @@ const Jobs = () => {
     }
 
     const selectedJobTypes = Object.keys(jobTypes).filter((k) => jobTypes[k]);
-    
+
     if (selectedJobTypes.length > 0) {
       result = result.filter((j) => selectedJobTypes.includes(j.jobType));
     }
@@ -322,6 +327,7 @@ const Jobs = () => {
 
   useEffect(() => {
     applyFiltersAndSort();
+    setCurrentPage(1);
   }, [search, location, jobTypes, experience, category, sortBy]);
 
   const resetFilters = () => {
@@ -342,7 +348,18 @@ const Jobs = () => {
     );
     setSelectDetails(null);
     setCurrentPage(1);
+    setSearchParams({})
   };
+
+  useEffect(() => {
+    const keyword = searchParams.get("keyword") || "";
+    const location = searchParams.get("location") || "";
+
+    setSearch(keyword);
+    setLocation(location === "all" ? "" : location);
+    
+
+  }, [searchParams]);
 
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
   const lastIndex = currentPage * itemsPerPage;
@@ -585,9 +602,9 @@ const Jobs = () => {
                     {filteredJobs.length === 0
                       ? 0
                       : `${firstIndex + 1} – ${Math.min(
-                          lastIndex,
-                          filteredJobs.length,
-                        )}`}
+                        lastIndex,
+                        filteredJobs.length,
+                      )}`}
                   </span>{" "}
                   of{" "}
                   <span className="font-semibold text-zinc-800">
@@ -622,85 +639,88 @@ const Jobs = () => {
               {(anyJobTypeSelected ||
                 anyExpSelected ||
                 category !== "All Categories" ||
-                search.trim() ||
+                search?.trim() ||
                 location.trim()) && (
-                <div className="flex flex-wrap items-center gap-2 mb-5">
-                  {anyJobTypeSelected &&
-                    Object.keys(jobTypes)
-                      .filter((k) => jobTypes[k])
-                      .map((k) => (
-                        <span
-                          key={k}
-                          className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-lg text-xs font-medium"
-                        >
-                          Job: {k}
-                          <button
-                            onClick={() =>
-                              setJobTypes({ ...jobTypes, [k]: false })
-                            }
-                            className="hover:text-indigo-900"
+                  <div className="flex flex-wrap items-center gap-2 mb-5">
+                    {anyJobTypeSelected &&
+                      Object.keys(jobTypes)
+                        .filter((k) => jobTypes[k])
+                        .map((k) => (
+                          <span
+                            key={k}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-indigo-50 text-indigo-700 border border-indigo-100 rounded-lg text-xs font-medium"
                           >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-                  {anyExpSelected &&
-                    Object.keys(experience)
-                      .filter((k) => experience[k])
-                      .map((k) => (
-                        <span
-                          key={k}
-                          className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg text-xs font-medium"
-                        >
-                          Exp: {k}
-                          <button
-                            onClick={() =>
-                              setExperience({ ...experience, [k]: false })
-                            }
-                            className="hover:text-blue-900"
+                            Job: {k}
+                            <button
+                              onClick={() =>
+                                setJobTypes({ ...jobTypes, [k]: false })
+                              }
+                              className="hover:text-indigo-900"
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                    {anyExpSelected &&
+                      Object.keys(experience)
+                        .filter((k) => experience[k])
+                        .map((k) => (
+                          <span
+                            key={k}
+                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-lg text-xs font-medium"
                           >
-                            ×
-                          </button>
-                        </span>
-                      ))}
-                  {category !== "All Categories" && (
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-medium">
-                      {category}
-                      <button
-                        onClick={() => setCategory("All Categories")}
-                        className="hover:text-purple-900"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  )}
-                  {search.trim() && (
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-medium">
-                      "{search}"
-                      <button
-                        onClick={() => setSearch("")}
-                        className="hover:text-green-900"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  )}
-                  {location.trim() && (
-                    <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-medium">
-                      Loc: {locationSelect?.label || location}
-                      <button
-                        onClick={() => {
-                          setLocation("");
-                          setLocationSelect(locationOptions[0]);
-                        }}
-                        className="hover:text-amber-900"
-                      >
-                        ×
-                      </button>
-                    </span>
-                  )}
-                </div>
-              )}
+                            Exp: {k}
+                            <button
+                              onClick={() =>
+                                setExperience({ ...experience, [k]: false })
+                              }
+                              className="hover:text-blue-900"
+                            >
+                              ×
+                            </button>
+                          </span>
+                        ))}
+                    {category !== "All Categories" && (
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-medium">
+                        {category}
+                        <button
+                          onClick={() => setCategory("All Categories")}
+                          className="hover:text-purple-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {search.trim() && (
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-medium">
+                        "{search}"
+                        <button
+                          onClick={() => {
+                            setSearch("")
+                            setSearchParams({})
+                          }}
+                          className="hover:text-green-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {location.trim() && (
+                      <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-medium">
+                        Loc: {locationSelect?.label || location}
+                        <button
+                          onClick={() => {
+                            setLocation("");
+                            setLocationSelect(locationOptions[0]);
+                          }}
+                          className="hover:text-amber-900"
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                  </div>
+                )}
 
               {currentJobs.length === 0 ? (
                 <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-10 md:p-14 text-center">
@@ -726,9 +746,8 @@ const Jobs = () => {
                   className={`flex flex-col xl:flex-row gap-6 transition-all duration-300`}
                 >
                   <div
-                    className={`w-full ${
-                      !selectDetails ? "xl:w-full" : "xl:w-[45%]"
-                    } transition-all duration-300 space-y-3`}
+                    className={`w-full ${!selectDetails ? "xl:w-full" : "xl:w-[45%]"
+                      } transition-all duration-300 space-y-3`}
                   >
                     {currentJobs.map((job, index) => (
                       <JobCard
@@ -753,11 +772,10 @@ const Jobs = () => {
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                     disabled={currentPage === 1}
-                    className={`w-10 h-10 rounded-lg border transition flex items-center justify-center ${
-                      currentPage === 1
-                        ? "cursor-not-allowed bg-zinc-50 border-zinc-200 text-zinc-400"
-                        : "bg-white border-zinc-200 text-zinc-500 hover:border-indigo-200 hover:text-indigo-600"
-                    }`}
+                    className={`w-10 h-10 rounded-lg border transition flex items-center justify-center ${currentPage === 1
+                      ? "cursor-not-allowed bg-zinc-50 border-zinc-200 text-zinc-400"
+                      : "bg-white border-zinc-200 text-zinc-500 hover:border-indigo-200 hover:text-indigo-600"
+                      }`}
                   >
                     <ChevronLeft size={18} />
                   </button>
@@ -766,11 +784,10 @@ const Jobs = () => {
                     <button
                       key={index}
                       onClick={() => setCurrentPage(index + 1)}
-                      className={`w-10 h-10 rounded-lg border transition flex items-center justify-center text-sm font-medium ${
-                        currentPage === index + 1
-                          ? "bg-indigo-600 border-indigo-600 text-white shadow-sm shadow-indigo-200"
-                          : "bg-white border-zinc-200 text-zinc-600 hover:border-indigo-200 hover:text-indigo-600"
-                      }`}
+                      className={`w-10 h-10 rounded-lg border transition flex items-center justify-center text-sm font-medium ${currentPage === index + 1
+                        ? "bg-indigo-600 border-indigo-600 text-white shadow-sm shadow-indigo-200"
+                        : "bg-white border-zinc-200 text-zinc-600 hover:border-indigo-200 hover:text-indigo-600"
+                        }`}
                     >
                       {index + 1}
                     </button>
@@ -781,11 +798,10 @@ const Jobs = () => {
                       setCurrentPage((p) => Math.min(totalPages, p + 1))
                     }
                     disabled={currentPage === totalPages}
-                    className={`w-10 h-10 rounded-lg border transition flex items-center justify-center ${
-                      currentPage === totalPages
-                        ? "cursor-not-allowed bg-zinc-50 border-zinc-200 text-zinc-400"
-                        : "bg-white border-zinc-200 text-zinc-500 hover:border-indigo-200 hover:text-indigo-600"
-                    }`}
+                    className={`w-10 h-10 rounded-lg border transition flex items-center justify-center ${currentPage === totalPages
+                      ? "cursor-not-allowed bg-zinc-50 border-zinc-200 text-zinc-400"
+                      : "bg-white border-zinc-200 text-zinc-500 hover:border-indigo-200 hover:text-indigo-600"
+                      }`}
                   >
                     <ChevronRight size={18} />
                   </button>

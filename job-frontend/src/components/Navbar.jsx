@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
+  const location = useLocation();
+
+  const isHomePage = location.pathname === "/";
+
   useEffect(() => {
+
 
     const handelScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -16,10 +21,12 @@ export const Navbar = () => {
 
     return () => window.removeEventListener("scroll", handelScroll)
 
-  }, [])
+  }, [location.pathname])
+
+   const showWhiteBg = !isHomePage || isScrolled;
 
   return (
-    <header className={`w-full sticky top-0 z-50 ${isScrolled ? "bg-white/70 shadow-lg border-b border-gray-200  backdrop-blur-xl" : "bg-white md:bg-transparent border-b border-transparent shadow-none"}`}>
+    <header className={`w-full sticky top-0 z-50 ${showWhiteBg ? "bg-white/70 shadow-lg border-b border-gray-200  backdrop-blur-xl" : "bg-white md:bg-transparent border-b border-transparent shadow-none"}`}>
       <nav className="max-w-7xl mx-auto flex items-center justify-between h-15 px-5 sm:px-8 lg:px-10">
         <Link to={"/"}>
           <img
