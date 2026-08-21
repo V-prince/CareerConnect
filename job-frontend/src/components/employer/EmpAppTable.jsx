@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ChevronDown, MapPin, Search } from "lucide-react";
 
 const statusClass = {
@@ -103,6 +103,25 @@ const ApplicantRow = ({
   onStatusChange,
   onViewProfile,
 }) => {
+  const [dropdownPosition, setDropdownPosition] = useState(null);
+
+  const handleStatusClick = (e) => {
+    const button = e.currentTarget;
+    const rect = button.getBoundingClientRect();
+
+    const dropdownHeight = 260;
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    const openUpward = spaceBelow < dropdownHeight;
+
+    setDropdownPosition({
+      top: openUpward ? rect.top - dropdownHeight - 8 : rect.bottom + 8,
+      left: rect.left,
+    });
+
+    onStatusOpen(applicant.id);
+  };
+
   return (
     <tr className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/70 transition">
       <td className="px-5 py-5">
@@ -133,7 +152,6 @@ const ApplicantRow = ({
         {applicant.experience}
       </td>
 
-      {/* Location */}
       <td className="px-4 py-5">
         <div className="flex items-start gap-1.5">
           <MapPin size={16} className="text-zinc-400 mt-0.5 shrink-0" />
@@ -163,37 +181,44 @@ const ApplicantRow = ({
       </td>
 
       <td className="px-4 py-5">
-        <div className="relative inline-block">
-          <button
-            type="button"
-            onClick={() => onStatusOpen(applicant.id)}
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition hover:opacity-80 ${
-              statusClass[applicant.status]
-            }`}
-          >
-            {applicant.status}
-            <ChevronDown size={13} />
-          </button>
+        <button
+          type="button"
+          onClick={handleStatusClick}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition hover:opacity-80 ${
+            statusClass[applicant.status]
+          }`}
+        >
+          {applicant.status}
+          <ChevronDown size={13} />
+        </button>
 
-          {openStatusId === applicant.id && (
-            <div className="absolute left-0 top-full mt-2 z-50 w-36 rounded-lg border border-zinc-200 bg-white shadow-lg overflow-hidden">
-              {statusOptions.map((status) => (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() => onStatusChange(applicant.id, status)}
-                  className={`w-full text-left px-3 py-2.5 text-sm transition ${
-                    applicant.status === status
-                      ? "bg-blue-50 text-blue-600 font-medium"
-                      : "text-zinc-700 hover:bg-zinc-50"
-                  }`}
-                >
-                  {status}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+        {openStatusId === applicant.id && dropdownPosition && (
+          <div
+            className="fixed z-[9999] w-36 rounded-lg border border-zinc-200 bg-white shadow-xl overflow-hidden"
+            style={{
+              top: `${dropdownPosition.top}px`,
+              left: `${dropdownPosition.left}px`,
+            }}
+          >
+            {statusOptions.map((status) => (
+              <button
+                key={status}
+                type="button"
+                onClick={() => {
+                  onStatusChange(applicant.id, status);
+                  setDropdownPosition(null);
+                }}
+                className={`w-full text-left px-3 py-2.5 text-sm transition ${
+                  applicant.status === status
+                    ? "bg-blue-50 text-blue-600 font-medium"
+                    : "text-zinc-700 hover:bg-zinc-50"
+                }`}
+              >
+                {status}
+              </button>
+            ))}
+          </div>
+        )}
       </td>
 
       <td className="px-4 py-5">

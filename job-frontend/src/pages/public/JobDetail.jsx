@@ -74,7 +74,7 @@ const JobDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
         <div className="flex items-center gap-2 text-sm">
           <button
@@ -124,13 +124,6 @@ const JobDetail = () => {
                           <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-zinc-900">
                             {job.title}
                           </h1>
-
-                          {job.status === "Verified" && (
-                            <span className="inline-flex items-center gap-1 text-xs font-medium text-blue-600">
-                              <FaCheckCircle />
-                              Verified
-                            </span>
-                          )}
                         </div>
 
                         <div className="flex flex-wrap items-center gap-2 mt-1.5 text-sm md:text-base text-zinc-500">
@@ -187,13 +180,10 @@ const JobDetail = () => {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                     <div className="flex items-center gap-2 text-xs md:text-sm text-zinc-500">
                       <FaCalendarAlt />
-
                       <span>Posted {job.date || "recently"}</span>
-
                       {job.applicants && (
                         <>
                           <span className="text-zinc-300">•</span>
-
                           <span className="flex items-center gap-1">
                             <FaUsers />
                             {job.applicants} applicants
@@ -201,7 +191,6 @@ const JobDetail = () => {
                         </>
                       )}
                     </div>
-
                     <button
                       onClick={handleApply}
                       className="h-11 px-6 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2"
@@ -214,20 +203,12 @@ const JobDetail = () => {
               </div>
 
               <div className="border-t border-zinc-100" />
-
               <div className="p-5 md:p-7">
                 <Section title="Job Description">
                   <p className="text-sm md:text-[15px] text-zinc-600 leading-7 whitespace-pre-line">
                     {job.description || "No job description has been provided."}
                   </p>
                 </Section>
-
-                {job.responsibilities && (
-                  <Section title="Key Responsibilities">
-                    <BulletContent content={job.responsibilities} />
-                  </Section>
-                )}
-
                 <Section title="Requirements">
                   {job.requirements ? (
                     <BulletContent content={job.requirements} />
@@ -251,11 +232,11 @@ const JobDetail = () => {
                     </div>
                   </Section>
                 )}
+
                 <div className="pt-6 border-t border-zinc-100">
                   <h3 className="text-base md:text-lg font-bold text-zinc-800 mb-5">
                     Job Details
                   </h3>
-
                   <div className="grid sm:grid-cols-2 gap-x-8 gap-y-6">
                     <DetailItem
                       icon={<FaBriefcase />}
@@ -266,19 +247,13 @@ const JobDetail = () => {
                     <DetailItem
                       icon={<FaBuilding />}
                       title="Industry"
-                      value={job.industry || job.category || "Not specified"}
+                      value={job.industry || "Not specified"}
                     />
 
                     <DetailItem
                       icon={<FaGraduationCap />}
                       title="Experience"
                       value={job.experience || "Not specified"}
-                    />
-
-                    <DetailItem
-                      icon={<FaGlobe />}
-                      title="Work Mode"
-                      value={job.workMode || "Not specified"}
                     />
 
                     <DetailItem
@@ -290,8 +265,20 @@ const JobDetail = () => {
                     <DetailItem
                       icon={<FaClock />}
                       title="Employment Type"
+                      value={job.employmentType || "Not specified"}
+                    />
+
+                    <DetailItem
+                      icon={<FaUsers />}
+                      title="Position Openings"
                       value={
-                        job.employmentType || job.jobType || "Not specified"
+                        job.openings
+                          ? `${job.openings} ${
+                              Number(job.openings) === 1
+                                ? "Position"
+                                : "Positions"
+                            }`
+                          : "Not specified"
                       }
                     />
                   </div>
@@ -319,13 +306,6 @@ const JobDetail = () => {
 
                 <div>
                   <p className="font-semibold text-zinc-800">{companyName}</p>
-
-                  {job.status === "Verified" && (
-                    <p className="flex items-center gap-1 text-xs text-blue-600 mt-1">
-                      <FaCheckCircle />
-                      Verified
-                    </p>
-                  )}
                 </div>
               </div>
 
@@ -390,11 +370,8 @@ const JobDetail = () => {
 const Tag = ({ icon, text, color }) => {
   const colors = {
     green: "bg-green-50 text-green-600 border-green-100",
-
     blue: "bg-blue-50 text-blue-600 border-blue-100",
-
     purple: "bg-purple-50 text-purple-600 border-purple-100",
-
     emerald: "bg-emerald-50 text-emerald-600 border-emerald-100",
   };
 

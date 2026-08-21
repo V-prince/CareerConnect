@@ -42,7 +42,7 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    if(formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
@@ -66,7 +66,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white flex items-center justify-center px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
       <div className="w-full max-w-lg bg-white rounded-xl shadow-md border border-zinc-200 px-6 md:px-8 py-8 md:py-10">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-zinc-800">
@@ -216,13 +216,7 @@ const Register = () => {
               className="w-4 h-4 accent-indigo-600 rounded border-zinc-300"
               required
             />
-            I agree to the
-            <Link
-              to="/terms"
-              className="text-indigo-600 font-medium hover:text-indigo-700 transition"
-            >
-              Terms & Conditions
-            </Link>
+            I agree to the Terms & Conditions
           </label>
 
           <button

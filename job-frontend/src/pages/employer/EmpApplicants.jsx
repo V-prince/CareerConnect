@@ -172,6 +172,7 @@ const EmpApplicants = () => {
   const [sortBy, setSortBy] = useState("Newest");
   const [currentPage, setCurrentPage] = useState(1);
   const [openStatusId, setOpenStatusId] = useState(null);
+  const [statusDropUp, setStatusDropUp] = useState(false);
 
   const applicantsPerPage = 5;
 
@@ -269,7 +270,19 @@ const EmpApplicants = () => {
   };
 
   const handleStatusOpen = (id) => {
-    setOpenStatusId((prev) => (prev === id ? null : id));
+    setOpenStatusId((prev) => {
+      if (prev === id) {
+        return null;
+      }
+
+      const index = currentApplicants.findIndex(
+        (applicant) => applicant.id === id,
+      );
+
+      setStatusDropUp(index >= currentApplicants.length - 2);
+
+      return id;
+    });
   };
 
   const handleTabChange = (tab) => {
@@ -310,7 +323,7 @@ const EmpApplicants = () => {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       <EmpHeader />
 
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
@@ -331,10 +344,6 @@ const EmpApplicants = () => {
           <h1 className="text-2xl md:text-3xl font-bold text-zinc-900">
             Applicants
           </h1>
-
-          <span className="px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-sm font-semibold">
-            45 Total
-          </span>
         </div>
 
         <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden">
@@ -358,6 +367,7 @@ const EmpApplicants = () => {
           <EmpAppTable
             applicants={currentApplicants}
             openStatusId={openStatusId}
+            statusDropUp={statusDropUp}
             onStatusOpen={handleStatusOpen}
             onStatusChange={handleStatusChange}
             onViewProfile={handleViewProfile}

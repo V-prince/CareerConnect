@@ -44,7 +44,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white flex items-center justify-center px-4 md:px-6 lg:px-8 py-8 md:py-10 lg:py-12">
       <div className="w-full max-w-md bg-white rounded-xl shadow-md border border-zinc-200 px-6 md:px-8 py-8 md:py-10">
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-zinc-800">
@@ -147,14 +147,6 @@ const Login = () => {
         >
           <FaGoogle className="text-red-500" />
           Login with Google
-        </button>
-
-        <button
-          type="button"
-          className="w-full h-12 border border-zinc-300 rounded-xl flex items-center justify-center gap-3 font-medium text-zinc-700 hover:bg-zinc-50 transition text-sm mt-3"
-        >
-          <FaLinkedinIn className="text-indigo-600" />
-          Login with LinkedIn
         </button>
 
         <p className="text-center text-sm text-zinc-600 mt-7">
