@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
+import { TopHeader } from "./TopHeader";
+import { useAuth } from "../store/UserContext";
+
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const location = useLocation();
+
+  const { user } = useAuth();
+
+  console.log(user)
 
   const isHomePage = location.pathname === "/";
 
@@ -23,7 +30,7 @@ export const Navbar = () => {
 
   }, [location.pathname])
 
-   const showWhiteBg = !isHomePage || isScrolled;
+  const showWhiteBg = !isHomePage || isScrolled;
 
   return (
     <header className={`w-full sticky top-0 z-50 ${showWhiteBg ? "bg-white/70 shadow-lg border-b border-gray-200  backdrop-blur-xl" : "bg-white md:bg-transparent border-b border-transparent shadow-none"}`}>
@@ -85,19 +92,56 @@ export const Navbar = () => {
         </ul>
 
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            to="/login"
-            className="px-5 py-2 border border-zinc-300 rounded-lg hover:bg-gray-100 transition-all duration-300"
-          >
-            Login
-          </Link>
+          {user ? (
+            <>
+              <Link to={"/user/profile"}  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-100 transition-all duration-200 cursor-pointer">
 
-          <Link
-            to="/register"
-            className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300"
-          >
-            Register
-          </Link>
+
+                <span
+                  className="block lg:hidden cursor-pointer p-1 rounded-lg hover:bg-zinc-200"
+                  onClick={() => setIsOpen(true)}
+                >
+                  <Menu size={22} />
+                </span>
+
+
+                <div className="flex items-center gap-3">
+                  <img
+                    src={user?.photo || "/images/profile.jpg"}
+                    alt="Profile"
+                    className="h-10 w-10 md:h-11 md:w-11 rounded-full object-cover border-2 border-white shadow-sm"
+                  />
+
+                  <div className="leading-tight">
+                    <h2 className="font-semibold text-sm text-zinc-800">
+                      {user?.fullname || "Guest User"}
+                    </h2>
+
+                    <p className="text-xs text-zinc-500 mt-1 capitalize">
+                      {user?.role || "Candidate"}
+                    </p>
+                  </div>
+                </div>
+
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="px-5 py-2 border border-zinc-300 rounded-lg hover:bg-gray-100 transition-all duration-300"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         <button onClick={() => setIsOpen(!isOpen)} className="md:hidden">
@@ -117,21 +161,49 @@ export const Navbar = () => {
 
           <hr />
 
-          <Link
-            to="/login"
-            onClick={() => setIsOpen(false)}
-            className="w-full border border-zinc-300 rounded-lg py-2 text-center hover:bg-gray-100"
-          >
-            Login
-          </Link>
+          {user ?
+            <>
+              <Link to={"/user/profile"} className="flex items-center gap-2">
+                <img
+                  src={user?.photo || "/images/profile.jpg"}
+                  alt="Profile"
+                  className="h-9 w-9 rounded-full object-cover border border-zinc-200"
+                />
 
-          <Link
-            to="/register"
-            onClick={() => setIsOpen(false)}
-            className="w-full bg-indigo-600 text-white rounded-lg py-2 text-center hover:bg-indigo-700"
-          >
-            Register
-          </Link>
+                <div className="leading-tight">
+                  <h2 className="font-semibold text-sm text-zinc-800">
+                    {user?.fullname || "Guest User"}
+                  </h2>
+
+                  <p className="text-[11px] text-zinc-500 capitalize">
+                    {user?.role || "candidate"}
+                  </p>
+                </div>
+              </Link>
+
+            </>
+            :
+            <>
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full border border-zinc-300 rounded-lg py-2 text-center hover:bg-gray-100"
+              >
+                Login
+              </Link>
+
+              <Link
+                to="/register"
+                onClick={() => setIsOpen(false)}
+                className="w-full bg-indigo-600 text-white rounded-lg py-2 text-center hover:bg-indigo-700"
+              >
+                Register
+              </Link>
+            </>
+
+          }
+
+
         </ul>
       </div>
     </header>

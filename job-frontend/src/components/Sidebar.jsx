@@ -15,14 +15,12 @@ import {
 
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useAuth } from "../store/UserContext";
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
-  const [user, SetUser] = useState({
-    id: 1,
-    role: "candidate",
-  });
-
   const [showJobs, setShowJobs] = useState(false);
+
+  const { user } = useAuth();
 
   const sideData = [
     {
