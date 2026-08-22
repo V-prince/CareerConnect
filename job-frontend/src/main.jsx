@@ -4,10 +4,12 @@ import './index.css'
 import App from './App.jsx'
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from 'react-router-dom'
+import { ScrollToTop } from './components/scrolltotop/ScrollToTop.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop/>
       <Toaster
         position="top-center"
         reverseOrder={false}

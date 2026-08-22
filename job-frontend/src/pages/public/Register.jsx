@@ -53,6 +53,8 @@ const Register = () => {
       agree,
     });
 
+    
+
     setFormData({
       fullName: "",
       email: "",
