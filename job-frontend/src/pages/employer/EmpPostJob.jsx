@@ -175,16 +175,38 @@ export const EmpPostJob = () => {
     setStep(4);
   };
   const handlePublish = () => {
-    console.log("Job Data:", formData);
+    const newJob = {
+      id: Date.now(),
+      ...formData,
+      title: formData.jobTitle,
+      type: formData.jobType,
+      experience: formData.experienceLevel,
+      location: formData.location,
+      mode: formData.remote ? "Remote" : "On-site",
+
+      applications: 0,
+      status: "Active",
+      postedOn: new Date().toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      }),
+    };
+
+    console.log("New Job:", newJob);
 
     alert("Job published successfully!");
 
-    navigate("/employer/jobs");
+    navigate("/employer/jobs", {
+      state: {
+        newJob,
+      },
+    });
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16">
-      
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <EmpHeader />
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="mb-7">
           <div className="flex items-center gap-2 text-xs md:text-sm mb-3">
@@ -350,18 +372,20 @@ const StepItem = ({ number, title, description, currentStep, line }) => {
     <div className="flex-1">
       <div className="flex items-center">
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${currentStep >= number
-            ? "bg-blue-600 text-white"
-            : "bg-zinc-200 text-zinc-600"
-            }`}
+          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
+            currentStep >= number
+              ? "bg-blue-600 text-white"
+              : "bg-zinc-200 text-zinc-600"
+          }`}
         >
           {number}
         </div>
 
         {line && (
           <div
-            className={`h-0.5 flex-1 mx-3 ${currentStep > number ? "bg-blue-600" : "bg-zinc-200"
-              }`}
+            className={`h-0.5 flex-1 mx-3 ${
+              currentStep > number ? "bg-blue-600" : "bg-zinc-200"
+            }`}
           />
         )}
       </div>

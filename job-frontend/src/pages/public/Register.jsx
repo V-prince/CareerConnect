@@ -42,7 +42,7 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    if(formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
@@ -218,13 +218,7 @@ const Register = () => {
               className="w-4 h-4 accent-indigo-600 rounded border-zinc-300"
               required
             />
-            I agree to the
-            <Link
-              to="/terms"
-              className="text-indigo-600 font-medium hover:text-indigo-700 transition"
-            >
-              Terms & Conditions
-            </Link>
+            I agree to the Terms & Conditions
           </label>
 
           <button

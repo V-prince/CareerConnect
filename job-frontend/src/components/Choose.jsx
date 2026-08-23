@@ -33,7 +33,7 @@ const features = [
 
 const Choose = () => {
   return (
-    <section className="bg-zinc-50/50 py-10 md:py-12 border-b border-zinc-100">
+    <section className="bg-transparent py-10 md:py-12 border-b border-zinc-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12 lg:py-16">
         <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-slate-900 mb-8 md:mb-10 text-center">
           Why Choose Us

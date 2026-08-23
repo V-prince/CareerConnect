@@ -14,7 +14,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         </p>
       </div>
 
-      {/* JOB TITLE */}
       <div className="mb-5">
         <label className="block text-sm font-semibold text-zinc-800 mb-2">
           Job Title <span className="text-red-500">*</span>
@@ -30,7 +29,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         />
       </div>
 
-      {/* JOB TYPE + EMPLOYMENT TYPE */}
       <div className="grid md:grid-cols-2 gap-5 mb-5">
         <SelectField
           label="Job Type"
@@ -59,7 +57,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         />
       </div>
 
-      {/* EXPERIENCE + DEPARTMENT */}
       <div className="grid md:grid-cols-2 gap-5 mb-5">
         <SelectField
           label="Experience Level"
@@ -95,7 +92,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         />
       </div>
 
-      {/* LOCATION */}
       <div className="mb-5">
         <label className="block text-sm font-semibold text-zinc-800 mb-2">
           Job Location <span className="text-red-500">*</span>
@@ -124,7 +120,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         </div>
       </div>
 
-      {/* SALARY */}
       <div className="mb-5">
         <label className="block text-sm font-semibold text-zinc-800 mb-2">
           Salary Range{" "}
@@ -163,7 +158,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         </div>
       </div>
 
-      {/* DEADLINE + OPENINGS */}
       <div className="grid md:grid-cols-2 gap-5 mb-7">
         <div>
           <label className="block text-sm font-semibold text-zinc-800 mb-2">
@@ -204,7 +198,6 @@ const EmpBasicForm = ({ formData, handleChange, handleNext, navigate }) => {
         </div>
       </div>
 
-      {/* ACTIONS */}
       <div className="flex items-center justify-between gap-3 pt-5 border-t border-zinc-100">
         <button
           type="button"

@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { ChevronRight } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import EmpJobFilters from "../../components/employer/EmpJobFilters";
 import EmpJobsTable from "../../components/employer/EmpJobsTable";
 import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
 import EmpHeader from "../../components/employer/EmpHeader";
+import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
 
 const jobsData = [
   {
@@ -156,6 +157,7 @@ const jobsData = [
 
 const EmpJobs = () => {
   const navigate = useNavigate();
+  const routeLocation = useLocation();
 
   const [jobs, setJobs] = useState(jobsData);
 
@@ -167,11 +169,40 @@ const EmpJobs = () => {
   const [jobsPerPage, setJobsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [editingJob, setEditingJob] = useState(null);
+
   const tabs = ["All Jobs", "Active", "Closed", "Expired"];
 
-  const departments = [...new Set(jobsData.map((job) => job.department))];
+  const departments = useMemo(
+    () => [...new Set(jobs.map((job) => job.department).filter(Boolean))],
+    [jobs],
+  );
 
-  const locations = [...new Set(jobsData.map((job) => job.location))];
+  const locations = useMemo(
+    () => [...new Set(jobs.map((job) => job.location).filter(Boolean))],
+    [jobs],
+  );
+
+  useEffect(() => {
+    const newJob = routeLocation.state?.newJob;
+
+    if (!newJob) return;
+
+    setJobs((prev) => {
+      const exists = prev.some((job) => String(job.id) === String(newJob.id));
+
+      if (exists) {
+        return prev;
+      }
+
+      return [newJob, ...prev];
+    });
+
+    navigate(routeLocation.pathname, {
+      replace: true,
+      state: {},
+    });
+  }, [routeLocation, navigate]);
 
   const filteredJobs = useMemo(() => {
     let result = [...jobs];
@@ -181,15 +212,24 @@ const EmpJobs = () => {
     }
 
     if (search.trim()) {
-      const searchValue = search.toLowerCase();
+      const searchValue = search.toLowerCase().trim();
 
-      result = result.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchValue) ||
-          job.type.toLowerCase().includes(searchValue) ||
-          job.location.toLowerCase().includes(searchValue) ||
-          job.department.toLowerCase().includes(searchValue),
-      );
+      result = result.filter((job) => {
+        return (
+          String(job.title || "")
+            .toLowerCase()
+            .includes(searchValue) ||
+          String(job.type || "")
+            .toLowerCase()
+            .includes(searchValue) ||
+          String(job.location || "")
+            .toLowerCase()
+            .includes(searchValue) ||
+          String(job.department || "")
+            .toLowerCase()
+            .includes(searchValue)
+        );
+      });
     }
 
     if (department) {
@@ -209,11 +249,13 @@ const EmpJobs = () => {
     }
 
     if (sortBy === "Applications") {
-      result.sort((a, b) => b.applications - a.applications);
+      result.sort((a, b) => (b.applications || 0) - (a.applications || 0));
     }
 
     if (sortBy === "Title") {
-      result.sort((a, b) => a.title.localeCompare(b.title));
+      result.sort((a, b) =>
+        String(a.title || "").localeCompare(String(b.title || "")),
+      );
     }
 
     return result;
@@ -258,11 +300,30 @@ const EmpJobs = () => {
   };
 
   const handleEdit = (job) => {
-    navigate(`/employer/edit/job/${job.id}`);
+    setEditingJob(job);
+  };
+
+  const handleSaveEdit = (updatedJob) => {
+    setJobs((prev) =>
+      prev.map((job) =>
+        String(job.id) === String(updatedJob.id)
+          ? {
+              ...job,
+              ...updatedJob,
+            }
+          : job,
+      ),
+    );
+
+    setEditingJob(null);
   };
 
   const handleView = (job) => {
-    navigate(`/employer/job/${job.id}`);
+    navigate(`/employer/job/${job.id}`, {
+      state: {
+        job,
+      },
+    });
   };
 
   const handleDelete = (job) => {
@@ -272,7 +333,9 @@ const EmpJobs = () => {
 
     if (!confirmDelete) return;
 
-    setJobs((prev) => prev.filter((item) => item.id !== job.id));
+    setJobs((prev) =>
+      prev.filter((item) => String(item.id) !== String(job.id)),
+    );
 
     if (currentJobs.length === 1 && safeCurrentPage > 1) {
       setCurrentPage((prev) => prev - 1);
@@ -280,8 +343,9 @@ const EmpJobs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16">
-  
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <EmpHeader />
+
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-4">
           <button
@@ -295,6 +359,7 @@ const EmpJobs = () => {
 
           <span className="text-zinc-500">All Jobs</span>
         </div>
+
         <div className="flex items-start justify-between gap-4 mb-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-zinc-900">
@@ -314,6 +379,7 @@ const EmpJobs = () => {
             Post New Job
           </button>
         </div>
+
         <div className="bg-white border-b border-zinc-200 overflow-hidden">
           <div className="flex items-center gap-8">
             {tabs.map((tab) => {
@@ -343,6 +409,7 @@ const EmpJobs = () => {
             })}
           </div>
         </div>
+
         <EmpJobFilters
           search={search}
           department={department}
@@ -355,12 +422,14 @@ const EmpJobs = () => {
           onLocation={handleLocation}
           onSort={handleSort}
         />
+
         <EmpJobsTable
           currentJobs={currentJobs}
           onEdit={handleEdit}
           onView={handleView}
           onDelete={handleDelete}
         />
+
         <EmpJobsPagination
           filteredJobsLength={filteredJobs.length}
           startIndex={startIndex}
@@ -373,6 +442,13 @@ const EmpJobs = () => {
           }
           onPageChange={(page) => setCurrentPage(page)}
           onJobsPerPage={handleJobsPerPage}
+        />
+
+        <EmpEditJobPopup
+          job={editingJob}
+          isOpen={!!editingJob}
+          onClose={() => setEditingJob(null)}
+          onSave={handleSaveEdit}
         />
       </main>
     </div>

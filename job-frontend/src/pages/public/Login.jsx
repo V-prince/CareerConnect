@@ -149,14 +149,6 @@ const Login = () => {
           Login with Google
         </button>
 
-        <button
-          type="button"
-          className="w-full h-12 border border-zinc-300 rounded-xl flex items-center justify-center gap-3 font-medium text-zinc-700 hover:bg-zinc-50 transition text-sm mt-3"
-        >
-          <FaLinkedinIn className="text-indigo-600" />
-          Login with LinkedIn
-        </button>
-
         <p className="text-center text-sm text-zinc-600 mt-7">
           Don't have an account?
           <Link

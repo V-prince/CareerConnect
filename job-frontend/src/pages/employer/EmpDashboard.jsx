@@ -230,18 +230,22 @@ export const EmpDashboard = () => {
   const currentData = monthlyData[period] || monthlyData["May 2024"];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16">
-      
-      <section className="bg-gradient-to-br from-indigo-50 via-blue-50 to-indigo-100 py-7 md:py-9 border-b border-zinc-100">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
-          <div className="text-center md:text-left">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-zinc-800 leading-tight">
-              Welcome back, TechSolutions Inc.! 👋
-            </h1>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <EmpHeader />
+      <section className="bg-gradient-to-br from-indigo-700 via-blue-700 to-indigo-800 py-7 md:py-9 border-b border-indigo-800">
+        <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10"></div>
+        <div className="absolute -bottom-24 right-40 w-48 h-48 rounded-full bg-white/5"></div>
+        <div className="relative max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <p className="text-blue-100 text-sm font-medium mb-1">
+                Employer Dashboard
+              </p>
 
-            <p className="text-zinc-600 mt-2 text-sm md:text-base">
-              Here's what's happening with your hiring today.
-            </p>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                Welcome back, TechSolutions Inc.!
+              </h1>
+            </div>
           </div>
         </div>
       </section>

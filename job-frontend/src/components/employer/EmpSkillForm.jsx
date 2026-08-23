@@ -37,7 +37,6 @@ const EmpSkillForm = ({
         </p>
       </div>
 
-      {/* REQUIRED SKILLS */}
       <RequirementList
         title="Required Skills"
         description="Add the technical or professional skills candidates should have."
@@ -50,7 +49,6 @@ const EmpSkillForm = ({
         required
       />
 
-      {/* QUALIFICATIONS */}
       <RequirementList
         title="Qualifications"
         description="Add the educational qualifications or certifications required."
@@ -63,7 +61,6 @@ const EmpSkillForm = ({
         required
       />
 
-      {/* JOB REQUIREMENTS */}
       <RequirementList
         title="Job Requirements"
         description="Add other requirements candidates should meet."
@@ -76,7 +73,6 @@ const EmpSkillForm = ({
         required
       />
 
-      {/* ACTIONS */}
       <div className="flex items-center justify-between gap-3 pt-5 border-t border-zinc-100">
         <button
           type="button"

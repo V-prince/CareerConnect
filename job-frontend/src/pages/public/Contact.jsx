@@ -10,7 +10,7 @@ import {
   FaPencilAlt,
 } from "react-icons/fa";
 
-import emailjs from '@emailjs/browser';
+import emailjs from "@emailjs/browser";
 import toast from "react-hot-toast";
 import { Loader } from "lucide-react";
 
@@ -44,7 +44,7 @@ const Contact = () => {
     subject: "",
     message: "",
   });
-  const [loading, SetLoading] = useState(false)
+  const [loading, SetLoading] = useState(false);
 
   const handleChange = (e) => {
     setContact({
@@ -57,7 +57,7 @@ const Contact = () => {
     e.preventDefault();
     console.log(contact);
 
-    SetLoading(true)
+    SetLoading(true);
     const data = await emailjs.send(
       "service_mckbk8s",
       "template_inwl8nh",
@@ -67,14 +67,14 @@ const Contact = () => {
         subject: contact.subject,
         message: contact.message,
       },
-      "s_ju_136k7wXHzHtf"
-    )
+      "s_ju_136k7wXHzHtf",
+    );
     if (!data) {
-      return toast.error("Error Not Send")
+      return toast.error("Error Not Send");
     }
-    SetLoading(false)
+    SetLoading(false);
 
-    toast.success("Email Send Successfully")
+    toast.success("Email Send Successfully");
 
     setContact({
       name: "",
@@ -85,7 +85,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-white via-blue-50 to-white min-h-screen border-t border-zinc-200">
+    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen border-t border-zinc-200">
       <section className=" py-6 md:py-8 lg:py-10">
         <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
@@ -214,14 +214,14 @@ const Contact = () => {
                     disabled={loading}
                     className="w-full h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 transition text-white text-sm md:text-base font-semibold flex items-center justify-center gap-2 shadow-sm"
                   >
-
-                    {
-
-                      loading ? <Loader className=" animate-spin" /> :
-                        (<><FaPaperPlane size={14} />
-                          Send Message</>)
-
-                    }
+                    {loading ? (
+                      <Loader className=" animate-spin" />
+                    ) : (
+                      <>
+                        <FaPaperPlane size={14} />
+                        Send Message
+                      </>
+                    )}
                   </button>
                 </form>
               </div>
