@@ -10,8 +10,6 @@ const AuthProvider = ({ children }) => {
     role:"employer"
   });
 
-
-
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}
