@@ -25,7 +25,9 @@ function App() {
   return (
     <>
       <Routes>
+        
         {/* Public Pages */}
+
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/jobs" element={<Jobs />} />
@@ -37,7 +39,9 @@ function App() {
         </Route>
 
         <Route element={<MainSidebar />}>
+
           {/* Student */}
+
           <Route path="/user/dashboard" element={<Dashboard />} />
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/applications" element={<Applications />} />
@@ -45,6 +49,7 @@ function App() {
           <Route path="/settings" element={<Setting />} />
 
           {/* Employer */}
+
           <Route path="/employer/dashboard" element={<EmpDashboard />} />
           <Route
             path="/employer/company/profile"
@@ -55,6 +60,7 @@ function App() {
           <Route path="/employer/applicants" element={<EmpApplicants />} />
 
           {/* Admim */}
+
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
           <Route path="/admin/manage/users" element={<ManageUsers />} />
         </Route>

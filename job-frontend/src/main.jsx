@@ -8,6 +8,7 @@ import { ScrollToTop } from './components/scrolltotop/ScrollToTop.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider >
     <BrowserRouter>
       <ScrollToTop/>
       <Toaster
@@ -60,5 +61,6 @@ createRoot(document.getElementById('root')).render(
       />
       <App />
     </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )

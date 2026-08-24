@@ -7,6 +7,7 @@ import {
   UsersRound,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import EmpHeader from "../../components/employer/EmpHeader";
 import EmpBasicForm from "../../components/employer/EmpBasicForm";
@@ -112,32 +113,32 @@ export const EmpPostJob = () => {
   };
   const handleNextFromStep1 = () => {
     if (!formData.jobTitle.trim()) {
-      alert("Please enter a job title.");
+      toast.error("Please enter a job title.");
       return;
     }
 
     if (!formData.jobType) {
-      alert("Please select a job type.");
+      toast.error("Please select a job type.");
       return;
     }
 
     if (!formData.employmentType) {
-      alert("Please select an employment type.");
+      toast.error("Please select an employment type.");
       return;
     }
 
     if (!formData.experienceLevel) {
-      alert("Please select an experience level.");
+      toast.error("Please select an experience level.");
       return;
     }
 
     if (!formData.location.trim()) {
-      alert("Please enter a job location.");
+      toast.error("Please enter a job location.");
       return;
     }
 
     if (!formData.openings) {
-      alert("Please enter the number of openings.");
+      toast.error("Please enter the number of openings.");
       return;
     }
 
@@ -145,12 +146,12 @@ export const EmpPostJob = () => {
   };
   const handleNextFromStep2 = () => {
     if (!formData.jobDescription.trim()) {
-      alert("Please enter the job description.");
+      toast.error("Please enter the job description.");
       return;
     }
 
     if (!formData.responsibilities.trim()) {
-      alert("Please enter the roles and responsibilities.");
+      toast.error("Please enter the roles and responsibilities.");
       return;
     }
 
@@ -158,17 +159,17 @@ export const EmpPostJob = () => {
   };
   const handleNextFromStep3 = () => {
     if (formData.skills.length === 0) {
-      alert("Please add at least one required skill.");
+      toast.error("Please add at least one required skill.");
       return;
     }
 
     if (formData.qualifications.length === 0) {
-      alert("Please add at least one qualification.");
+      toast.error("Please add at least one qualification.");
       return;
     }
 
     if (formData.requirements.length === 0) {
-      alert("Please add at least one job requirement.");
+      toast.error("Please add at least one job requirement.");
       return;
     }
 
@@ -195,7 +196,7 @@ export const EmpPostJob = () => {
 
     console.log("New Job:", newJob);
 
-    alert("Job published successfully!");
+    toast.success("Job published successfully!");
 
     navigate("/employer/jobs", {
       state: {
