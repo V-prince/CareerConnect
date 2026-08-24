@@ -10,6 +10,7 @@ import {
   FaEye,
   FaDownload,
 } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
   if (!show) return null;
@@ -99,7 +100,7 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
   const handleViewResume = () => {
     if (!resumeUrl) {
-      alert("No resume is available.");
+      toast.error("No resume is available.");
       return;
     }
 
@@ -108,7 +109,7 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
   const handleDownloadResume = async () => {
     if (!resumeUrl) {
-      alert("No resume is available.");
+      toast.error("No resume is available.");
       return;
     }
 

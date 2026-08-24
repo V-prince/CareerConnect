@@ -359,34 +359,37 @@ const Jobs = () => {
   };
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen">
-      <section className="relative overflow-hidden border-b border-zinc-200 bg-[#0f172a]">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 right-0 w-[28rem] h-[28rem] bg-indigo-500/20 rounded-full blur-3xl" />
-        <div className="absolute top-10 right-1/4 w-48 h-48 bg-cyan-400/10 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-br from-blue-800 via-indigo-800 to-slate-800">
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-cyan-300/10 rounded-full blur-3xl" />
+
+        <div className="absolute -bottom-40 -right-20 w-[30rem] h-[30rem] bg-blue-400/10 rounded-full blur-3xl" />
+
+        <div className="absolute top-12 right-1/4 w-56 h-56 bg-indigo-300/10 rounded-full blur-3xl" />
+
         <div
-          className="absolute inset-0 opacity-[0.08]"
+          className="absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
             backgroundSize: "40px 40px",
           }}
         />
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="py-14 md:py-20 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-blue-200 text-xs md:text-sm font-medium mb-5">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-cyan-100 text-xs md:text-sm font-semibold mb-5">
+              <span className="w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,0.8)]" />
               Explore Your Next Opportunity
             </div>
 
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
               Find Your{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-blue-300 to-indigo-300">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-blue-200 to-indigo-200">
                 Dream Job
               </span>
             </h1>
 
-            <p className="max-w-2xl mx-auto text-slate-300 mt-4 text-sm md:text-base lg:text-lg leading-7">
+            <p className="max-w-2xl mx-auto mt-4 text-sm md:text-base lg:text-lg leading-7 text-blue-100">
               Discover opportunities that match your skills, passion, and career
               goals.
             </p>
