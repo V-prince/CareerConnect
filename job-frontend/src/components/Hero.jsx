@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import career from "../assets/career.png";
 
@@ -18,11 +19,20 @@ const Hero = () => {
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState(locationOptions[0]);
 
+  const navigate = useNavigate();
+
   const handleSearch = () => {
     console.log({
       keyword,
       location: location?.value || "all",
     });
+
+    const params = new URLSearchParams();
+    params.set("keyword", keyword);
+    params.set("location", location?.value || "all");
+
+   navigate(`/jobs?${params}`)
+
     setKeyword("");
     setLocation(locationOptions[0]);
   };

@@ -4,10 +4,11 @@ import './index.css'
 import App from './App.jsx'
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter } from 'react-router-dom'
-import { ScrollToTop } from './components/scrolltotop/ScrollToTop.jsx';
+import { AuthProvider } from './store/UserContext';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <AuthProvider >
     <BrowserRouter>
       <ScrollToTop/>
       <Toaster
@@ -60,5 +61,6 @@ createRoot(document.getElementById('root')).render(
       />
       <App />
     </BrowserRouter>
+    </AuthProvider>
   </StrictMode>,
 )
