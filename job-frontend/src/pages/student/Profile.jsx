@@ -1,125 +1,372 @@
 import {
-  User,
   Mail,
   Phone,
   BriefcaseBusiness,
   GraduationCap,
   Building2,
   CalendarDays,
-  Clock3,
   Code2,
   File,
   MapPin,
   FileText,
   Pencil,
   X,
-} from 'lucide-react'
-import React, { useState } from 'react'
-import ProfileSetupModal from '../../components/ProfileSetupModel';
+  Plus,
+ 
+} from "lucide-react";
+
+import { useState } from "react";
+import ProfileSetupModal from "../../components/ProfileSetupModel";
+import { ProfileCard } from "../../components/ProfileCard";
+import { ProfileStatus } from "../../components/ProfileStatus";
+import { Tag } from "../../components/Tag";
+
 
 export const Profile = () => {
   const [showProfileModal, setShowProfileModal] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
+
+  // ==========================================
+  // INPUT STATES
+  // ==========================================
+
   const [skillsInput, setSkillsInput] = useState("");
-  const [skills, setSkills] = useState([]);
+  const [educationInput, setEducationInput] = useState("");
+  const [experienceInput, setExperienceInput] = useState("");
 
-  const [EditData, setEditData] = useState({
-    fullname: "",
-    email: "",
+  // ==========================================
+  // PROFILE DATA
+  // ==========================================
+
+  const [editData, setEditData] = useState({
+    fullname: "Prince Vadher",
+    email: "vadherprince63@gmail.com",
     company: "",
-    phone: "",
-    education: "",
-    skills: [],
-    bio: "",
-    resume: null
-  })
+    phone: "+91 9978093258",
 
-  const handelOnChange = (e) => {
+    // Multiple education
+    education: ["BCA Semester 3"],
+
+    // Multiple experience
+    experience: [],
+
+    // Multiple skills
+    skills: [
+      "React",
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "Node.js",
+      "MongoDB",
+    ],
+
+    bio: "Passionate MERN Stack Developer and BCA Student. I enjoy building responsive web applications using React, Node.js, Express.js and MongoDB. Currently looking for internship opportunities to improve my skills.",
+
+    resume: null,
+  });
+
+  // Original data for Cancel
+  const [backupData, setBackupData] = useState(null);
+
+  // ==========================================
+  // NORMAL INPUT CHANGE
+  // ==========================================
+
+  const handleOnChange = (e) => {
     const { name, value } = e.target;
-
-    setEditData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-
-  }
-
-
-  const handelOnSkills = (e) => {
-    setSkillsInput(e.target.value);
-  }
-
-  const handelonSkillClick = () => {
-
-    if (!skillsInput.trim()) return;
-    const updatedSkills = [...skills, skillsInput.trim()];
-
-    setSkills(updatedSkills);
 
     setEditData((prev) => ({
       ...prev,
-      skills: updatedSkills,
+      [name]: value,
+    }));
+  };
+
+  // ==========================================
+  // EDUCATION
+  // ==========================================
+
+  const handleAddEducation = () => {
+    const value = educationInput.trim();
+
+    if (!value) return;
+
+    const exists = editData.education.some(
+      (item) => item.toLowerCase() === value.toLowerCase()
+    );
+
+    if (exists) {
+      setEducationInput("");
+      return;
+    }
+
+    setEditData((prev) => ({
+      ...prev,
+      education: [...prev.education, value],
+    }));
+
+    setEducationInput("");
+  };
+
+  const handleRemoveEducation = (education) => {
+    setEditData((prev) => ({
+      ...prev,
+      education: prev.education.filter(
+        (item) => item !== education
+      ),
+    }));
+  };
+
+  const handleEducationKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddEducation();
+    }
+  };
+
+  // ==========================================
+  // EXPERIENCE
+  // ==========================================
+
+  const handleAddExperience = () => {
+    const value = experienceInput.trim();
+
+    if (!value) return;
+
+    const exists = editData.experience.some(
+      (item) => item.toLowerCase() === value.toLowerCase()
+    );
+
+    if (exists) {
+      setExperienceInput("");
+      return;
+    }
+
+    setEditData((prev) => ({
+      ...prev,
+      experience: [...prev.experience, value],
+    }));
+
+    setExperienceInput("");
+  };
+
+  const handleRemoveExperience = (experience) => {
+    setEditData((prev) => ({
+      ...prev,
+      experience: prev.experience.filter(
+        (item) => item !== experience
+      ),
+    }));
+  };
+
+  const handleExperienceKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddExperience();
+    }
+  };
+
+  // ==========================================
+  // SKILLS
+  // ==========================================
+
+  const handleAddSkill = () => {
+    const value = skillsInput.trim();
+
+    if (!value) return;
+
+    const exists = editData.skills.some(
+      (item) => item.toLowerCase() === value.toLowerCase()
+    );
+
+    if (exists) {
+      setSkillsInput("");
+      return;
+    }
+
+    setEditData((prev) => ({
+      ...prev,
+      skills: [...prev.skills, value],
     }));
 
     setSkillsInput("");
-  }
+  };
 
+  const handleRemoveSkill = (skill) => {
+    setEditData((prev) => ({
+      ...prev,
+      skills: prev.skills.filter(
+        (item) => item !== skill
+      ),
+    }));
+  };
 
-  const handelOnFileChange = (e) => {
-    const file = e.target.files[0];
-    setEditData(prev => (
-      {
-        ...prev,
-        resume: file
-      }
-    ))
-  }
+  const handleSkillsKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddSkill();
+    }
+  };
 
-  const handelOnClick = () => {
+  // ==========================================
+  // RESUME
+  // ==========================================
+
+  const handleOnFileChange = (e) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    setEditData((prev) => ({
+      ...prev,
+      resume: file,
+    }));
+  };
+
+  // ==========================================
+  // EDIT PROFILE
+  // ==========================================
+
+  const handleEdit = () => {
+    setBackupData(structuredClone(editData));
+    setIsEdit(true);
+  };
+
+  // ==========================================
+  // SAVE
+  // ==========================================
+
+  const handleSave = async () => {
     try {
-      console.log("EditData", EditData)
-      setIsEdit(false)
+      console.log("Profile Data:", editData);
+
+      /*
+      Backend API અહીં આવશે.
+
+      const formData = new FormData();
+
+      formData.append("fullname", editData.fullname);
+      formData.append("email", editData.email);
+      formData.append("phone", editData.phone);
+      formData.append("company", editData.company);
+      formData.append("bio", editData.bio);
+
+      formData.append(
+        "education",
+        JSON.stringify(editData.education)
+      );
+
+      formData.append(
+        "experience",
+        JSON.stringify(editData.experience)
+      );
+
+      formData.append(
+        "skills",
+        JSON.stringify(editData.skills)
+      );
+
+      if (editData.resume) {
+        formData.append("resume", editData.resume);
+      }
+
+      await axios.put(
+        "/api/user/update-profile",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      */
+
+      setBackupData(null);
+      setIsEdit(false);
+
+    } catch (error) {
+      console.log("Profile update error:", error);
     }
-    catch (error) {
-      console.log(error)
-    } finally {
-      console.log("done")
+  };
+
+  // ==========================================
+  // CANCEL
+  // ==========================================
+
+  const handleCancel = () => {
+    if (backupData) {
+      setEditData(backupData);
     }
 
-  }
+    setSkillsInput("");
+    setEducationInput("");
+    setExperienceInput("");
 
-  const handelOnRemoveSkill = (skill) => {
-    const updatedSkills = skills.filter((s) => s !== skill);
-    setSkills(updatedSkills);
-  }
+    setIsEdit(false);
+    setBackupData(null);
+  };
 
+  // ==========================================
+  // PROFILE STRENGTH
+  // ==========================================
 
+  const profileStrength = () => {
+    let completed = 0;
+    const total = 5;
+
+    if (editData.fullname) completed++;
+    if (editData.skills.length > 0) completed++;
+    if (editData.resume) completed++;
+    if (editData.education.length > 0) completed++;
+    if (editData.experience.length > 0) completed++;
+
+    return Math.round((completed / total) * 100);
+  };
+
+  const strength = profileStrength();
+
+  // ==========================================
+  // UI
+  // ==========================================
 
   return (
-    <section className='min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8'>
-      <h1 className="text-2xl md:text-3xl font-bold">
-        My Profile
-      </h1>
+    <section className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-4 md:p-8">
 
-      <p className="text-zinc-600 mt-2 text-sm md:text-base">
-        View and manage your personal information
-      </p>
+      {/* ==========================================
+          PAGE HEADER
+      ========================================== */}
 
-      <div className="bg-white rounded-xl shadow-md mt-8 p-4 md:p-6">
+      <div>
+        <h1 className="text-2xl md:text-3xl font-bold text-zinc-900">
+          My Profile
+        </h1>
+
+        <p className="text-zinc-600 mt-2 text-sm md:text-base">
+          View and manage your personal information
+        </p>
+      </div>
+
+      {/* ==========================================
+          PROFILE HEADER
+      ========================================== */}
+
+      <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-4 md:p-6 shadow-sm">
+
         <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-8">
 
+          {/* LEFT */}
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
             <img
               src="/images/profile.jpg"
-              alt=""
-              className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover"
+              alt="Profile"
+              className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md"
             />
 
             <div className="text-center md:text-left">
-              <h1 className="font-bold text-2xl md:text-3xl">
-                Prince Vadher
+
+              <h1 className="font-bold text-2xl md:text-3xl text-zinc-900">
+                {editData.fullname}
               </h1>
 
               <span className="text-zinc-500 font-semibold">
@@ -130,20 +377,23 @@ export const Profile = () => {
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <Mail size={20} />
+
                   <span className="text-zinc-800 break-all">
-                    vadherprince63@gmail.com
+                    {editData.email}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <Phone size={20} />
+
                   <span className="text-zinc-800">
-                    +91 9978093258
+                    {editData.phone}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <MapPin size={20} />
+
                   <span className="text-zinc-800">
                     Surat, Gujarat, India
                   </span>
@@ -151,30 +401,43 @@ export const Profile = () => {
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <CalendarDays size={20} />
+
                   <span className="text-zinc-800">
                     Joined on May 15, 2025
                   </span>
                 </div>
 
               </div>
+
             </div>
+
           </div>
 
+          {/* ==========================================
+              PROFILE STRENGTH
+          ========================================== */}
 
           <div className="w-full xl:w-80 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
 
             <div className="flex items-center justify-between mb-3">
+
               <h2 className="text-lg font-semibold">
                 Profile Strength
               </h2>
 
               <span className="text-green-600 font-bold">
-                80%
+                {strength}%
               </span>
+
             </div>
 
             <div className="w-full h-3 bg-zinc-200 rounded-full overflow-hidden">
-              <div className="h-full w-[80%] bg-green-500 rounded-full"></div>
+
+              <div
+                className="h-full bg-green-500 rounded-full transition-all duration-500"
+                style={{ width: `${strength}%` }}
+              />
+
             </div>
 
             <p className="text-sm text-zinc-500 mt-3">
@@ -183,337 +446,523 @@ export const Profile = () => {
 
             <div className="mt-4 space-y-2 text-sm">
 
-              <div className="flex justify-between">
-                <span>✔ Personal Details</span>
-                <span className="text-green-600">Done</span>
-              </div>
+              <ProfileStatus
+                title="Personal Details"
+                done={Boolean(editData.fullname && editData.phone)}
+              />
 
-              <div className="flex justify-between">
-                <span>✔ Skills</span>
-                <span className="text-green-600">Done</span>
-              </div>
+              <ProfileStatus
+                title="Skills"
+                done={editData.skills.length > 0}
+              />
 
-              <div className="flex justify-between">
-                <span>✔ Resume</span>
-                <span className="text-green-600">Done</span>
-              </div>
+              <ProfileStatus
+                title="Resume"
+                done={Boolean(editData.resume)}
+              />
 
-              <div className="flex justify-between">
-                <span>✖ Experience</span>
-                <span className="text-red-500">Missing</span>
-              </div>
+              <ProfileStatus
+                title="Education"
+                done={editData.education.length > 0}
+              />
 
-              <div className="flex justify-between">
-                <span>✖ Projects</span>
-                <span className="text-red-500">Missing</span>
-              </div>
+              <ProfileStatus
+                title="Experience"
+                done={editData.experience.length > 0}
+              />
 
             </div>
 
           </div>
 
         </div>
+
       </div>
 
-      <div className="mt-8 rounded-3xl bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-zinc-100 overflow-hidden p-8">
+      {/* ==========================================
+          PERSONAL INFORMATION
+      ========================================== */}
 
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-7 border-b border-zinc-100">
+      <div className="mt-8 rounded-3xl bg-white shadow-sm border border-zinc-200 overflow-hidden p-5 md:p-8">
+
+        {/* HEADER */}
+
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-7 border-b border-zinc-200">
 
           <div>
-            <h2 className="text-3xl font-bold tracking-tight text-zinc-900">
+
+            <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-zinc-900">
               Personal Information
             </h2>
 
             <p className="text-zinc-500 mt-2">
               Keep your profile updated to attract recruiters.
             </p>
+
           </div>
 
           {!isEdit ? (
+
             <button
-              onClick={() => setIsEdit(true)}
-              className="flex items-center gap-2 bg-indigo-600 cursor-pointer hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-md transition"
+              onClick={handleEdit}
+              className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl shadow-md transition cursor-pointer"
             >
               <Pencil size={18} />
               Edit Profile
             </button>
+
           ) : (
+
             <div className="flex gap-3">
 
               <button
-                onClick={handelOnClick}
-                className="px-5 py-3 rounded-xl cursor-pointer bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition"
+                onClick={handleSave}
+                className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition cursor-pointer"
               >
                 Save
               </button>
 
               <button
-                onClick={() => setIsEdit(false)}
-                className="px-5 py-3 rounded-xl cursor-pointer bg-zinc-100 hover:bg-zinc-200 transition"
+                onClick={handleCancel}
+                className="px-5 py-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 transition cursor-pointer"
               >
                 Cancel
               </button>
 
             </div>
+
           )}
 
         </div>
 
+        {/* ==========================================
+            INFORMATION GRID
+        ========================================== */}
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
+          {/* EMAIL */}
 
-
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <Mail size={18} />
-              </span>
-              <span className="text-xs uppercase tracking-widest font-semibold text-zinc-400">Email</span>
-            </div>
+          <ProfileCard
+            icon={<Mail size={18} />}
+            title="Email"
+          >
 
             {isEdit ? (
+
               <input
                 type="email"
                 name="email"
-                placeholder='john@example.com'
-                value={EditData.email}
-                onChange={handelOnChange}
-
-                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+                value={editData.email}
+                disabled={true}
+                className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition hover:border-indigo-500 focus:ring-4 hover:ring-indigo-100"
               />
+
             ) : (
-              <p className="text-base font-semibold text-zinc-900 mt-2">
-                vadherprince63@gmail.com
+
+              <p className="profile-value">
+                {editData.email}
               </p>
+
             )}
-          </div>
 
+          </ProfileCard>
 
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300 ">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <Phone size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Phone</span>
-            </div>
+          {/* PHONE */}
+
+          <ProfileCard
+            icon={<Phone size={18} />}
+            title="Phone"
+          >
 
             {isEdit ? (
+
               <input
                 type="text"
                 name="phone"
-                placeholder='+91 9954854541'
-                value={EditData.phone}
-                onChange={handelOnChange}
-
-                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+                value={editData.phone}
+                onChange={handleOnChange}
+                placeholder="+91 9954854541"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
               />
+
             ) : (
-              <p className="text-base font-semibold text-zinc-900 mt-2">+91 9978093258</p>
+
+              <p className="profile-value">
+                {editData.phone}
+              </p>
+
             )}
-          </div>
 
+          </ProfileCard>
 
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <BriefcaseBusiness size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Role</span>
-            </div>
+          {/* ROLE */}
 
-            <p className="text-base font-semibold text-zinc-900 mt-2">Student</p>
-          </div>
+          <ProfileCard
+            icon={<BriefcaseBusiness size={18} />}
+            title="Role"
+          >
 
+            <p className="text-base font-semibold text-zinc-900 mt-2">
+              Student
+            </p>
 
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <GraduationCap size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Education</span>
-            </div>
+          </ProfileCard>
+
+          {/* COMPANY */}
+
+          <ProfileCard
+            icon={<Building2 size={18} />}
+            title="Company"
+          >
 
             {isEdit ? (
-              <input
-                type="text"
-                name="education"
-                placeholder='BCA,MCA,BCOM,BBA ETC.'
-                value={EditData.education}
-                onChange={handelOnChange}
 
-                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
-              />
-            ) : (
-              <p className="text-base font-semibold text-zinc-900 mt-2">BCA Semester 3</p>
-            )}
-          </div>
-
-
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <Building2 size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Company</span>
-            </div>
-
-            {isEdit ? (
               <input
                 type="text"
                 name="company"
-                placeholder='XYZ Infotech / No Assigned'
-                value={EditData.company}
-                onChange={handelOnChange}
-
-                className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+                value={editData.company}
+                disabled={true}
+                placeholder="XYZ Infotech / Not Assigned"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
               />
+
             ) : (
-              <p className="text-base font-semibold text-zinc-900 mt-2">Not Assigned</p>
+
+              <p className="profile-value">
+                {editData.company || "Not Assigned"}
+              </p>
+
             )}
-          </div>
 
+          </ProfileCard>
 
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <File size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Resume</span>
-            </div>
+          {/* ==========================================
+              EDUCATION
+          ========================================== */}
+
+          <ProfileCard
+            icon={<GraduationCap size={18} />}
+            title="Education"
+          >
 
             {isEdit ? (
-              <input
-                type="file"
-                onChange={handelOnFileChange}
-                className="text-indigo-600 font-semibold hover:text-indigo-700 transition"
-              />
+
+              <>
+
+                <div className="flex gap-2">
+
+                  <input
+                    type="text"
+                    value={educationInput}
+                    onChange={(e) =>
+                      setEducationInput(e.target.value)
+                    }
+                    onKeyDown={handleEducationKeyDown}
+                    placeholder="BCA, MCA, B.Com..."
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={handleAddEducation}
+                    className="px-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer"
+                  >
+                    <Plus size={20} />
+                  </button>
+
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-4">
+
+                  {editData.education.map((education) => (
+
+                    <Tag
+                      key={education}
+                      text={education}
+                      onRemove={() =>
+                        handleRemoveEducation(education)
+                      }
+                    />
+
+                  ))}
+
+                </div>
+
+              </>
+
             ) : (
+
+              <div className="flex flex-wrap gap-2">
+
+                {editData.education.map((education) => (
+
+                  <span
+                    key={education}
+                    className="px-3 py-2 bg-zinc-100 rounded-full text-sm font-medium"
+                  >
+                    {education}
+                  </span>
+
+                ))}
+
+              </div>
+
+            )}
+
+          </ProfileCard>
+
+          {/* ==========================================
+              EXPERIENCE
+          ========================================== */}
+
+          <ProfileCard
+            icon={<BriefcaseBusiness size={18} />}
+            title="Experience"
+          >
+
+            {isEdit ? (
+
+              <>
+
+                <div className="flex gap-2">
+
+                  <input
+                    type="text"
+                    value={experienceInput}
+                    onChange={(e) =>
+                      setExperienceInput(e.target.value)
+                    }
+                    onKeyDown={handleExperienceKeyDown}
+                    placeholder="Frontend Developer - ABC Company"
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={handleAddExperience}
+                    className="px-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer"
+                  >
+                    <Plus size={20} />
+                  </button>
+
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-4">
+
+                  {editData.experience.map((experience) => (
+
+                    <Tag
+                      key={experience}
+                      text={experience}
+                      onRemove={() =>
+                        handleRemoveExperience(experience)
+                      }
+                    />
+
+                  ))}
+
+                </div>
+
+              </>
+
+            ) : (
+
+              <div className="flex flex-wrap gap-2">
+
+                {editData.experience.length > 0 ? (
+
+                  editData.experience.map((experience) => (
+
+                    <span
+                      key={experience}
+                      className="px-3 py-2 bg-zinc-100 rounded-full text-sm font-medium"
+                    >
+                      {experience}
+                    </span>
+
+                  ))
+
+                ) : (
+
+                  <p className="text-zinc-500">
+                    No experience added
+                  </p>
+
+                )}
+
+              </div>
+
+            )}
+
+          </ProfileCard>
+
+          {/* RESUME */}
+
+          <ProfileCard
+            icon={<File size={18} />}
+            title="Resume"
+          >
+
+            {isEdit ? (
+
+              <div>
+
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleOnFileChange}
+                  className="w-full text-sm text-zinc-600"
+                />
+
+                {editData.resume && (
+                  <p className="text-sm text-green-600 mt-2">
+                    {editData.resume.name}
+                  </p>
+                )}
+
+              </div>
+
+            ) : (
+
               <a
                 href="#"
                 className="text-blue-600 hover:underline font-medium"
               >
                 View Resume
               </a>
+
             )}
-          </div>
 
+          </ProfileCard>
 
-          <div className="rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center justify-between gap-3 mb-3">
-              <div className='flex items-center gap-3 mb-3'>
-                <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                  <Code2 size={18} />
-                </span>
-                <span className="text-sm text-zinc-500">Skills</span>
-              </div>
+          {/* ==========================================
+              SKILLS
+          ========================================== */}
 
-              {isEdit &&
-                <button onClick={handelonSkillClick} className='px-5 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition'>
-                  add
-                </button>}
-            </div>
+          <ProfileCard
+            icon={<Code2 size={18} />}
+            title="Skills"
+            action={
+              isEdit && (
+                <button
+                  type="button"
+                  onClick={handleAddSkill}
+                  className="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
+                >
+                  <Plus size={16} />
+                  Add
+                </button>
+              )
+            }
+          >
 
             {isEdit ? (
+
               <>
 
                 <input
                   type="text"
-                  name="skills"
                   value={skillsInput}
-                  placeholder='React,Javascript,Html,Java ...'
-                  onChange={handelOnSkills}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      setSkills((prev) => [...prev, skillsInput.trim()]);
-                      const updatedSkills = [...skills, skillsInput.trim()];
-
-                      setSkills(updatedSkills);
-
-                      setEditData((prev) => ({
-                        ...prev,
-                        skills: updatedSkills,
-                      }));
-                      setSkillsInput("");
-                    }
-                  }}
-                  className="w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
+                  placeholder="React, JavaScript, HTML..."
+                  onChange={(e) =>
+                    setSkillsInput(e.target.value)
+                  }
+                  onKeyDown={handleSkillsKeyDown}
+                  className="profile-input"
                 />
 
                 <div className="flex flex-wrap gap-2 mt-5">
-                  {skills.filter(skill => skill.trim() !== "").map(
-                    (skill, index) => (
-                      <p
-                        key={index}
-                        className="px-4 py-2 flex items-center gap-2 rounded-full bg-indigo-50 text-indigo-700 font-medium hover:bg-indigo-100 transition"
-                      >
-                        {skill}
 
-                        <button
-                          type="button"
-                          onClick={() => handelOnRemoveSkill(skill)}
-                          className="hover:text-red-500 cursor-pointer"
-                        >
-                          <X size={18} />
-                        </button>
-                      </p>
-                    )
-                  )}
+                  {editData.skills.map((skill) => (
+
+                    <Tag
+                      key={skill}
+                      text={skill}
+                      onRemove={() =>
+                        handleRemoveSkill(skill)
+                      }
+                    />
+
+                  ))}
+
                 </div>
+
               </>
 
-
             ) : (
+
               <div className="flex flex-wrap gap-2">
-                {EditData?.skills?.map(
-                  (skill) => (
-                    <span
-                      key={skill}
-                      className="px-3 py-1 bg-zinc-100 rounded-full text-sm"
-                    >
-                      {skill}
-                    </span>
-                  )
-                )}
+
+                {editData.skills.map((skill) => (
+
+                  <span
+                    key={skill}
+                    className="px-3 py-1 bg-zinc-100 rounded-full text-sm"
+                  >
+                    {skill}
+                  </span>
+
+                ))}
+
               </div>
+
             )}
+
+          </ProfileCard>
+
+          {/* ==========================================
+              BIO
+          ========================================== */}
+
+          <div className="lg:col-span-2">
+
+            <ProfileCard
+              icon={<FileText size={18} />}
+              title="Bio"
+            >
+
+              {isEdit ? (
+
+                <textarea
+                  rows={4}
+                  name="bio"
+                  value={editData.bio}
+                  placeholder="Write Yourself..."
+                  onChange={handleOnChange}
+                  className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                />
+
+              ) : (
+
+                <p className="text-zinc-700 leading-7">
+                  {editData.bio}
+                </p>
+
+              )}
+
+            </ProfileCard>
+
           </div>
 
-
-          <div className="lg:col-span-2 rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-zinc-50 p-6 hover:border-indigo-300 hover:shadow-lg transition-all duration-300">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <FileText size={18} />
-              </span>
-              <span className="text-sm text-zinc-500">Bio</span>
-            </div>
-
-            {isEdit ? (
-              <textarea
-                rows={4}
-                name="bio"
-                value={EditData.bio}
-                placeholder='Write Yourself ...'
-                onChange={handelOnChange}
-                className="w-full rounded-xl border border-zinc-200 px-4 py-3 resize-none outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition"
-              />
-            ) : (
-              <p className="lg:col-span-2 rounded-2xl border border-zinc-100 bg-gradient-to-br from-white to-slate-50 p-6">
-                Passionate MERN Stack Developer and BCA Student. I enjoy building
-                responsive web applications using React, Node.js, Express.js and
-                MongoDB. Currently looking for internship opportunities to improve my
-                skills.
-              </p>
-            )}
-          </div>
         </div>
+
       </div>
+
+      {/* PROFILE SETUP MODAL */}
 
       {showProfileModal && (
         <ProfileSetupModal
-          onComplete={() => setShowProfileModal(false)}
+          onComplete={() =>
+            setShowProfileModal(false)
+          }
         />
       )}
-    </section >
-  )
-}
+
+    </section>
+  );
+};
+
+
+
+
