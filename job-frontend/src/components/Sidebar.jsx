@@ -18,6 +18,11 @@ import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../store/UserContext";
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
+  const [user, SetUser] = useState({
+    id: 1,
+    role: "employer",
+  });
+
   const [showJobs, setShowJobs] = useState(false);
 
   const { user } = useAuth();
@@ -128,104 +133,14 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
         <div className="px-3 space-y-2">
           {user.role === "admin"
             ? AdminSideData.map((item, index) => (
-              <NavLink
-                to={item.to}
-                key={index}
-                className={({ isActive }) =>
-                  `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
-                    ? "bg-blue-800 text-white border-blue-800"
-                    : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
-                  }`
-                }
-              >
-                {item.icon}
-
-                <span className="text-xl hover:text-white font-medium">
-                  {item.title}
-                </span>
-              </NavLink>
-            ))
-            : user.role === "employer"
-              ? EmployerSideData.map((item, index) =>
-                item.title === "Jobs" ? (
-                  <div key={index}>
-                    {/* JOBS */}
-                    <button
-                      onClick={() => setShowJobs(!showJobs)}
-                      className="w-full flex items-center gap-6 px-10 py-3 rounded-xl border border-transparent transition-all duration-300 text-gray-700 hover:bg-blue-800 hover:text-white hover:border-blue-800"
-                    >
-                      {item.icon}
-
-                      <span className="text-xl hover:text-white font-medium flex-1 text-left">
-                        {item.title}
-                      </span>
-
-                      {showJobs ? (
-                        <ChevronDown size={18} />
-                      ) : (
-                        <ChevronRight size={18} />
-                      )}
-                    </button>
-
-                    {/* JOBS DROPDOWN */}
-                    {showJobs && (
-                      <div className="ml-14 mt-1 space-y-1">
-                        {/* ALL JOBS */}
-                        <NavLink
-                          to="/employer/jobs"
-                          className={({ isActive }) =>
-                            `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${isActive
-                              ? "bg-blue-100 text-blue-800"
-                              : "text-gray-600 hover:bg-gray-100"
-                            }`
-                          }
-                        >
-                          All Jobs
-                        </NavLink>
-
-                        {/* POST NEW JOB */}
-                        <NavLink
-                          to="/employer/post/job"
-                          className={({ isActive }) =>
-                            `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${isActive
-                              ? "bg-blue-100 text-blue-800"
-                              : "text-gray-600 hover:bg-gray-100"
-                            }`
-                          }
-                        >
-                          Post New Job
-                        </NavLink>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <NavLink
-                    to={item.to}
-                    key={index}
-                    className={({ isActive }) =>
-                      `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
-                        ? "bg-blue-800 text-white border-blue-800"
-                        : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
-                      }`
-                    }
-                  >
-                    {item.icon}
-
-                    <span className="text-xl hover:text-white font-medium">
-                      {item.title}
-                    </span>
-                  </NavLink>
-                ),
-              )
-              : /* NORMAL USER */
-              sideData.map((item, index) => (
                 <NavLink
                   to={item.to}
                   key={index}
                   className={({ isActive }) =>
-                    `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${isActive
-                      ? "bg-blue-800 text-white border-blue-800"
-                      : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                    `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${
+                      isActive
+                        ? "bg-blue-800 text-white border-blue-800"
+                        : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
                     }`
                   }
                 >
@@ -235,7 +150,102 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                     {item.title}
                   </span>
                 </NavLink>
-              ))}
+              ))
+            : user.role === "employer"
+              ? EmployerSideData.map((item, index) =>
+                  item.title === "Jobs" ? (
+                    <div key={index}>
+                      {/* JOBS */}
+                      <button
+                        onClick={() => setShowJobs(!showJobs)}
+                        className="w-full flex items-center gap-6 px-10 py-3 rounded-xl border border-transparent transition-all duration-300 text-gray-700 hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                      >
+                        {item.icon}
+
+                        <span className="text-xl hover:text-white font-medium flex-1 text-left">
+                          {item.title}
+                        </span>
+
+                        {showJobs ? (
+                          <ChevronDown size={18} />
+                        ) : (
+                          <ChevronRight size={18} />
+                        )}
+                      </button>
+
+                      {/* JOBS DROPDOWN */}
+                      {showJobs && (
+                        <div className="ml-14 mt-1 space-y-1">
+                          {/* ALL JOBS */}
+                          <NavLink
+                            to="/employer/jobs"
+                            className={({ isActive }) =>
+                              `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                                isActive
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "text-gray-600 hover:bg-gray-100"
+                              }`
+                            }
+                          >
+                            All Jobs
+                          </NavLink>
+
+                          {/* POST NEW JOB */}
+                          <NavLink
+                            to="/employer/post/job"
+                            className={({ isActive }) =>
+                              `block px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                                isActive
+                                  ? "bg-blue-100 text-blue-800"
+                                  : "text-gray-600 hover:bg-gray-100"
+                              }`
+                            }
+                          >
+                            Post New Job
+                          </NavLink>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <NavLink
+                      to={item.to}
+                      key={index}
+                      className={({ isActive }) =>
+                        `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${
+                          isActive
+                            ? "bg-blue-800 text-white border-blue-800"
+                            : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                        }`
+                      }
+                    >
+                      {item.icon}
+
+                      <span className="text-xl hover:text-white font-medium">
+                        {item.title}
+                      </span>
+                    </NavLink>
+                  ),
+                )
+              : /* NORMAL USER */
+                sideData.map((item, index) => (
+                  <NavLink
+                    to={item.to}
+                    key={index}
+                    className={({ isActive }) =>
+                      `w-full flex items-center gap-6 px-10 py-3 rounded-xl border transition-all duration-300 ${
+                        isActive
+                          ? "bg-blue-800 text-white border-blue-800"
+                          : "text-gray-700 border-transparent hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                      }`
+                    }
+                  >
+                    {item.icon}
+
+                    <span className="text-xl hover:text-white font-medium">
+                      {item.title}
+                    </span>
+                  </NavLink>
+                ))}
         </div>
       </div>
     </section>
