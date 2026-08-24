@@ -15,7 +15,6 @@ import {
 
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useAuth } from "../store/UserContext";
 
 export const Sidebar = ({ isOpen, SetIsOpen }) => {
   const [user, SetUser] = useState({
@@ -24,8 +23,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
   });
 
   const [showJobs, setShowJobs] = useState(false);
-
-  const { user } = useAuth();
 
   const sideData = [
     {
@@ -36,7 +33,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <User />,
       title: "Profile",
-      to: "/user/profile",
+      to: "/user/Profile",
     },
     {
       icon: <FileText />,
@@ -88,11 +85,6 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       icon: <ClipboardList />,
       title: "Applications",
       to: "/employer/applicants",
-    },
-    {
-      icon: <User />,
-      title: "Profile",
-      to: "/user/profile",
     },
     {
       icon: <Building2 />,
