@@ -19,13 +19,13 @@ import EmpPostJob from "./pages/employer/EmpPostJob";
 import EmpJobs from "./pages/employer/EmpJobs";
 import EmpCompanyProfile from "./pages/employer/EmpCompanyProfile";
 import EmpApplicants from "./pages/employer/EmpApplicants";
+import EmpApplicantProfile from "./pages/employer/EmpApplicantProfile";
 import JobDetail from "./pages/public/JobDetail";
 
 function App() {
   return (
     <>
       <Routes>
-        
         {/* Public Pages */}
 
         <Route element={<MainLayout />}>
@@ -39,7 +39,6 @@ function App() {
         </Route>
 
         <Route element={<MainSidebar />}>
-
           {/* Student */}
 
           <Route path="/user/dashboard" element={<Dashboard />} />
@@ -58,6 +57,7 @@ function App() {
           <Route path="/employer/post/job" element={<EmpPostJob />} />
           <Route path="/employer/jobs" element={<EmpJobs />} />
           <Route path="/employer/applicants" element={<EmpApplicants />} />
+          <Route path="/employer/applicants/:id" element={<EmpApplicantProfile />} />
 
           {/* Admim */}
 

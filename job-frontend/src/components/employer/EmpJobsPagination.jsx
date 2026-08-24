@@ -21,7 +21,6 @@ const EmpJobsPagination = ({
       </p>
 
       <div className="flex items-center gap-2">
-        {/* PREVIOUS */}
         <button
           disabled={safeCurrentPage === 1}
           onClick={onPrevious}
@@ -30,7 +29,6 @@ const EmpJobsPagination = ({
           <ChevronLeft size={17} />
         </button>
 
-        {/* PAGE NUMBERS */}
         {Array.from({ length: totalPages }, (_, index) => index + 1).map(
           (page) => (
             <button
@@ -47,7 +45,6 @@ const EmpJobsPagination = ({
           ),
         )}
 
-        {/* NEXT */}
         <button
           disabled={safeCurrentPage === totalPages}
           onClick={onNext}
@@ -57,7 +54,6 @@ const EmpJobsPagination = ({
         </button>
       </div>
 
-      {/* JOBS PER PAGE */}
       <div className="flex items-center gap-2">
         <span className="text-sm text-zinc-500">Jobs per page</span>
 

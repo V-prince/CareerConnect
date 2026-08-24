@@ -32,7 +32,6 @@ const JobFilterSidebar = ({
           </button>
         </div>
 
-        {/* JOB TYPE */}
         <div className="mb-6">
           <button
             onClick={() => setJobTypeOpen(!jobTypeOpen)}
@@ -83,7 +82,6 @@ const JobFilterSidebar = ({
           )}
         </div>
 
-        {/* EXPERIENCE */}
         <div className="border-t border-zinc-100 pt-6 mb-6">
           <button
             onClick={() => setExperienceOpen(!experienceOpen)}
@@ -134,7 +132,6 @@ const JobFilterSidebar = ({
           )}
         </div>
 
-        {/* CATEGORY */}
         <div className="border-t border-zinc-100 pt-6">
           <h3 className="font-semibold text-zinc-800 text-sm md:text-base mb-3">
             Category

@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import EmpJobFilters from "../../components/employer/EmpJobFilters";
 import EmpJobsTable from "../../components/employer/EmpJobsTable";
 import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
-import EmpHeader from "../../components/employer/EmpHeader";
 import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
 
 const jobsData = [
@@ -344,8 +343,6 @@ const EmpJobs = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
-      <EmpHeader />
-
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-4">
           <button

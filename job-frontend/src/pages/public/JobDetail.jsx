@@ -16,6 +16,12 @@ import {
 } from "react-icons/fa";
 
 import ApplicationReview from "../../components/popups/ApplicationReview";
+import Reason from "../../components/Reason";
+import CompanyInfo from "../../components/CompanyInfo";
+import DetailItem from "../../components/DetailItem";
+import BulletContent from "../../components/BulletContent";
+import Section from "../../components/Section";
+import Tag from "../../components/Tag";
 
 const JobDetail = () => {
   const navigate = useNavigate();
@@ -366,103 +372,5 @@ const JobDetail = () => {
     </div>
   );
 };
-
-const Tag = ({ icon, text, color }) => {
-  const colors = {
-    green: "bg-green-50 text-green-600 border-green-100",
-    blue: "bg-blue-50 text-blue-600 border-blue-100",
-    purple: "bg-purple-50 text-purple-600 border-purple-100",
-    emerald: "bg-emerald-50 text-emerald-600 border-emerald-100",
-  };
-
-  return (
-    <span
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-medium ${
-        colors[color] || colors.blue
-      }`}
-    >
-      {icon}
-      {text}
-    </span>
-  );
-};
-
-const Section = ({ title, children }) => (
-  <div className="mb-7">
-    <h3 className="text-base md:text-lg font-bold text-zinc-800 mb-3">
-      {title}
-    </h3>
-
-    {children}
-  </div>
-);
-
-const BulletContent = ({ content }) => {
-  const items = Array.isArray(content)
-    ? content
-    : String(content)
-        .split(/\n|•|;/)
-        .map((item) => item.trim())
-        .filter(Boolean);
-
-  return (
-    <ul className="space-y-2">
-      {items.map((item, index) => (
-        <li
-          key={index}
-          className="flex gap-2 text-sm md:text-[15px] text-zinc-600 leading-6"
-        >
-          <span className="text-blue-600 mt-2 shrink-0">•</span>
-
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
-};
-
-const DetailItem = ({ icon, title, value }) => (
-  <div className="flex items-start gap-3">
-    <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-      {icon}
-    </div>
-
-    <div>
-      <p className="text-xs text-zinc-500">{title}</p>
-
-      <p className="text-sm font-medium text-zinc-700 mt-1">{value}</p>
-    </div>
-  </div>
-);
-
-const CompanyInfo = ({ title, value, blue }) => (
-  <div className="flex items-start gap-3">
-    <div className="w-5 text-zinc-400 mt-0.5">
-      <FaBuilding size={13} />
-    </div>
-
-    <div className="flex-1">
-      <p className="text-xs text-zinc-500">{title}</p>
-
-      <p
-        className={`text-sm mt-0.5 ${
-          blue ? "text-blue-600 font-medium" : "text-zinc-700"
-        }`}
-      >
-        {value}
-      </p>
-    </div>
-  </div>
-);
-
-const Reason = ({ text }) => (
-  <div className="flex items-center gap-3">
-    <div className="w-7 h-7 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-      <FaCheckCircle size={13} />
-    </div>
-
-    <p className="text-sm text-zinc-600">{text}</p>
-  </div>
-);
 
 export default JobDetail;

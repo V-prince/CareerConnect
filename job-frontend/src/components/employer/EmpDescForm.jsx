@@ -15,7 +15,6 @@ const EmpDescForm = ({ formData, handleChange, setStep, handleNext }) => {
         </p>
       </div>
 
-      {/* JOB DESCRIPTION */}
       <div className="mb-6">
         <label className="block text-sm font-semibold text-zinc-700 mb-2">
           Job Description <span className="text-red-500">*</span>
@@ -31,7 +30,6 @@ const EmpDescForm = ({ formData, handleChange, setStep, handleNext }) => {
         />
       </div>
 
-      {/* RESPONSIBILITIES */}
       <div className="mb-7">
         <label className="block text-sm font-semibold text-zinc-700 mb-2">
           Roles & Responsibilities <span className="text-red-500">*</span>
@@ -51,7 +49,6 @@ const EmpDescForm = ({ formData, handleChange, setStep, handleNext }) => {
         />
       </div>
 
-      {/* ACTIONS */}
       <div className="flex items-center justify-between gap-3 pt-5 border-t border-zinc-100">
         <button
           type="button"

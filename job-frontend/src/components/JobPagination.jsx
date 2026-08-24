@@ -7,7 +7,6 @@ const JobPagination = ({ currentPage, totalPages, setCurrentPage }) => {
 
   return (
     <div className="flex items-center justify-center gap-2 mt-10">
-      {/* Previous */}
       <button
         onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
         disabled={currentPage === 1}
@@ -20,7 +19,6 @@ const JobPagination = ({ currentPage, totalPages, setCurrentPage }) => {
         <ChevronLeft size={18} />
       </button>
 
-      {/* Pages */}
       {[...Array(totalPages)].map((_, index) => (
         <button
           key={index}
@@ -35,7 +33,6 @@ const JobPagination = ({ currentPage, totalPages, setCurrentPage }) => {
         </button>
       ))}
 
-      {/* Next */}
       <button
         onClick={() => setCurrentPage((page) => Math.min(totalPages, page + 1))}
         disabled={currentPage === totalPages}

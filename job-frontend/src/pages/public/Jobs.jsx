@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import JobFilterSidebar from "../../components/JobFilterSidebar";
 import JobSearchFilter from "../../components/JobSearchFilter";
@@ -175,6 +175,7 @@ const createInitialState = (items) =>
 
 const Jobs = () => {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const [keyword, setKeyword] = useState("");
   const [search, setSearch] = useState("");
@@ -387,11 +388,6 @@ const Jobs = () => {
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="py-14 md:py-20 text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-cyan-100 text-xs md:text-sm font-semibold mb-5">
-              <span className="w-2 h-2 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,0.8)]" />
-              Explore Your Next Opportunity
-            </div>
-
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
               Find Your{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-blue-200 to-indigo-200">

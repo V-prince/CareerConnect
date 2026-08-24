@@ -16,7 +16,6 @@ const EmpJobFilters = ({
   return (
     <div className="bg-white border border-zinc-200 border-t-0 p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-[1.7fr_1fr_1fr_1fr] gap-3">
-        {/* SEARCH */}
         <div className="relative">
           <Search
             size={18}
@@ -32,7 +31,6 @@ const EmpJobFilters = ({
           />
         </div>
 
-        {/* DEPARTMENT */}
         <div className="relative">
           <select
             value={department}
@@ -54,7 +52,6 @@ const EmpJobFilters = ({
           />
         </div>
 
-        {/* LOCATION */}
         <div className="relative">
           <select
             value={location}
@@ -76,7 +73,6 @@ const EmpJobFilters = ({
           />
         </div>
 
-        {/* SORT */}
         <div className="relative">
           <select
             value={sortBy}

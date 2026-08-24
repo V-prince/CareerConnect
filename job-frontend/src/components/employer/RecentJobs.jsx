@@ -61,10 +61,6 @@ const RecentJobs = ({ recentJobs, navigate }) => {
               <th className="text-left px-5 py-3 text-[11px] font-semibold uppercase text-zinc-500">
                 Posted On
               </th>
-
-              <th className="px-5 py-3 text-right text-[11px] font-semibold uppercase text-zinc-500">
-                Actions
-              </th>
             </tr>
           </thead>
 
@@ -116,12 +112,6 @@ const RecentJobs = ({ recentJobs, navigate }) => {
 
                 <td className="px-5 py-4 text-xs md:text-sm text-zinc-500">
                   {job.date}
-                </td>
-
-                <td className="px-5 py-4 text-right">
-                  <button className="p-1.5 rounded-lg hover:bg-zinc-100 transition">
-                    <MoreVertical size={18} className="text-zinc-400" />
-                  </button>
                 </td>
               </tr>
             ))}

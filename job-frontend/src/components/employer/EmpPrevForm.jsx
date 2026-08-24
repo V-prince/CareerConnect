@@ -14,7 +14,6 @@ const EmpPrevForm = ({ formData, setStep, handlePublish }) => {
         </p>
       </div>
 
-      {/* BASIC INFORMATION */}
       <PreviewSection title="Basic Information">
         <PreviewRow label="Job Title" value={formData.jobTitle} />
 
@@ -57,36 +56,30 @@ const EmpPrevForm = ({ formData, setStep, handlePublish }) => {
         <PreviewRow label="Number of Openings" value={formData.openings} />
       </PreviewSection>
 
-      {/* DESCRIPTION */}
       <PreviewSection title="Job Description">
         <p className="text-sm text-zinc-600 leading-7 whitespace-pre-line">
           {formData.jobDescription}
         </p>
       </PreviewSection>
 
-      {/* RESPONSIBILITIES */}
       <PreviewSection title="Roles & Responsibilities">
         <p className="text-sm text-zinc-600 leading-7 whitespace-pre-line">
           {formData.responsibilities}
         </p>
       </PreviewSection>
 
-      {/* SKILLS */}
       <PreviewSection title="Required Skills">
         <PreviewItems items={formData.skills} />
       </PreviewSection>
 
-      {/* QUALIFICATIONS */}
       <PreviewSection title="Qualifications">
         <PreviewItems items={formData.qualifications} />
       </PreviewSection>
 
-      {/* REQUIREMENTS */}
       <PreviewSection title="Job Requirements">
         <PreviewItems items={formData.requirements} />
       </PreviewSection>
 
-      {/* ACTIONS */}
       <div className="flex items-center justify-between gap-3 pt-5 border-t border-zinc-100">
         <button
           type="button"

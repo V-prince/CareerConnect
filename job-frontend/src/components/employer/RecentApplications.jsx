@@ -33,7 +33,7 @@ const RecentApplications = ({ recentApplications, navigate }) => {
         </div>
 
         <button
-          onClick={() => navigate("/employer/applications")}
+          onClick={() => navigate("/employer/applicants")}
           className="flex items-center gap-1 text-xs md:text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition"
         >
           View All
@@ -45,7 +45,6 @@ const RecentApplications = ({ recentApplications, navigate }) => {
         {recentApplications.map((app) => (
           <div
             key={app.id}
-            onClick={() => navigate("/employer/applications")}
             className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
           >
             <div className="flex items-center gap-3 min-w-0">

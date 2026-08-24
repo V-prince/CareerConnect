@@ -5,7 +5,6 @@ import {
   FaLock,
   FaEye,
   FaEyeSlash,
-  FaGoogle,
   FaUserPlus,
 } from "react-icons/fa";
 import Select from "react-select";
@@ -22,7 +21,6 @@ const Register = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const [role, setRole] = useState(null);
-
   const [agree, setAgree] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -42,18 +40,58 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
+    if (!formData.fullName.trim()) {
+      toast.error("Please enter your full name.");
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      toast.error("Please enter a password.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+
+    if (!formData.confirmPassword.trim()) {
+      toast.error("Please confirm your password.");
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       toast.error("Passwords do not match!");
       return;
     }
 
+    if (!role) {
+      toast.error("Please select your role.");
+      return;
+    }
+
+    if (!agree) {
+      toast.error("Please agree to the Terms & Conditions.");
+      return;
+    }
+
     console.log({
       ...formData,
-      role: role?.value,
+      role: role.value,
       agree,
     });
 
-    
+    toast.success("Registration successful!");
 
     setFormData({
       fullName: "",
@@ -61,6 +99,7 @@ const Register = () => {
       password: "",
       confirmPassword: "",
     });
+
     setRole(null);
     setAgree(false);
     setShowPassword(false);
@@ -96,7 +135,6 @@ const Register = () => {
                 value={formData.fullName}
                 onChange={handleChange}
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
             </div>
           </div>
@@ -116,7 +154,6 @@ const Register = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
             </div>
           </div>
@@ -136,7 +173,6 @@ const Register = () => {
                 value={formData.password}
                 onChange={handleChange}
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
 
               <button
@@ -164,7 +200,6 @@ const Register = () => {
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
 
               <button
@@ -216,7 +251,6 @@ const Register = () => {
               checked={agree}
               onChange={(e) => setAgree(e.target.checked)}
               className="w-4 h-4 accent-indigo-600 rounded border-zinc-300"
-              required
             />
             I agree to the Terms & Conditions
           </label>
@@ -229,22 +263,6 @@ const Register = () => {
             Register
           </button>
         </form>
-
-        <div className="flex items-center my-6">
-          <div className="flex-1 h-px bg-zinc-200"></div>
-
-          <span className="px-4 text-sm text-zinc-500">OR</span>
-
-          <div className="flex-1 h-px bg-zinc-200"></div>
-        </div>
-
-        <button
-          type="button"
-          className="w-full h-12 border border-zinc-300 rounded-xl flex justify-center items-center gap-3 font-medium text-zinc-700 hover:bg-zinc-50 transition text-sm"
-        >
-          <FaGoogle className="text-red-500" />
-          Register with Google
-        </button>
 
         <p className="text-center mt-6 text-sm text-zinc-600">
           Already have an account?

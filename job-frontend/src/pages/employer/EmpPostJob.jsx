@@ -9,11 +9,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-import EmpHeader from "../../components/employer/EmpHeader";
 import EmpBasicForm from "../../components/employer/EmpBasicForm";
 import EmpDescForm from "../../components/employer/EmpDescForm";
 import EmpSkillForm from "../../components/employer/EmpSkillForm";
 import EmpPrevForm from "../../components/employer/EmpPrevForm";
+import StepItem from "../../components/employer/StepItem";
+import TipItem from "../../components/employer/TipItem";
+import BenefitItem from "../../components/employer/BenefitItem";
 
 export const EmpPostJob = () => {
   const navigate = useNavigate();
@@ -207,7 +209,6 @@ export const EmpPostJob = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
-      <EmpHeader />
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="mb-7">
           <div className="flex items-center gap-2 text-xs md:text-sm mb-3">
@@ -365,60 +366,6 @@ export const EmpPostJob = () => {
           Your job information will be published after you click "Publish Job".
         </div>
       </main>
-    </div>
-  );
-};
-const StepItem = ({ number, title, description, currentStep, line }) => {
-  return (
-    <div className="flex-1">
-      <div className="flex items-center">
-        <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-            currentStep >= number
-              ? "bg-blue-600 text-white"
-              : "bg-zinc-200 text-zinc-600"
-          }`}
-        >
-          {number}
-        </div>
-
-        {line && (
-          <div
-            className={`h-0.5 flex-1 mx-3 ${
-              currentStep > number ? "bg-blue-600" : "bg-zinc-200"
-            }`}
-          />
-        )}
-      </div>
-
-      <div className="mt-2">
-        <p className="text-sm font-semibold text-zinc-800">{title}</p>
-
-        <p className="text-xs text-zinc-500 mt-0.5">{description}</p>
-      </div>
-    </div>
-  );
-};
-const TipItem = ({ icon, title, text }) => {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="w-9 h-9 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-        {icon}
-      </div>
-
-      <div>
-        <p className="text-sm font-semibold text-zinc-800">{title}</p>
-
-        <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{text}</p>
-      </div>
-    </div>
-  );
-};
-const BenefitItem = ({ text }) => {
-  return (
-    <div className="flex items-start gap-2">
-      <CheckCircle2 size={16} className="text-green-500 mt-0.5 shrink-0" />
-      <p className="text-sm text-zinc-600 leading-relaxed">{text}</p>
     </div>
   );
 };

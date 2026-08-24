@@ -8,13 +8,9 @@ import CompanyMarquee from "../../components/CompanyMarquee";
 export const Home = () => {
   return (
     <div className="min-h-screen">
-      {/* Keep Hero background exactly as it is */}
       <Hero />
 
-      {/* Keep Company Marquee unchanged */}
       <CompanyMarquee />
-
-      {/* Background for the remaining home sections */}
       <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-white">
         <Choose />
         <Categories />

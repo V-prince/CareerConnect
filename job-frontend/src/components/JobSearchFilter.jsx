@@ -35,10 +35,6 @@ const JobSearchFilter = ({
 }) => {
   const [showFilters, setShowFilters] = useState(false);
 
-  /* =========================================================
-     SAFE VALUES
-  ========================================================= */
-
   const safeJobTypes = jobTypes || {};
   const safeExperience = experience || {};
 
@@ -49,10 +45,6 @@ const JobSearchFilter = ({
   const anyJobTypeSelected = Object.values(safeJobTypes).some(Boolean);
   const anyExpSelected = Object.values(safeExperience).some(Boolean);
 
-  /* =========================================================
-     REMOVE JOB TYPE
-  ========================================================= */
-
   const removeJobType = (key) => {
     if (!setJobTypes) return;
 
@@ -62,10 +54,6 @@ const JobSearchFilter = ({
     });
   };
 
-  /* =========================================================
-     REMOVE EXPERIENCE
-  ========================================================= */
-
   const removeExperience = (key) => {
     if (!setExperience) return;
 
@@ -74,10 +62,6 @@ const JobSearchFilter = ({
       [key]: false,
     });
   };
-
-  /* =========================================================
-     LOCATION CHANGE
-  ========================================================= */
 
   const handleLocationChange = (selected) => {
     if (setLocationSelect) {
@@ -89,10 +73,6 @@ const JobSearchFilter = ({
     }
   };
 
-  /* =========================================================
-     CLEAR LOCATION
-  ========================================================= */
-
   const clearLocation = () => {
     if (setLocation) {
       setLocation("");
@@ -103,10 +83,6 @@ const JobSearchFilter = ({
     }
   };
 
-  /* =========================================================
-     SEARCH
-  ========================================================= */
-
   const handleSearch = () => {
     if (onSearch) {
       onSearch();
@@ -115,14 +91,8 @@ const JobSearchFilter = ({
 
   return (
     <>
-      {/* =========================================================
-          SEARCH
-      ========================================================= */}
-
       <div className="bg-white border border-zinc-200 shadow-sm rounded-xl p-2.5 md:p-3 mb-6">
         <div className="grid md:grid-cols-12 gap-2 md:gap-2.5 items-stretch">
-          {/* KEYWORD */}
-
           <div className="md:col-span-5 flex items-center border border-zinc-200 rounded-xl px-3.5 bg-white">
             <FaSearch className="text-indigo-600 mr-2.5 shrink-0" size={13} />
 
@@ -135,9 +105,6 @@ const JobSearchFilter = ({
               className="w-full min-w-0 h-10 outline-none bg-transparent text-xs md:text-sm text-slate-800"
             />
           </div>
-
-          {/* LOCATION */}
-
           <div className="md:col-span-4 relative">
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none text-indigo-600">
               <FaMapMarkerAlt size={13} />
@@ -193,8 +160,6 @@ const JobSearchFilter = ({
             />
           </div>
 
-          {/* SEARCH BUTTON */}
-
           <div className="md:col-span-3">
             <button
               onClick={handleSearch}
@@ -205,10 +170,6 @@ const JobSearchFilter = ({
           </div>
         </div>
       </div>
-
-      {/* =========================================================
-          LIST HEADER
-      ========================================================= */}
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <p className="text-sm md:text-base text-zinc-600">
@@ -227,8 +188,6 @@ const JobSearchFilter = ({
           </span>{" "}
           jobs
         </p>
-
-        {/* SORT */}
 
         <div className="flex items-center gap-2">
           <label className="text-sm text-zinc-600 hidden sm:inline">
@@ -255,18 +214,12 @@ const JobSearchFilter = ({
         </div>
       </div>
 
-      {/* =========================================================
-          ACTIVE FILTER TAGS
-      ========================================================= */}
-
       {(anyJobTypeSelected ||
         anyExpSelected ||
         safeCategory !== "All Categories" ||
         safeLocation.trim() ||
         safeKeyword.trim()) && (
         <div className="flex flex-wrap items-center gap-2 mb-5">
-          {/* JOB TYPE TAGS */}
-
           {anyJobTypeSelected &&
             Object.keys(safeJobTypes)
               .filter((key) => safeJobTypes[key])
@@ -285,9 +238,6 @@ const JobSearchFilter = ({
                   </button>
                 </span>
               ))}
-
-          {/* EXPERIENCE TAGS */}
-
           {anyExpSelected &&
             Object.keys(safeExperience)
               .filter((key) => safeExperience[key])
@@ -307,8 +257,6 @@ const JobSearchFilter = ({
                 </span>
               ))}
 
-          {/* CATEGORY TAG */}
-
           {safeCategory !== "All Categories" && (
             <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 text-purple-700 border border-purple-100 rounded-lg text-xs font-medium">
               {safeCategory}
@@ -323,15 +271,11 @@ const JobSearchFilter = ({
             </span>
           )}
 
-          {/* KEYWORD TAG */}
-
           {safeKeyword.trim() && (
             <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 border border-green-100 rounded-lg text-xs font-medium">
               "{safeKeyword}"
             </span>
           )}
-
-          {/* LOCATION TAG */}
 
           {safeLocation.trim() && (
             <span className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-lg text-xs font-medium">

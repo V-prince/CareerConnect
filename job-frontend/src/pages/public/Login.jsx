@@ -5,10 +5,9 @@ import {
   FaEye,
   FaEyeSlash,
   FaSignInAlt,
-  FaGoogle,
-  FaLinkedinIn,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,16 +28,39 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
 
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email.");
+      return;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      toast.error("Please enter your password.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters.");
+      return;
+    }
+
     console.log("Login Data:", {
       email: formData.email,
       password: formData.password,
       rememberMe,
     });
 
+    toast.success("Login successful!");
+
     setFormData({
       email: "",
       password: "",
     });
+
     setRememberMe(false);
     setShowPassword(false);
   };
@@ -72,7 +94,6 @@ const Login = () => {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
             </div>
           </div>
@@ -92,7 +113,6 @@ const Login = () => {
                 onChange={handleChange}
                 placeholder="Enter your password"
                 className="w-full h-12 outline-none text-zinc-700 text-sm"
-                required
               />
 
               <button
@@ -132,22 +152,6 @@ const Login = () => {
             Login
           </button>
         </form>
-
-        <div className="flex items-center gap-4 my-7">
-          <div className="flex-1 h-px bg-zinc-200"></div>
-
-          <span className="text-sm text-zinc-500">OR</span>
-
-          <div className="flex-1 h-px bg-zinc-200"></div>
-        </div>
-
-        <button
-          type="button"
-          className="w-full h-12 border border-zinc-300 rounded-xl flex items-center justify-center gap-3 font-medium text-zinc-700 hover:bg-zinc-50 transition text-sm"
-        >
-          <FaGoogle className="text-red-500" />
-          Login with Google
-        </button>
 
         <p className="text-center text-sm text-zinc-600 mt-7">
           Don't have an account?

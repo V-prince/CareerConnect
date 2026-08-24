@@ -72,7 +72,6 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
                 key={job.id}
                 className="border-b border-zinc-100 hover:bg-zinc-50 transition"
               >
-                {/* JOB TITLE */}
                 <td className="px-5 py-5">
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
@@ -91,12 +90,10 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
                   </div>
                 </td>
 
-                {/* DEPARTMENT */}
                 <td className="px-5 py-5">
                   <p className="text-sm text-zinc-700">{job.department}</p>
                 </td>
 
-                {/* LOCATION */}
                 <td className="px-5 py-5">
                   <div className="space-y-1">
                     <div className="flex items-center gap-1.5">
@@ -111,19 +108,16 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
                   </div>
                 </td>
 
-                {/* APPLICATIONS */}
                 <td className="px-5 py-5">
                   <p className="text-sm font-medium text-zinc-700">
                     {job.applications}
                   </p>
                 </td>
 
-                {/* STATUS */}
                 <td className="px-5 py-5">
                   <StatusBadge status={job.status} />
                 </td>
 
-                {/* POSTED ON */}
                 <td className="px-5 py-5">
                   <p className="text-sm text-zinc-700">{job.postedOn}</p>
 
@@ -132,7 +126,6 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
                   </p>
                 </td>
 
-                {/* ACTIONS */}
                 <td className="px-5 py-5">
                   <div className="flex items-center justify-center gap-2">
                     <button

@@ -11,7 +11,6 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-import EmpHeader from "../../components/employer/EmpHeader";
 import DashboardData from "../../components/employer/DashboardData";
 import Application from "../../components/employer/Application";
 import QuickActions from "../../components/employer/QuickActions";
@@ -230,9 +229,8 @@ export const EmpDashboard = () => {
   const currentData = monthlyData[period] || monthlyData["May 2024"];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
-      <EmpHeader />
-      <section className="bg-gradient-to-br from-indigo-700 via-blue-700 to-indigo-800 py-7 md:py-9 border-b border-indigo-800">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-indigo-700 via-blue-700 to-indigo-800 py-7 md:py-9 border-b border-indigo-800">
         <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-white/10"></div>
         <div className="absolute -bottom-24 right-40 w-48 h-48 rounded-full bg-white/5"></div>
         <div className="relative max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8">
