@@ -6,8 +6,10 @@ import {
   FaEyeSlash,
   FaSignInAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { LoginAPI } from "../../Services/authService";
+import { useAuth } from "../../store/UserContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,6 +20,10 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+
+  const { user, setUser, isLoggedIn, SetIsLoggedIn } = useAuth()
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -25,7 +31,7 @@ const Login = () => {
     });
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     if (!formData.email.trim()) {
@@ -48,13 +54,27 @@ const Login = () => {
       return;
     }
 
-    console.log("Login Data:", {
-      email: formData.email,
-      password: formData.password,
-      rememberMe,
-    });
+    try {
 
-    toast.success("Login successful!");
+      const data = await LoginAPI(formData);
+
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+
+      toast.success("Login successful!");
+      setUser(data.user);
+      
+      SetIsLoggedIn(true);
+      if (data.user.role === "candidate") {
+        navigate('/user/profile')
+      } else {
+        navigate('/employer/profile')
+      }
+    } catch (error) {
+      console.log("login err", error)
+    }
+
 
     setFormData({
       email: "",

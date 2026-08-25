@@ -13,16 +13,22 @@ import {
   FileText,
   Pencil,
   X,
+  UserStar,
 } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProfileSetupModal from '../../components/ProfileSetupModel';
+import { GetUserData } from '../../Services/authService';
+import toast from 'react-hot-toast';
+import dayjs from 'dayjs'
+
 
 export const Profile = () => {
   const [showProfileModal, setShowProfileModal] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [skillsInput, setSkillsInput] = useState("");
   const [skills, setSkills] = useState([]);
-
+  const [data, Setdata] = useState(null);
+  const [loading, SetLoading] = useState(false);
   const [EditData, setEditData] = useState({
     fullname: "",
     email: "",
@@ -33,6 +39,8 @@ export const Profile = () => {
     bio: "",
     resume: null
   })
+
+  const date = dayjs(data?.user.createsAt)
 
   const handelOnChange = (e) => {
     const { name, value } = e.target;
@@ -93,6 +101,24 @@ export const Profile = () => {
     setSkills(updatedSkills);
   }
 
+  const ProfileData = async () => {
+    try {
+      SetLoading(true)
+      const data = await GetUserData();
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+      Setdata(data)
+    } catch (error) {
+      console.log("profile err", error)
+    } finally {
+      SetLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    ProfileData();
+  }, [])
 
 
   return (
@@ -112,18 +138,18 @@ export const Profile = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
             <img
-              src="/images/profile.jpg"
+              src={data?.user.photo || "/images/profile.png"}
               alt=""
               className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover"
             />
 
             <div className="text-center md:text-left">
-              <h1 className="font-bold text-2xl md:text-3xl">
-                Prince Vadher
+              <h1 className="font-bold text-2xl md:text-3xl capitalize">
+                {data?.user.fullname}
               </h1>
 
               <span className="text-zinc-500 font-semibold">
-                Student
+                {data?.user.role}
               </span>
 
               <div className="mt-5 space-y-3">
@@ -131,28 +157,28 @@ export const Profile = () => {
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <Mail size={20} />
                   <span className="text-zinc-800 break-all">
-                    vadherprince63@gmail.com
+                    {data?.user.email}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <Phone size={20} />
                   <span className="text-zinc-800">
-                    +91 9978093258
+                    {data?.user.phone || "Not Provided"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <MapPin size={20} />
                   <span className="text-zinc-800">
-                    Surat, Gujarat, India
+                    {data?.user.location || "Not Provided"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-center md:justify-start gap-3 text-zinc-500">
                   <CalendarDays size={20} />
                   <span className="text-zinc-800">
-                    Joined on May 15, 2025
+                    Joined on {date.format("MMMM D, YYYY")}
                   </span>
                 </div>
 
@@ -169,17 +195,23 @@ export const Profile = () => {
               </h2>
 
               <span className="text-green-600 font-bold">
-                80%
+                {data?.process.progress}%
               </span>
             </div>
 
             <div className="w-full h-3 bg-zinc-200 rounded-full overflow-hidden">
-              <div className="h-full w-[80%] bg-green-500 rounded-full"></div>
+              <div className="h-full bg-green-500 rounded-full" style={{ width: `${data?.process?.progress || 0}%` }}></div>
             </div>
 
-            <p className="text-sm text-zinc-500 mt-3">
-              Complete your profile to improve your chances of getting hired.
-            </p>
+            {data?.process.progress !== 100 &&
+              (<>
+                <p className="text-sm text-zinc-500 mt-3">
+                  Complete your profile to improve your chances of getting hired.
+                </p>
+              </>)
+            }
+
+
 
             <div className="mt-4 space-y-2 text-sm">
 

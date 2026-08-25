@@ -8,11 +8,12 @@ import {
   FaUserPlus,
 } from "react-icons/fa";
 import Select from "react-select";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { RegisterAPI } from "../../Services/authService";
 
 const roleOptions = [
-  { value: "jobseeker", label: "Jobseeker" },
+  { value: "candidate", label: "Candidate" },
   { value: "employer", label: "Employer" },
 ];
 
@@ -30,6 +31,9 @@ const Register = () => {
     confirmPassword: "",
   });
 
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -37,7 +41,7 @@ const Register = () => {
     });
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (!formData.fullName.trim()) {
@@ -85,13 +89,24 @@ const Register = () => {
       return;
     }
 
-    console.log({
-      ...formData,
-      role: role.value,
-      agree,
-    });
+    try {
 
-    toast.success("Registration successful!");
+      const registerData = {
+        ...formData,
+        role: role.value
+      }
+
+      const data = await RegisterAPI(registerData);
+
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+
+      toast.success("Registration successful!");
+      navigate('/login')
+    } catch (error) {
+      console.log("Registration err:", error)
+    }
 
     setFormData({
       fullName: "",

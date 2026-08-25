@@ -13,13 +13,9 @@ export const Navbar = () => {
 
   const { user } = useAuth();
 
-  console.log(user)
-
   const isHomePage = location.pathname === "/";
 
   useEffect(() => {
-
-
     const handelScroll = () => {
       setIsScrolled(window.scrollY > 10);
     }
@@ -107,7 +103,7 @@ export const Navbar = () => {
 
                 <div className="flex items-center gap-3">
                   <img
-                    src={user?.photo || "/images/profile.jpg"}
+                    src={user?.photo || "/images/profile.png"}
                     alt="Profile"
                     className="h-10 w-10 md:h-11 md:w-11 rounded-full object-cover border-2 border-white shadow-sm"
                   />
@@ -165,7 +161,7 @@ export const Navbar = () => {
             <>
               <Link to={"/user/profile"} className="flex items-center gap-2">
                 <img
-                  src={user?.photo || "/images/profile.jpg"}
+                  src={user?.photo || "/images/profile.png"}
                   alt="Profile"
                   className="h-9 w-9 rounded-full object-cover border border-zinc-200"
                 />
