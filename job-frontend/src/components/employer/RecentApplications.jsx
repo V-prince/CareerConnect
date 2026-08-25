@@ -1,0 +1,92 @@
+import React from "react";
+import { FaStar } from "react-icons/fa";
+import { ChevronRight } from "lucide-react";
+
+const RecentApplications = ({ recentApplications, navigate }) => {
+  const appStatusColor = (status) => {
+    switch (status.toLowerCase()) {
+      case "new":
+        return "bg-green-50 text-green-700 border border-green-100";
+
+      case "shortlisted":
+        return "bg-blue-50 text-blue-700 border border-blue-100";
+
+      case "interview":
+        return "bg-purple-50 text-purple-700 border border-purple-100";
+
+      default:
+        return "bg-zinc-50 text-zinc-600 border border-zinc-200";
+    }
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-zinc-200 shadow-sm p-4 md:p-5">
+      <div className="flex items-center justify-between mb-4 md:mb-5">
+        <div>
+          <h2 className="text-base md:text-lg font-bold text-zinc-800">
+            Recent Applications
+          </h2>
+
+          <p className="text-xs md:text-sm text-zinc-500 mt-0.5">
+            Latest candidates
+          </p>
+        </div>
+
+        <button
+          onClick={() => navigate("/employer/applicants")}
+          className="flex items-center gap-1 text-xs md:text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition"
+        >
+          View All
+          <ChevronRight size={16} />
+        </button>
+      </div>
+
+      <div className="space-y-2 md:space-y-2.5">
+        {recentApplications.map((app) => (
+          <div
+            key={app.id}
+            className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <div
+                className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${app.bg}`}
+              >
+                {app.initials}
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-sm md:text-[15px] font-semibold text-zinc-800 truncate flex items-center gap-1">
+                  {app.name}
+
+                  {app.featured && (
+                    <span className="text-indigo-500 text-[10px]">
+                      <FaStar />
+                    </span>
+                  )}
+                </p>
+
+                <p className="text-[11px] md:text-xs text-zinc-500 truncate">
+                  {app.job}
+                </p>
+
+                <p className="text-[10px] md:text-[11px] text-zinc-400 mt-0.5">
+                  {app.date}
+                </p>
+              </div>
+            </div>
+
+            <span
+              className={`inline-flex px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-semibold whitespace-nowrap ${appStatusColor(
+                app.status,
+              )}`}
+            >
+              {app.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RecentApplications;
