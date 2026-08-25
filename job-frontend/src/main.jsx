@@ -3,9 +3,9 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter } from "react-router-dom";
-import { ScrollToTop } from "./components/scrolltotop/ScrollToTop.jsx";
-import { AuthProvider } from "./store/UserContext.jsx";
+import { BrowserRouter } from 'react-router-dom'
+import { ScrollToTop } from './components/scrolltotop/ScrollToTop.jsx';
+import { AuthProvider } from './store/UserContext.jsx';
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

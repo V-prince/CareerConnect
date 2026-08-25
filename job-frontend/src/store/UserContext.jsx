@@ -37,8 +37,6 @@ const AuthProvider = ({ children }) => {
     userDataFetch();
   }, [])
 
-
-
   return (
     <AuthContext.Provider value={{ user, setUser, isLoggedIn, SetIsLoggedIn, loading, SetLoading }}>
       {children}

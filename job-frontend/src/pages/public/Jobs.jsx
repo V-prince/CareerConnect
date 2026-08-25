@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import JobFilterSidebar from "../../components/JobFilterSidebar";
 import JobSearchFilter from "../../components/JobSearchFilter";
 import JobPagination from "../../components/JobPagination";
@@ -175,6 +175,7 @@ const createInitialState = (items) =>
 
 const Jobs = () => {
   const navigate = useNavigate();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [keyword, setKeyword] = useState("");

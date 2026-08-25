@@ -1,3 +1,4 @@
+
 const Tag = ({ icon, text, color }) => {
   const colors = {
     green: "bg-green-50 text-green-600 border-green-100",
@@ -18,3 +19,4 @@ const Tag = ({ icon, text, color }) => {
   );
 };
 export default Tag;
+

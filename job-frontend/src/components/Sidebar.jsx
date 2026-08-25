@@ -155,7 +155,8 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
                       {/* JOBS */}
                       <button
                         onClick={() => setShowJobs(!showJobs)}
-                        className="w-full flex items-center gap-6 px-10 py-3 rounded-xl border border-transparent transition-all duration-300 text-gray-700 hover:bg-blue-800 hover:text-white hover:border-blue-800"
+                        className="w-full flex 3.
+                        20items-center gap-6 px-10 py-3 rounded-xl border border-transparent transition-all duration-300 text-gray-700 hover:bg-blue-800 hover:text-white hover:border-blue-800"
                       >
                         {item.icon}
 

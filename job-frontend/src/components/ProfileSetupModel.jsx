@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import {
   User,
+  Mail,
   Phone,
   GraduationCap,
   FileText,
+  Briefcase,
   X,
 } from "lucide-react";
 
@@ -12,8 +14,10 @@ const ProfileSetupModal = ({ onComplete }) => {
     fullname: "",
     email: "",
     phone: "",
-    education: "",
-    company: "",
+
+    education: [],
+    experience: [],
+    
     photo: null,
     skills: [],
     resume: null,
@@ -21,9 +25,14 @@ const ProfileSetupModal = ({ onComplete }) => {
   });
 
   const [skillInput, setSkillInput] = useState("");
+  const [educationInput, setEducationInput] = useState("");
+  const [experienceInput, setExperienceInput] = useState("");
+
   const [errors, setErrors] = useState({});
 
-
+  // =========================
+  // VALIDATION
+  // =========================
 
   const validateForm = () => {
     const newErrors = {};
@@ -36,7 +45,7 @@ const ProfileSetupModal = ({ onComplete }) => {
     }
 
     // Education
-    if (!formData.education.trim()) {
+    if (formData.education.length === 0) {
       newErrors.education = "Education is required";
     }
 
@@ -65,7 +74,9 @@ const ProfileSetupModal = ({ onComplete }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  
+  // =========================
+  // NORMAL INPUT CHANGE
+  // =========================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,20 +86,21 @@ const ProfileSetupModal = ({ onComplete }) => {
       [name]: value,
     }));
 
-    // Remove error when user starts typing
     setErrors((prev) => ({
       ...prev,
       [name]: "",
     }));
   };
 
-  
+  // =========================
+  // PHOTO
+  // =========================
+
   const handlePhoto = (e) => {
     const file = e.target.files[0];
 
     if (!file) return;
 
-    
     if (!file.type.startsWith("image/")) {
       setErrors((prev) => ({
         ...prev,
@@ -109,7 +121,9 @@ const ProfileSetupModal = ({ onComplete }) => {
     }));
   };
 
-  
+  // =========================
+  // RESUME
+  // =========================
 
   const handleResume = (e) => {
     const file = e.target.files[0];
@@ -142,7 +156,99 @@ const ProfileSetupModal = ({ onComplete }) => {
     }));
   };
 
+  // =========================
+  // EDUCATION
+  // =========================
 
+  const addEducation = () => {
+    const education = educationInput.trim();
+
+    if (!education) return;
+
+    // Duplicate check
+    if (
+      formData.education.some(
+        (item) => item.toLowerCase() === education.toLowerCase()
+      )
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        education: "This education is already added",
+      }));
+
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      education: [...prev.education, education],
+    }));
+
+    setEducationInput("");
+
+    setErrors((prev) => ({
+      ...prev,
+      education: "",
+    }));
+  };
+
+  const removeEducation = (education) => {
+    setFormData((prev) => ({
+      ...prev,
+      education: prev.education.filter(
+        (item) => item !== education
+      ),
+    }));
+  };
+
+  // =========================
+  // EXPERIENCE
+  // =========================
+
+  const addExperience = () => {
+    const experience = experienceInput.trim();
+
+    if (!experience) return;
+
+    // Duplicate check
+    if (
+      formData.experience.some(
+        (item) => item.toLowerCase() === experience.toLowerCase()
+      )
+    ) {
+      setErrors((prev) => ({
+        ...prev,
+        experience: "This experience is already added",
+      }));
+
+      return;
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      experience: [...prev.experience, experience],
+    }));
+
+    setExperienceInput("");
+
+    setErrors((prev) => ({
+      ...prev,
+      experience: "",
+    }));
+  };
+
+  const removeExperience = (experience) => {
+    setFormData((prev) => ({
+      ...prev,
+      experience: prev.experience.filter(
+        (item) => item !== experience
+      ),
+    }));
+  };
+
+  // =========================
+  // SKILLS
+  // =========================
 
   const addSkill = () => {
     const skill = skillInput.trim();
@@ -176,8 +282,6 @@ const ProfileSetupModal = ({ onComplete }) => {
     }));
   };
 
- 
-
   const removeSkill = (skill) => {
     setFormData((prev) => ({
       ...prev,
@@ -185,7 +289,9 @@ const ProfileSetupModal = ({ onComplete }) => {
     }));
   };
 
-
+  // =========================
+  // SUBMIT
+  // =========================
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -200,43 +306,61 @@ const ProfileSetupModal = ({ onComplete }) => {
       const data = new FormData();
 
       data.append("phone", formData.phone);
-      data.append("education", formData.education);
-      data.append("skills", JSON.stringify(formData.skills));
+
+      // Multiple Education
+      data.append(
+        "education",
+        JSON.stringify(formData.education)
+      );
+
+      // Multiple Experience
+      data.append(
+        "experience",
+        JSON.stringify(formData.experience)
+      );
+
+      // Multiple Skills
+      data.append(
+        "skills",
+        JSON.stringify(formData.skills)
+      );
+
       data.append("bio", formData.bio);
 
-      
+      // Files
       data.append("photo", formData.photo);
       data.append("resume", formData.resume);
 
       console.log("Profile FormData:", data);
 
       /*
-        અહીં API call કરવી:
+      અહીં API call કરવી:
 
-        await axios.put(
-          "/api/user/create-profile",
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
+      await axios.put(
+        "/api/user/create-profile",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       */
 
       onComplete();
+
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+
       <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
 
-        {/* Header */}
+        {/* ================= HEADER ================= */}
+
         <div className="sticky top-0 z-10 bg-white border-b border-zinc-100 px-6 py-5 flex items-center justify-between">
 
           <div>
@@ -249,7 +373,6 @@ const ProfileSetupModal = ({ onComplete }) => {
             </p>
           </div>
 
-      
           <button
             type="button"
             onClick={onComplete}
@@ -260,10 +383,15 @@ const ProfileSetupModal = ({ onComplete }) => {
 
         </div>
 
-        {/* Form */}
+        {/* ================= FORM ================= */}
+
         <form onSubmit={handleSubmit} className="p-6">
 
+          {/* ================= BASIC DETAILS ================= */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            {/* PHONE */}
 
             <div>
               <label className="text-sm font-semibold text-zinc-700">
@@ -271,6 +399,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               </label>
 
               <div className="relative mt-2">
+
                 <Phone
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -285,6 +414,7 @@ const ProfileSetupModal = ({ onComplete }) => {
                   maxLength={10}
                   className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                 />
+
               </div>
 
               {errors.phone && (
@@ -295,33 +425,8 @@ const ProfileSetupModal = ({ onComplete }) => {
             </div>
 
             
-            <div>
-              <label className="text-sm font-semibold text-zinc-700">
-                Education
-              </label>
 
-              <div className="relative mt-2">
-                <GraduationCap
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
-                />
-
-                <input
-                  type="text"
-                  name="education"
-                  value={formData.education}
-                  onChange={handleChange}
-                  placeholder="BCA, MCA, B.Tech..."
-                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
-                />
-              </div>
-
-              {errors.education && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.education}
-                </p>
-              )}
-            </div>
+            {/* PHOTO */}
 
             <div>
               <label className="text-sm font-semibold text-zinc-700">
@@ -329,6 +434,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               </label>
 
               <div className="relative mt-2">
+
                 <User
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -340,6 +446,7 @@ const ProfileSetupModal = ({ onComplete }) => {
                   onChange={handlePhoto}
                   className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-2.5 text-sm"
                 />
+
               </div>
 
               {errors.photo && (
@@ -348,9 +455,9 @@ const ProfileSetupModal = ({ onComplete }) => {
                 </p>
               )}
 
-              
               {formData.photo && (
                 <div className="mt-3 flex items-center gap-3">
+
                   <img
                     src={URL.createObjectURL(formData.photo)}
                     alt="Profile Preview"
@@ -360,11 +467,12 @@ const ProfileSetupModal = ({ onComplete }) => {
                   <span className="text-sm text-zinc-500">
                     {formData.photo.name}
                   </span>
+
                 </div>
               )}
             </div>
 
-           
+            {/* RESUME */}
 
             <div>
               <label className="text-sm font-semibold text-zinc-700">
@@ -372,6 +480,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               </label>
 
               <div className="relative mt-2">
+
                 <FileText
                   size={18}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
@@ -383,6 +492,7 @@ const ProfileSetupModal = ({ onComplete }) => {
                   onChange={handleResume}
                   className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-2.5 text-sm"
                 />
+
               </div>
 
               {errors.resume && (
@@ -396,13 +506,180 @@ const ProfileSetupModal = ({ onComplete }) => {
                   Selected: {formData.resume.name}
                 </p>
               )}
+
+            </div>
+
+          </div>
+
+          {/* ================= EDUCATION ================= */}
+
+          <div className="mt-6">
+
+            <label className="text-sm font-semibold text-zinc-700">
+              Education
+            </label>
+
+            <div className="flex gap-2 mt-2">
+
+              <div className="relative flex-1">
+
+                <GraduationCap
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                />
+
+                <input
+                  type="text"
+                  value={educationInput}
+                  onChange={(e) => {
+                    setEducationInput(e.target.value);
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      education: "",
+                    }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addEducation();
+                    }
+                  }}
+                  placeholder="BCA, MCA, B.Tech..."
+                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                />
+
+              </div>
+
+              <button
+                type="button"
+                onClick={addEducation}
+                className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
+              >
+                Add
+              </button>
+
+            </div>
+
+            {errors.education && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.education}
+              </p>
+            )}
+
+            {/* EDUCATION LIST */}
+
+            <div className="flex flex-wrap gap-2 mt-3">
+
+              {formData.education.map((education) => (
+                <span
+                  key={education}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
+                >
+
+                  {education}
+
+                  <button
+                    type="button"
+                    onClick={() => removeEducation(education)}
+                    className="hover:text-red-500"
+                  >
+                    <X size={15} />
+                  </button>
+
+                </span>
+              ))}
+
             </div>
 
           </div>
 
          
 
-          <div className="mt-5">
+          <div className="mt-6">
+
+            <label className="text-sm font-semibold text-zinc-700">
+              Experience
+            </label>
+
+            <div className="flex gap-2 mt-2">
+
+              <div className="relative flex-1">
+
+                <Briefcase
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                />
+
+                <input
+                  type="text"
+                  value={experienceInput}
+                  onChange={(e) => {
+                    setExperienceInput(e.target.value);
+
+                    setErrors((prev) => ({
+                      ...prev,
+                      experience: "",
+                    }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addExperience();
+                    }
+                  }}
+                  placeholder="Frontend Developer - ABC Company"
+                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                />
+
+              </div>
+
+              <button
+                type="button"
+                onClick={addExperience}
+                className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
+              >
+                Add
+              </button>
+
+            </div>
+
+            {errors.experience && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.experience}
+              </p>
+            )}
+
+            
+
+            <div className="flex flex-wrap gap-2 mt-3">
+
+              {formData.experience.map((experience) => (
+                <span
+                  key={experience}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
+                >
+
+                  {experience}
+
+                  <button
+                    type="button"
+                    onClick={() => removeExperience(experience)}
+                    className="hover:text-red-500"
+                  >
+                    <X size={15} />
+                  </button>
+
+                </span>
+              ))}
+
+            </div>
+
+          </div>
+
+         
+
+          <div className="mt-6">
 
             <label className="text-sm font-semibold text-zinc-700">
               Skills
@@ -447,7 +724,8 @@ const ProfileSetupModal = ({ onComplete }) => {
               </p>
             )}
 
-            {/* Skills List */}
+            
+
             <div className="flex flex-wrap gap-2 mt-3">
 
               {formData.skills.map((skill) => (
@@ -455,6 +733,7 @@ const ProfileSetupModal = ({ onComplete }) => {
                   key={skill}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
                 >
+
                   {skill}
 
                   <button
@@ -464,6 +743,7 @@ const ProfileSetupModal = ({ onComplete }) => {
                   >
                     <X size={15} />
                   </button>
+
                 </span>
               ))}
 
@@ -471,7 +751,9 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-          <div className="mt-5">
+         
+
+          <div className="mt-6">
 
             <label className="text-sm font-semibold text-zinc-700">
               About You
@@ -494,7 +776,8 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-          
+         
+
           <button
             type="submit"
             className="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg transition"
