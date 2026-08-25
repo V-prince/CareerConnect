@@ -1,6 +1,8 @@
 import React from 'react'
 
-export const LogoutPopup = ({isOpenPopup ,SetisOpenPopup}) => {
+export const LogoutPopup = ({handelLogout ,SetisOpenPopup}) => {
+
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       
@@ -17,13 +19,14 @@ export const LogoutPopup = ({isOpenPopup ,SetisOpenPopup}) => {
         </p>
 
         <div className="flex justify-end gap-3 mt-6">
-          <button onClick={() => SetisOpenPopup(false)}
+          <button onClick={() => SetisOpenPopup(null)}
             className="px-4 py-2 cursor-pointer rounded-lg border border-zinc-300 text-zinc-700 hover:bg-zinc-100 transition"
           >
             Cancel
           </button>
 
           <button
+            onClick={handelLogout}
             className="px-4 py-2 cursor-pointer rounded-lg bg-black text-white hover:bg-red-600 transition"
           >
             Logout

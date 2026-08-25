@@ -45,6 +45,28 @@ export const LoginAPI = async (formData) => {
   }
 }
 
+
+export const LogoutAPI = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify()
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const GetUserData = async () => {
   try {
 
@@ -54,7 +76,7 @@ export const GetUserData = async () => {
     });
 
     const data = await res.json();
-    
+
     return data;
 
   } catch (error) {

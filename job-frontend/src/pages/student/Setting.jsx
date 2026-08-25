@@ -1,10 +1,35 @@
 import React, { useState } from "react";
 import { LogoutPopup } from "../../components/popups/LogoutPopup";
 import { DeleteAccountPopup } from "../../components/popups/DeleteAccountPopup";
+import { useAuth } from "../../store/UserContext";
+import { LogoutAPI } from "../../Services/authService";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const Setting = () => {
-  const [isOpenPopup, SetisOpenPopup] = useState(false);
+  const [isOpenPopup, SetisOpenPopup] = useState(null);
   const [isOpenDeletePopup, SetisOpenDeletePopup] = useState(false);
+  const { user, setUser, isLoggedIn } = useAuth()
+  const navigate = useNavigate();
+
+
+  const handelLogout = async () => {
+    try {
+      const data = await LogoutAPI();
+      if (!data.success) {
+        return toast.error(data.message);
+      }
+
+      setUser(null);
+      isLoggedIn(false);
+      navigate('/login');
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+
+
 
   return (
     <section className="relative min-h-screen  bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-8">
@@ -25,7 +50,7 @@ export const Setting = () => {
           </div>
 
           <button
-            onClick={() => SetisOpenPopup(true)}
+            onClick={() => SetisOpenPopup(user?._id)}
             className="px-5 py-2.5 rounded-lg cursor-pointer bg-zinc-900 text-white hover:bg-zinc-800 transition"
           >
             Logout
@@ -33,7 +58,7 @@ export const Setting = () => {
         </div>
         {isOpenPopup && (
           <LogoutPopup
-            isOpenPopup={isOpenPopup}
+            handelLogout={handelLogout}
             SetisOpenPopup={SetisOpenPopup}
           />
         )}

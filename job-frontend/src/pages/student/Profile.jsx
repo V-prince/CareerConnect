@@ -12,14 +12,17 @@ import {
   Pencil,
   X,
   Plus,
- 
+
 } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import dayjs from 'dayjs'
 import ProfileSetupModal from "../../components/ProfileSetupModel";
 import { ProfileCard } from "../../components/ProfileCard";
 import { ProfileStatus } from "../../components/ProfileStatus";
 import { Tags } from "../../components/Tags";
+import { GetUserData } from "../../Services/authService";
+import toast from "react-hot-toast";
 
 
 export const Profile = () => {
@@ -33,37 +36,32 @@ export const Profile = () => {
   const [skillsInput, setSkillsInput] = useState("");
   const [educationInput, setEducationInput] = useState("");
   const [experienceInput, setExperienceInput] = useState("");
-  const [data,setData] = useState(null)
+  const [data, setData] = useState(null)
 
-  // ==========================================
+
+  const date = dayjs(data?.user.createdAt)
+  // ===================d=======================
   // PROFILE DATA
   // ==========================================
 
   const [editData, setEditData] = useState({
-    fullname: "Prince Vadher",
-    email: "vadherprince63@gmail.com",
+    fullname: "",
+    email: "",
     company: "",
-    phone: "+91 9978093258",
+    phone: "",
 
     // Multiple education
-    education: ["BCA Semester 3"],
+    education: [],
 
     // Multiple experience
     experience: [],
 
     // Multiple skills
-    skills: [
-      "React",
-      "JavaScript",
-      "HTML",
-      "CSS",
-      "Node.js",
-      "MongoDB",
-    ],
+    skills: [],
 
-    bio: "Passionate MERN Stack Developer and BCA Student. I enjoy building responsive web applications using React, Node.js, Express.js and MongoDB. Currently looking for internship opportunities to improve my skills.",
+    bio: "",
 
-    resume: null,
+    resume: "",
   });
 
   // Original data for Cancel
@@ -310,20 +308,43 @@ export const Profile = () => {
   // PROFILE STRENGTH
   // ==========================================
 
-  const profileStrength = () => {
-    let completed = 0;
-    const total = 5;
 
-    if (editData.fullname) completed++;
-    if (editData.skills.length > 0) completed++;
-    if (editData.resume) completed++;
-    if (editData.education.length > 0) completed++;
-    if (editData.experience.length > 0) completed++;
 
-    return Math.round((completed / total) * 100);
-  };
+  const getData = async () => {
+    try {
 
-  const strength = profileStrength();
+      const data = await GetUserData();
+
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+
+
+
+      setData(data)
+
+
+      setEditData({
+        fullname: data.user.fullname || "",
+        email: data.user.email || "",
+        phone: data.user.phone || "",
+        education: data.user.education || [],
+        experience: data.user.experience || [],
+        skills: data.user.skills || [],
+        bio: data.user.bio || "",
+        resume: data.user.resume || "",
+      })
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+
+
+  useEffect(() => {
+    getData()
+  }, [])
 
   // ==========================================
   // UI
@@ -359,15 +380,15 @@ export const Profile = () => {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
             <img
-              src="/images/profile.jpg"
+              src={data?.user.photo || "/images/profile.png"}
               alt="Profile"
               className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md"
             />
 
             <div className="text-center md:text-left">
 
-              <h1 className="font-bold text-2xl md:text-3xl text-zinc-900">
-                {editData.fullname}
+              <h1 className="font-bold text-2xl md:text-3xl text-zinc-900 capitalize">
+                {data?.user.fullname}
               </h1>
 
               <span className="text-zinc-500 font-semibold">
@@ -380,7 +401,7 @@ export const Profile = () => {
                   <Mail size={20} />
 
                   <span className="text-zinc-800 break-all">
-                    {editData.email}
+                    {data?.user.email}
                   </span>
                 </div>
 
@@ -388,7 +409,7 @@ export const Profile = () => {
                   <Phone size={20} />
 
                   <span className="text-zinc-800">
-                    {editData.phone}
+                    {data?.user.phone || "Not Provided"}
                   </span>
                 </div>
 
@@ -427,7 +448,7 @@ export const Profile = () => {
               </h2>
 
               <span className="text-green-600 font-bold">
-                {strength}%
+                {data?.process.progress}%
               </span>
 
             </div>
@@ -436,7 +457,7 @@ export const Profile = () => {
 
               <div
                 className="h-full bg-green-500 rounded-full transition-all duration-500"
-                style={{ width: `${strength}%` }}
+                style={{ width: `${data?.process.progress}%` }}
               />
 
             </div>
@@ -455,27 +476,32 @@ export const Profile = () => {
 
               <ProfileStatus
                 title="Personal Details"
-                done={Boolean(editData.fullname && editData.phone)}
+                done={Boolean(data?.user.fullname && data?.user.phone)}
               />
 
               <ProfileStatus
                 title="Skills"
-                done={editData.skills.length > 0}
+                done={data?.user.skills.length > 0}
               />
 
               <ProfileStatus
                 title="Resume"
-                done={Boolean(editData.resume)}
+                done={Boolean(data?.user.resume)}
               />
 
               <ProfileStatus
                 title="Education"
-                done={editData.education.length > 0}
+                done={data?.user.education.length > 0}
               />
 
               <ProfileStatus
                 title="Experience"
-                done={editData.experience.length > 0}
+                done={data?.user.experience.length > 0}
+              />
+
+              <ProfileStatus
+                title="Bio"
+                done={data?.user.bio}
               />
 
             </div>
@@ -568,7 +594,7 @@ export const Profile = () => {
             ) : (
 
               <p className="profile-value">
-                {editData.email}
+                {editData.email || "Not Assigned"}
               </p>
 
             )}
@@ -596,7 +622,7 @@ export const Profile = () => {
             ) : (
 
               <p className="profile-value">
-                {editData.phone}
+                {editData.phone || "Not Assigned"}
               </p>
 
             )}
@@ -611,7 +637,7 @@ export const Profile = () => {
           >
 
             <p className="text-base font-semibold text-zinc-900 mt-2">
-              Student
+              {data?.user?.role}
             </p>
 
           </ProfileCard>
@@ -702,7 +728,7 @@ export const Profile = () => {
 
               <div className="flex flex-wrap gap-2">
 
-                {editData.education.map((education) => (
+                {editData.education.length > 0 ? (editData.education.map((education) => (
 
                   <span
                     key={education}
@@ -711,7 +737,13 @@ export const Profile = () => {
                     {education}
                   </span>
 
-                ))}
+                ))) : (
+
+                  <p className="text-zinc-500">
+                    No education added
+                  </p>
+
+                )}
 
               </div>
 
@@ -881,17 +913,18 @@ export const Profile = () => {
 
                 <div className="flex flex-wrap gap-2 mt-5">
 
-                  {editData.skills.map((skill) => (
+                  {
+                    editData.skills.map((skill) => (
 
-                    <Tags
-                      key={skill}
-                      text={skill}
-                      onRemove={() =>
-                        handleRemoveSkill(skill)
-                      }
-                    />
+                      <Tags
+                        key={skill}
+                        text={skill}
+                        onRemove={() =>
+                          handleRemoveSkill(skill)
+                        }
+                      />
 
-                  ))}
+                    ))}
 
                 </div>
 
@@ -901,7 +934,7 @@ export const Profile = () => {
 
               <div className="flex flex-wrap gap-2">
 
-                {editData.skills.map((skill) => (
+                {editData.skills.length > 0 ? (editData.skills.map((skill) => (
 
                   <span
                     key={skill}
@@ -910,7 +943,12 @@ export const Profile = () => {
                     {skill}
                   </span>
 
-                ))}
+                ))) : (
+                  <p className="text-zinc-500">
+                    No skills added
+                  </p>
+
+                )}
 
               </div>
 
@@ -943,7 +981,7 @@ export const Profile = () => {
               ) : (
 
                 <p className="text-zinc-700 leading-7">
-                  {editData.bio}
+                  {editData.bio || "Bio not added"}
                 </p>
 
               )}
