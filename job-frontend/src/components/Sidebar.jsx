@@ -87,6 +87,11 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       to: "/employer/applicants",
     },
     {
+      icon: <User />,
+      title: "Profile",
+      to: "/user/profile",
+    },
+    {
       icon: <Building2 />,
       title: "Company Profile",
       to: "/employer/company/profile",
