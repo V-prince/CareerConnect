@@ -18,7 +18,7 @@ export const TopHeader = ({ IsOpen, SetIsOpen }) => {
           />
 
           <div>
-            <h2 className="font-bold text-sm md:text-sm">{user?.fullname}</h2>
+            <h2 className="font-bold text-sm md:text-sm capitalize">{user?.fullname}</h2>
             <p className="text-zinc-500 text-xs md:text-sm">{user?.role}</p>
           </div>
         </div>

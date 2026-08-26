@@ -1,7 +1,7 @@
 import React from "react";
 
 export const DeleteAccountPopup = ({
-  isOpenDeletePopup,
+  handelDeleteUser,
   SetisOpenDeletePopup,
 }) => {
   return (
@@ -21,13 +21,13 @@ export const DeleteAccountPopup = ({
 
         <div className="flex justify-end gap-3 mt-6">
           <button
-            onClick={() => SetisOpenDeletePopup(false)}
+            onClick={() => SetisOpenDeletePopup(null)}
             className="px-4 py-2 cursor-pointer rounded-lg border border-zinc-300 text-zinc-700 hover:bg-zinc-100 transition"
           >
             Cancel
           </button>
 
-          <button className="px-4 py-2 cursor-pointer rounded-lg bg-red-500 text-white hover:bg-red-600  transition">
+          <button onClick={handelDeleteUser} className="px-4 py-2 cursor-pointer rounded-lg bg-red-500 text-white hover:bg-red-600  transition">
             Delete
           </button>
         </div>

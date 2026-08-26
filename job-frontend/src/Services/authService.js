@@ -67,6 +67,53 @@ export const LogoutAPI = async () => {
   }
 }
 
+
+
+
+
+export const DeleteUserAPI = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/auth/account/delete`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify()
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export const CreateUserAPI = async (formData) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/auth/account/create`, {
+      method: "POST",
+      credentials: "include",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+
 export const GetUserData = async () => {
   try {
 
@@ -76,7 +123,7 @@ export const GetUserData = async () => {
     });
 
     const data = await res.json();
-
+    console.log(data)
     return data;
 
   } catch (error) {

@@ -90,7 +90,7 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <Link to={"/user/profile"}  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-100 transition-all duration-200 cursor-pointer">
+              <Link to={"/user/profile"}  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-100/70 backdrop-blur-xl transition-all duration-200 cursor-pointer">
 
 
                 <span
@@ -109,7 +109,7 @@ export const Navbar = () => {
                   />
 
                   <div className="leading-tight">
-                    <h2 className="font-semibold text-sm text-zinc-800">
+                    <h2 className="font-semibold text-sm text-zinc-800 capitalize">
                       {user?.fullname || "Guest User"}
                     </h2>
 

@@ -12,6 +12,7 @@ import {
   Pencil,
   X,
   Plus,
+  MapIcon,
 
 } from "lucide-react";
 
@@ -26,7 +27,6 @@ import toast from "react-hot-toast";
 
 
 export const Profile = () => {
-  const [showProfileModal, setShowProfileModal] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
 
   // ==========================================
@@ -49,6 +49,8 @@ export const Profile = () => {
     email: "",
     company: "",
     phone: "",
+
+    location: "",
 
     // Multiple education
     education: [],
@@ -328,6 +330,7 @@ export const Profile = () => {
         fullname: data.user.fullname || "",
         email: data.user.email || "",
         phone: data.user.phone || "",
+        location: data.user.location || "",
         education: data.user.education || [],
         experience: data.user.experience || [],
         skills: data.user.skills || [],
@@ -629,6 +632,35 @@ export const Profile = () => {
 
           </ProfileCard>
 
+
+          {/* Location */}
+
+          <ProfileCard
+            icon={<MapIcon size={18} />}
+            title="Location"
+          >
+
+            {isEdit ? (
+
+              <input
+                type="text"
+                name="location"
+                value={editData.location}
+                onChange={handleOnChange}
+                placeholder="Kamrej,Surat,Gujarat"
+                className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+              />
+
+            ) : (
+
+              <p className="profile-value">
+                {editData.location || "Not Assigned"}
+              </p>
+
+            )}
+
+          </ProfileCard>
+
           {/* ROLE */}
 
           <ProfileCard
@@ -643,8 +675,7 @@ export const Profile = () => {
           </ProfileCard>
 
           {/* COMPANY */}
-
-          <ProfileCard
+          {data?.user.companey && (<ProfileCard
             icon={<Building2 size={18} />}
             title="Company"
           >
@@ -668,7 +699,8 @@ export const Profile = () => {
 
             )}
 
-          </ProfileCard>
+          </ProfileCard>)}
+
 
           {/* ==========================================
               EDUCATION
@@ -865,7 +897,8 @@ export const Profile = () => {
             ) : (
 
               <a
-                href="#"
+                href={data?.user?.resume}
+                target="_blank"
                 className="text-blue-600 hover:underline font-medium"
               >
                 View Resume
@@ -996,10 +1029,10 @@ export const Profile = () => {
 
       {/* PROFILE SETUP MODAL */}
 
-      {showProfileModal && (
+      {data?.user?.isComplateProfile === false && (
         <ProfileSetupModal
           onComplete={() =>
-            setShowProfileModal(false)
+            getData()
           }
         />
       )}

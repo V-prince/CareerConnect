@@ -15,10 +15,6 @@ const AuthProvider = ({ children }) => {
       SetLoading(true);
 
       const data = await GetUserData();
-        console.log(data)
-      if (!data.success) {
-        return toast.error(data.message);
-      }
 
       setUser(data.user);
 

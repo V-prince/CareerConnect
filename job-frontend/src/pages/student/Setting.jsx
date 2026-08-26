@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { LogoutPopup } from "../../components/popups/LogoutPopup";
 import { DeleteAccountPopup } from "../../components/popups/DeleteAccountPopup";
 import { useAuth } from "../../store/UserContext";
-import { LogoutAPI } from "../../Services/authService";
+import { DeleteUserAPI, LogoutAPI } from "../../Services/authService";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const Setting = () => {
   const [isOpenPopup, SetisOpenPopup] = useState(null);
-  const [isOpenDeletePopup, SetisOpenDeletePopup] = useState(false);
+  const [isOpenDeletePopup, SetisOpenDeletePopup] = useState(null);
   const { user, setUser, isLoggedIn } = useAuth()
   const navigate = useNavigate();
 
@@ -20,9 +20,28 @@ export const Setting = () => {
         return toast.error(data.message);
       }
 
+      navigate('/login');
+      toast.success("Logout  successful!")
       setUser(null);
       isLoggedIn(false);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handelDeleteUser = async () => {
+    try {
+
+      const data = await DeleteUserAPI();
+      if (!data.success) {
+        return toast.error(data.message);
+      }
+
       navigate('/login');
+      toast.success(data.message);
+      setUser(null);
+      isLoggedIn(false);
     } catch (error) {
       console.log(error)
     }
@@ -76,14 +95,14 @@ export const Setting = () => {
           </div>
 
           <button
-            onClick={() => SetisOpenDeletePopup(true)}
+            onClick={() => SetisOpenDeletePopup(user?._id)}
             className="px-5 py-2.5 rounded-lg bg-red-600 cursor-pointer text-white hover:bg-red-700 transition"
           >
             Delete
           </button>
           {isOpenDeletePopup && (
             <DeleteAccountPopup
-              isOpenDeletePopup={isOpenDeletePopup}
+              handelDeleteUser={handelDeleteUser}
               SetisOpenDeletePopup={SetisOpenDeletePopup}
             />
           )}

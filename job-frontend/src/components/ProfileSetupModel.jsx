@@ -7,7 +7,11 @@ import {
   FileText,
   Briefcase,
   X,
+  PinIcon,
+  MapIcon,
 } from "lucide-react";
+import { CreateUserAPI } from "../Services/authService";
+import toast from "react-hot-toast";
 
 const ProfileSetupModal = ({ onComplete }) => {
   const [formData, setFormData] = useState({
@@ -17,7 +21,8 @@ const ProfileSetupModal = ({ onComplete }) => {
 
     education: [],
     experience: [],
-    
+
+    location: "",
     photo: null,
     skills: [],
     resume: null,
@@ -54,19 +59,10 @@ const ProfileSetupModal = ({ onComplete }) => {
       newErrors.photo = "Profile photo is required";
     }
 
-    // Skills
-    if (formData.skills.length === 0) {
-      newErrors.skills = "Skills are required";
-    }
 
     // Resume
     if (!formData.resume) {
       newErrors.resume = "Resume is required";
-    }
-
-    // Bio
-    if (!formData.bio.trim()) {
-      newErrors.bio = "Bio is required";
     }
 
     setErrors(newErrors);
@@ -326,27 +322,19 @@ const ProfileSetupModal = ({ onComplete }) => {
       );
 
       data.append("bio", formData.bio);
+      data.append("location", formData.location);
 
       // Files
       data.append("photo", formData.photo);
       data.append("resume", formData.resume);
 
-      console.log("Profile FormData:", data);
+      const bdata = await CreateUserAPI(data)
 
-      /*
-      અહીં API call કરવી:
+      if(!bdata.success){
+        return toast.error(bdata.message);
+      }
 
-      await axios.put(
-        "/api/user/create-profile",
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      */
-
+      toast.success(bdata.message);
       onComplete();
 
     } catch (error) {
@@ -424,7 +412,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               )}
             </div>
 
-            
+
 
             {/* PHOTO */}
 
@@ -504,6 +492,37 @@ const ProfileSetupModal = ({ onComplete }) => {
               {formData.resume && (
                 <p className="text-sm text-zinc-500 mt-2">
                   Selected: {formData.resume.name}
+                </p>
+              )}
+
+            </div>
+
+            <div>
+              <label className="text-sm font-semibold text-zinc-700">
+                Location
+              </label>
+
+              <div className="relative mt-2">
+
+                <MapIcon
+                  size={18}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                />
+
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location}
+                  placeholder="Kamrej,Surat,Gujarat"
+                  onChange={handleChange}
+                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-2.5 text-sm"
+                />
+
+              </div>
+
+              {errors.location && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.location}
                 </p>
               )}
 
@@ -594,7 +613,7 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-         
+
 
           <div className="mt-6">
 
@@ -650,7 +669,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               </p>
             )}
 
-            
+
 
             <div className="flex flex-wrap gap-2 mt-3">
 
@@ -677,7 +696,7 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-         
+
 
           <div className="mt-6">
 
@@ -724,7 +743,7 @@ const ProfileSetupModal = ({ onComplete }) => {
               </p>
             )}
 
-            
+
 
             <div className="flex flex-wrap gap-2 mt-3">
 
@@ -751,7 +770,7 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-         
+
 
           <div className="mt-6">
 
@@ -776,7 +795,7 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           </div>
 
-         
+
 
           <button
             type="submit"
