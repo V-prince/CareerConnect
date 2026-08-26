@@ -123,7 +123,25 @@ export const GetUserData = async () => {
     });
 
     const data = await res.json();
-    console.log(data)
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+export const UpdateUserAPI = async (formData) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/auth/user/account/edit/data`, {
+      method: "PUT",
+      credentials: "include",
+      body: formData
+    });
+
+    const data = await res.json();
+
     return data;
 
   } catch (error) {

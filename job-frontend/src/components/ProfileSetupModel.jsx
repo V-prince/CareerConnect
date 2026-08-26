@@ -14,6 +14,7 @@ import { CreateUserAPI } from "../Services/authService";
 import toast from "react-hot-toast";
 
 const ProfileSetupModal = ({ onComplete }) => {
+  const [loading, SetLoading] = useState(false)
   const [formData, setFormData] = useState({
     fullname: "",
     email: "",
@@ -327,10 +328,10 @@ const ProfileSetupModal = ({ onComplete }) => {
       // Files
       data.append("photo", formData.photo);
       data.append("resume", formData.resume);
-
+      SetLoading(true)
       const bdata = await CreateUserAPI(data)
 
-      if(!bdata.success){
+      if (!bdata.success) {
         return toast.error(bdata.message);
       }
 
@@ -339,6 +340,9 @@ const ProfileSetupModal = ({ onComplete }) => {
 
     } catch (error) {
       console.log(error);
+    }
+    finally {
+      SetLoading(false)
     }
   };
 
@@ -799,9 +803,13 @@ const ProfileSetupModal = ({ onComplete }) => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full mt-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-lg transition"
           >
-            Complete Profile
+            {
+              loading ? <Loader className=" animate-spin" /> : "Complete Profile"
+            }
+
           </button>
 
         </form>

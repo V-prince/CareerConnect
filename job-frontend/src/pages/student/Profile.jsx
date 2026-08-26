@@ -13,6 +13,7 @@ import {
   X,
   Plus,
   MapIcon,
+  Loader,
 
 } from "lucide-react";
 
@@ -22,7 +23,7 @@ import ProfileSetupModal from "../../components/ProfileSetupModel";
 import { ProfileCard } from "../../components/ProfileCard";
 import { ProfileStatus } from "../../components/ProfileStatus";
 import { Tags } from "../../components/Tags";
-import { GetUserData } from "../../Services/authService";
+import { GetUserData, UpdateUserAPI } from "../../Services/authService";
 import toast from "react-hot-toast";
 
 
@@ -36,7 +37,9 @@ export const Profile = () => {
   const [skillsInput, setSkillsInput] = useState("");
   const [educationInput, setEducationInput] = useState("");
   const [experienceInput, setExperienceInput] = useState("");
+  const [profileImage, SetProfileImage] = useState(null)
   const [data, setData] = useState(null)
+  const [loading, SetLoading] = useState(false)
 
 
   const date = dayjs(data?.user.createdAt)
@@ -49,6 +52,7 @@ export const Profile = () => {
     email: "",
     company: "",
     phone: "",
+    photo: "",
 
     location: "",
 
@@ -223,6 +227,18 @@ export const Profile = () => {
     }));
   };
 
+  const handelOnProfile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    
+    SetProfileImage(URL.createObjectURL(file))
+
+    setEditData((prev) => ({
+      ...prev,
+      photo: file,
+    }));
+  }
+
   // ==========================================
   // EDIT PROFILE
   // ==========================================
@@ -238,18 +254,11 @@ export const Profile = () => {
 
   const handleSave = async () => {
     try {
-      console.log("Profile Data:", editData);
-
-      /*
-      Backend API અહીં આવશે.
-
       const formData = new FormData();
-
-      formData.append("fullname", editData.fullname);
-      formData.append("email", editData.email);
       formData.append("phone", editData.phone);
       formData.append("company", editData.company);
       formData.append("bio", editData.bio);
+      formData.append("location", editData.location);
 
       formData.append(
         "education",
@@ -266,26 +275,30 @@ export const Profile = () => {
         JSON.stringify(editData.skills)
       );
 
+      if(editData.photo){
+        formData.append("photo", editData.photo);
+      }
+
       if (editData.resume) {
         formData.append("resume", editData.resume);
       }
 
-      await axios.put(
-        "/api/user/update-profile",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      */
+      SetLoading(true)
+      const edata = await UpdateUserAPI(formData);
+
+      if (!edata.success) {
+        return toast.error(edata.message);
+      }
+
+      toast.success(edata.message);
 
       setBackupData(null);
       setIsEdit(false);
-
+      getData()
     } catch (error) {
       console.log("Profile update error:", error);
+    } finally {
+      SetLoading(false)
     }
   };
 
@@ -382,11 +395,36 @@ export const Profile = () => {
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
-            <img
-              src={data?.user.photo || "/images/profile.png"}
-              alt="Profile"
-              className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md"
-            />
+            <div className="relative">
+              <img
+                src={profileImage || data?.user.photo || "/images/profile.png"}
+                alt="Profile"
+                className="w-36 h-36 md:w-48 md:h-48 rounded-full object-cover border-4 border-white shadow-md"
+              />
+
+              {isEdit && (
+                <>
+                  <label
+                    htmlFor="profilePhoto"
+                    className="absolute bottom-2 right-5 flex items-center gap-2 
+                            bg-black text-white px-2 py-2 rounded-full 
+                            text-sm font-medium cursor-pointer shadow-md 
+                            hover:bg-zinc-800 transition"
+                  >
+                    <Pencil size={16} />
+                  </label>
+
+                  <input
+                    id="profilePhoto"
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handelOnProfile}
+                  />
+                </>
+              )}
+
+            </div>
 
             <div className="text-center md:text-left">
 
@@ -438,9 +476,7 @@ export const Profile = () => {
 
           </div>
 
-          {/* ==========================================
-              PROFILE STRENGTH
-          ========================================== */}
+          
 
           <div className="w-full xl:w-80 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
 
@@ -479,7 +515,7 @@ export const Profile = () => {
 
               <ProfileStatus
                 title="Personal Details"
-                done={Boolean(data?.user.fullname && data?.user.phone)}
+                done={Boolean(data?.user.fullname && data?.user.phone && data?.user.location)}
               />
 
               <ProfileStatus
@@ -553,13 +589,15 @@ export const Profile = () => {
 
               <button
                 onClick={handleSave}
+                disabled={loading}
                 className="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md transition cursor-pointer"
               >
-                Save
+                {loading ? <Loader className=" animate-spin" /> : "Save"}
               </button>
 
               <button
                 onClick={handleCancel}
+                disabled={loading}
                 className="px-5 py-3 rounded-xl bg-zinc-100 hover:bg-zinc-200 transition cursor-pointer"
               >
                 Cancel
@@ -646,6 +684,7 @@ export const Profile = () => {
                 type="text"
                 name="location"
                 value={editData.location}
+                maxLength={40}
                 onChange={handleOnChange}
                 placeholder="Kamrej,Surat,Gujarat"
                 className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
