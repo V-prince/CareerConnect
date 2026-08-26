@@ -70,7 +70,9 @@ export const SaveJobs = () => {
       if (!data.success) {
         return toast.error(data.message)
       }
-      SetJobData(data.jobs)
+
+      console.log(data)
+      // SetJobData(data.jobs)
 
     } catch (error) {
       console.log("savejobs", error)

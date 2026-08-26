@@ -9,18 +9,15 @@ const emptyCompany = {
   industry: "",
   location: "",
   founded: "",
-  employees: "",
-  companyType: "",
+  size: "",
+  companeyType: "",
   registrationNumber: "",
   phone: "",
   email: "",
   website: "",
   description: "",
-  about: "",
-  companyDescription: "",
   specializations: "",
   logo: "",
-  culture: [],
 };
 
 const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
@@ -35,27 +32,20 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
 
     const data = {
       ...emptyCompany,
-      ...existingCompany,
-
-      name: existingCompany.name || "",
-      industry: existingCompany.industry || "",
-      location: existingCompany.location || "",
-      founded: existingCompany.founded || "",
-      employees: existingCompany.employees || "",
-      companyType: existingCompany.companyType || "",
-      registrationNumber: existingCompany.registrationNumber || "",
-      phone: existingCompany.phone || "",
-      email: existingCompany.email || "",
-      website: existingCompany.website || "",
-      description: existingCompany.description || "",
-      about: existingCompany.about || "",
-      companyDescription: existingCompany.companyDescription || "",
-      specializations: existingCompany.specializations || "",
-      logo: existingCompany.logo || "",
-
-      culture: Array.isArray(existingCompany.culture)
-        ? existingCompany.culture
-        : [],
+      
+      name: existingCompany.companyName,
+      industry: existingCompany.industry.trim(),
+      location: existingCompany.location.trim(),
+      founded: existingCompany.founded.trim(),
+      size: existingCompany.size.trim(),
+      companeyType: existingCompany.companeyType.trim(),
+      registrationNumber: existingCompany.registrationNumber.trim(),
+      phone: existingCompany.phone.trim(),
+      email: existingCompany.email.trim(),
+      website: existingCompany.website.trim(),
+      description: existingCompany.description.trim(),
+      specializations: existingCompany.specializations.trim(),
+       logo: existingCompany.logo || "",
     };
 
     setFormData(data);
@@ -70,8 +60,8 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
     company?.industry ||
     company?.location ||
     company?.email ||
-    company?.companyType ||
-    company?.employees,
+    company?.companeyType ||
+    company?.size
   );
 
   const handleChange = (e) => {
@@ -118,7 +108,7 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
 
       setFormData((prev) => ({
         ...prev,
-        logo: result,
+        logo: file,
       }));
 
       setErrors((prev) => ({
@@ -154,12 +144,12 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
       newErrors.location = "Company location is required.";
     }
 
-    if (!formData.companyType.trim()) {
-      newErrors.companyType = "Company type is required.";
+    if (!formData.companeyType.trim()) {
+      newErrors.companeyType = "Company type is required.";
     }
 
-    if (!formData.employees.trim()) {
-      newErrors.employees = "Company size is required.";
+    if (!formData.size.trim()) {
+      newErrors.size = "Company size is required.";
     }
 
     if (!formData.email.trim()) {
@@ -191,18 +181,14 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
       industry: formData.industry.trim(),
       location: formData.location.trim(),
       founded: formData.founded.trim(),
-      employees: formData.employees.trim(),
-      companyType: formData.companyType.trim(),
+      size: formData.size.trim(),
+      companeyType: formData.companeyType.trim(),
       registrationNumber: formData.registrationNumber.trim(),
       phone: formData.phone.trim(),
       email: formData.email.trim(),
       website: formData.website.trim(),
       description: formData.description.trim(),
-      about: formData.about.trim(),
-      companyDescription: formData.companyDescription.trim(),
       specializations: formData.specializations.trim(),
-
-      culture: Array.isArray(formData.culture) ? formData.culture : [],
     };
 
     if (onSave) {

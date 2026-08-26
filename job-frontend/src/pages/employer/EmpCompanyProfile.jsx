@@ -1,50 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, Pencil } from "lucide-react";
 
 import EmpCompleteProfilePopup from "../../components/popups/EmpCompleteProfilePopup";
-
+import toast from "react-hot-toast"
 import EmpCompanyOverview from "../../components/employer/EmpCompanyOverview";
 import EmpCompanyAbout from "../../components/employer/EmpCompanyAbout";
 import EmpCompanyDetails from "../../components/employer/EmpCompanyDetails";
+import { CreateCompaneyAPI, GetCompaneyData } from "../../Services/companeyService";
 
-const initialCompanyData = {
-  name: "TechSolutions Inc.",
-  industry: "Technology • Software Development",
-  location: "Bengaluru, India",
-  founded: "2020",
-  employees: "51-200 employees",
-  companyType: "Private Limited",
-  registrationNumber: "TSI20200001",
-  phone: "+91 98765 43210",
-  email: "hr@techsolutions.com",
-  website: "https://techsolutions.com",
-
-  description:
-    "TechSolutions Inc. is a leading technology company specializing in innovative software solutions.",
-
-  about:
-    "Founded in 2020, TechSolutions Inc. has been at the forefront of digital innovation, delivering cutting-edge software solutions to clients worldwide.",
-
-  companyDescription:
-    "TechSolutions Inc. is a leading technology company specializing in innovative software solutions.",
-
-  specializations:
-    "Web Development, Mobile Apps, Cloud Solutions, AI/ML, Digital Transformation",
-
-  logo: "",
-
-  culture: [],
-};
 
 const EmpCompanyProfile = () => {
   const navigate = useNavigate();
 
-  const [companyData, setCompanyData] = useState(initialCompanyData);
+  const [companyData, setCompanyData] = useState(null);
 
   const [showCompleteProfile, setShowCompleteProfile] = useState(false);
 
-  const handleSaveCompany = (updatedCompany) => {
+  const handleSaveCompany = async (updatedCompany) => {
+
+    try {
+      const data = new FormData();
+
+      data.append("companyName", updatedCompany.name);
+      data.append("industry", updatedCompany.industry);
+      data.append("location", updatedCompany.location);
+      data.append("founded", updatedCompany.founded);
+      data.append("size", updatedCompany.size);
+      data.append("companeyType", updatedCompany.companeyType);
+      data.append("registrationNumber", updatedCompany.registrationNumber);
+      data.append("phone", updatedCompany.phone);
+      data.append("email", updatedCompany.email);
+      data.append("description", updatedCompany.description);
+      data.append("specializations", updatedCompany.specializations);
+      data.append("photo", updatedCompany.logo);
+      data.append("website", updatedCompany.website);
+
+
+      if (!companyData) {
+
+        const Createdata = await CreateCompaneyAPI(data);
+
+        if (!Createdata.success) {
+          return toast.error(Createdata.message)
+        }
+
+        setCompanyData(Createdata?.companey)
+        setShowCompleteProfile(false);
+        getCompaney()
+        toast.success(Createdata.message)
+        return;
+      }
+
+
+
+
+    } catch (error) {
+      console.log("companey detail err:", error)
+    }
+
+
+
+
+
+
+
     setCompanyData(updatedCompany);
     setShowCompleteProfile(false);
   };
@@ -52,38 +72,57 @@ const EmpCompanyProfile = () => {
   const companyDetails = [
     {
       label: "Founded",
-      value: companyData.founded || "Not provided",
+      value: companyData?.founded || "Not provided",
       icon: "calendar",
     },
     {
       label: "Company Size",
-      value: companyData.employees || "Not provided",
+      value: companyData?.size || "Not provided",
       icon: "users",
     },
     {
       label: "Industry",
-      value: companyData.industry || "Not provided",
+      value: companyData?.industry || "Not provided",
       icon: "industry",
     },
     {
       label: "Headquarters",
-      value: companyData.location || "Not provided",
+      value: companyData?.location || "Not provided",
       icon: "location",
     },
     {
       label: "Company Type",
-      value: companyData.companyType || "Not provided",
+      value: companyData?.companeyType || "Not provided",
       icon: "briefcase",
     },
     {
       label: "Specializations",
-      value: companyData.specializations || "Not provided",
+      value: companyData?.specializations || "Not provided",
       icon: "specialization",
     },
   ];
 
+
+  const getCompaney = async () => {
+    try {
+
+      const data = await GetCompaneyData();
+
+      console.log(data)
+
+      setCompanyData(data.companey)
+
+    } catch (error) {
+      console.log("companey detail err:", error)
+    }
+  }
+
+  useEffect(() => {
+    getCompaney();
+  }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16">
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-7">
           <button

@@ -29,7 +29,7 @@ import toast from "react-hot-toast";
 
 export const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
-
+  const [showProfileModal, setShowProfileModal] = useState(true);
   // ==========================================
   // INPUT STATES
   // ==========================================
@@ -230,7 +230,7 @@ export const Profile = () => {
   const handelOnProfile = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     SetProfileImage(URL.createObjectURL(file))
 
     setEditData((prev) => ({
@@ -275,7 +275,7 @@ export const Profile = () => {
         JSON.stringify(editData.skills)
       );
 
-      if(editData.photo){
+      if (editData.photo) {
         formData.append("photo", editData.photo);
       }
 
@@ -476,7 +476,7 @@ export const Profile = () => {
 
           </div>
 
-          
+
 
           <div className="w-full xl:w-80 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm">
 
@@ -515,27 +515,33 @@ export const Profile = () => {
 
               <ProfileStatus
                 title="Personal Details"
-                done={Boolean(data?.user.fullname && data?.user.phone && data?.user.location)}
+                done={Boolean(data?.user.fullname && data?.user.phone && data?.user.location && data?.user.photo)}
               />
+              {
+                data?.user?.role === "candidate" && (
+                  <>
 
-              <ProfileStatus
-                title="Skills"
-                done={data?.user.skills.length > 0}
-              />
+                    <ProfileStatus
+                      title="Skills"
+                      done={data?.user.skills.length > 0}
+                    />
 
-              <ProfileStatus
-                title="Resume"
-                done={Boolean(data?.user.resume)}
-              />
+                    <ProfileStatus
+                      title="Resume"
+                      done={Boolean(data?.user.resume)}
+                    />
+
+                    <ProfileStatus
+                      title="Experience"
+                      done={data?.user.experience.length > 0}
+                    />
+                  </>
+
+                )}
 
               <ProfileStatus
                 title="Education"
                 done={data?.user.education.length > 0}
-              />
-
-              <ProfileStatus
-                title="Experience"
-                done={data?.user.experience.length > 0}
               />
 
               <ProfileStatus
@@ -825,208 +831,216 @@ export const Profile = () => {
           {/* ==========================================
               EXPERIENCE
           ========================================== */}
+          {data?.user?.role === "candidate" && (
 
-          <ProfileCard
-            icon={<BriefcaseBusiness size={18} />}
-            title="Experience"
-          >
 
-            {isEdit ? (
+            <ProfileCard
+              icon={<BriefcaseBusiness size={18} />}
+              title="Experience"
+            >
 
-              <>
+              {isEdit ? (
 
-                <div className="flex gap-2">
+                <>
 
-                  <input
-                    type="text"
-                    value={experienceInput}
-                    onChange={(e) =>
-                      setExperienceInput(e.target.value)
-                    }
-                    onKeyDown={handleExperienceKeyDown}
-                    placeholder="Frontend Developer - ABC Company"
-                    className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
-                  />
+                  <div className="flex gap-2">
 
-                  <button
-                    type="button"
-                    onClick={handleAddExperience}
-                    className="px-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer"
-                  >
-                    <Plus size={20} />
-                  </button>
-
-                </div>
-
-                <div className="flex flex-wrap gap-2 mt-4">
-
-                  {editData.experience.map((experience) => (
-
-                    <Tags
-                      key={experience}
-                      text={experience}
-                      onRemove={() =>
-                        handleRemoveExperience(experience)
+                    <input
+                      type="text"
+                      value={experienceInput}
+                      onChange={(e) =>
+                        setExperienceInput(e.target.value)
                       }
+                      onKeyDown={handleExperienceKeyDown}
+                      placeholder="Frontend Developer - ABC Company"
+                      className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                     />
 
-                  ))}
-
-                </div>
-
-              </>
-
-            ) : (
-
-              <div className="flex flex-wrap gap-2">
-
-                {editData.experience.length > 0 ? (
-
-                  editData.experience.map((experience) => (
-
-                    <span
-                      key={experience}
-                      className="px-3 py-2 bg-zinc-100 rounded-full text-sm font-medium"
+                    <button
+                      type="button"
+                      onClick={handleAddExperience}
+                      className="px-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition cursor-pointer"
                     >
-                      {experience}
-                    </span>
+                      <Plus size={20} />
+                    </button>
 
-                  ))
+                  </div>
 
-                ) : (
+                  <div className="flex flex-wrap gap-2 mt-4">
 
-                  <p className="text-zinc-500">
-                    No experience added
-                  </p>
-
-                )}
-
-              </div>
-
-            )}
-
-          </ProfileCard>
-
-          {/* RESUME */}
-
-          <ProfileCard
-            icon={<File size={18} />}
-            title="Resume"
-          >
-
-            {isEdit ? (
-
-              <div>
-
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleOnFileChange}
-                  className="w-full text-sm text-zinc-600"
-                />
-
-                {editData.resume && (
-                  <p className="text-sm text-green-600 mt-2">
-                    {editData.resume.name}
-                  </p>
-                )}
-
-              </div>
-
-            ) : (
-
-              <a
-                href={data?.user?.resume}
-                target="_blank"
-                className="text-blue-600 hover:underline font-medium"
-              >
-                View Resume
-              </a>
-
-            )}
-
-          </ProfileCard>
-
-          {/* ==========================================
-              SKILLS
-          ========================================== */}
-
-          <ProfileCard
-            icon={<Code2 size={18} />}
-            title="Skills"
-            action={
-              isEdit && (
-                <button
-                  type="button"
-                  onClick={handleAddSkill}
-                  className="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
-                >
-                  <Plus size={16} />
-                  Add
-                </button>
-              )
-            }
-          >
-
-            {isEdit ? (
-
-              <>
-
-                <input
-                  type="text"
-                  value={skillsInput}
-                  placeholder="React, JavaScript, HTML..."
-                  onChange={(e) =>
-                    setSkillsInput(e.target.value)
-                  }
-                  onKeyDown={handleSkillsKeyDown}
-                  className="profile-input"
-                />
-
-                <div className="flex flex-wrap gap-2 mt-5">
-
-                  {
-                    editData.skills.map((skill) => (
+                    {editData.experience.map((experience) => (
 
                       <Tags
-                        key={skill}
-                        text={skill}
+                        key={experience}
+                        text={experience}
                         onRemove={() =>
-                          handleRemoveSkill(skill)
+                          handleRemoveExperience(experience)
                         }
                       />
 
                     ))}
 
+                  </div>
+
+                </>
+
+              ) : (
+
+                <div className="flex flex-wrap gap-2">
+
+                  {editData.experience.length > 0 ? (
+
+                    editData.experience.map((experience) => (
+
+                      <span
+                        key={experience}
+                        className="px-3 py-2 bg-zinc-100 rounded-full text-sm font-medium"
+                      >
+                        {experience}
+                      </span>
+
+                    ))
+
+                  ) : (
+
+                    <p className="text-zinc-500">
+                      No experience added
+                    </p>
+
+                  )}
+
                 </div>
 
-              </>
+              )}
 
-            ) : (
+            </ProfileCard>
+          )}
 
-              <div className="flex flex-wrap gap-2">
+          {/* RESUME */}
+          {
+            data?.user?.role === "candidate" && (
 
-                {editData.skills.length > 0 ? (editData.skills.map((skill) => (
+              <ProfileCard
+                icon={<File size={18} />}
+                title="Resume"
+              >
 
-                  <span
-                    key={skill}
-                    className="px-3 py-1 bg-zinc-100 rounded-full text-sm"
+                {isEdit ? (
+
+                  <div>
+
+                    <input
+                      type="file"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleOnFileChange}
+                      className="w-full text-sm text-zinc-600"
+                    />
+
+                    {editData.resume && (
+                      <p className="text-sm text-green-600 mt-2">
+                        {editData.resume.name}
+                      </p>
+                    )}
+
+                  </div>
+
+                ) : (
+
+                  <a
+                    href={data?.user?.resume}
+                    target="_blank"
+                    className="text-blue-600 hover:underline font-medium"
                   >
-                    {skill}
-                  </span>
-
-                ))) : (
-                  <p className="text-zinc-500">
-                    No skills added
-                  </p>
+                    View Resume
+                  </a>
 
                 )}
 
-              </div>
-
+              </ProfileCard>
             )}
 
-          </ProfileCard>
+          {/* ==========================================
+              SKILLS
+          ========================================== */}
+          {data?.user?.role === "candidate" && (
+
+            <ProfileCard
+              icon={<Code2 size={18} />}
+              title="Skills"
+              action={
+                isEdit && (
+                  <button
+                    type="button"
+                    onClick={handleAddSkill}
+                    className="flex items-center gap-1 px-4 py-2 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition cursor-pointer"
+                  >
+                    <Plus size={16} />
+                    Add
+                  </button>
+                )
+              }
+            >
+
+              {isEdit ? (
+
+                <>
+
+                  <input
+                    type="text"
+                    value={skillsInput}
+                    placeholder="React, JavaScript, HTML..."
+                    onChange={(e) =>
+                      setSkillsInput(e.target.value)
+                    }
+                    onKeyDown={handleSkillsKeyDown}
+                    className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                  <div className="flex flex-wrap gap-2 mt-5">
+
+                    {
+                      editData.skills.map((skill) => (
+
+                        <Tags
+                          key={skill}
+                          text={skill}
+                          onRemove={() =>
+                            handleRemoveSkill(skill)
+                          }
+                        />
+
+                      ))}
+
+                  </div>
+
+                </>
+
+              ) : (
+
+                <div className="flex flex-wrap gap-2">
+
+                  {editData.skills.length > 0 ? (editData.skills.map((skill) => (
+
+                    <span
+                      key={skill}
+                      className="px-3 py-1 bg-zinc-100 rounded-full text-sm"
+                    >
+                      {skill}
+                    </span>
+
+                  ))) : (
+                    <p className="text-zinc-500">
+                      No skills added
+                    </p>
+
+                  )}
+
+                </div>
+
+              )}
+
+            </ProfileCard>
+          )}
 
           {/* ==========================================
               BIO
@@ -1068,10 +1082,12 @@ export const Profile = () => {
 
       {/* PROFILE SETUP MODAL */}
 
-      {data?.user?.isComplateProfile === false && (
+      {data?.user?.isComplateProfile === false && showProfileModal && (
         <ProfileSetupModal
-          onComplete={() =>
+          onComplete={() => {
             getData()
+            setShowProfileModal(false)
+          }
           }
         />
       )}

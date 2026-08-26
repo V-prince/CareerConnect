@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const industryOptions = [
   "Information Technology",
@@ -11,13 +11,13 @@ const industryOptions = [
   "Finance",
 ];
 
-const companyTypeOptions = ["Private Limited", "Public Limited"];
+const companeyTypeOptions = ["Private Limited", "Public Limited"];
 
 const companySizeOptions = [
-  "1-50 employees",
-  "51-200 employees",
-  "201-500 employees",
-  "500+ employees",
+  "1-50 size",
+  "51-200 size",
+  "201-500 size",
+  "500+ size",
 ];
 
 const EmpProfileForm = ({ formData, errors, onChange }) => {
@@ -91,22 +91,22 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             </label>
 
             <select
-              name="companyType"
-              value={formData.companyType}
+              name="companeyType"
+              value={formData.companeyType}
               onChange={onChange}
-              className={inputClass("companyType")}
+              className={inputClass("companeyType")}
             >
               <option value="">Select company type</option>
 
-              {companyTypeOptions.map((type) => (
+              {companeyTypeOptions.map((type) => (
                 <option key={type} value={type}>
                   {type}
                 </option>
               ))}
             </select>
 
-            {errors.companyType && (
-              <p className="text-xs text-red-500 mt-1">{errors.companyType}</p>
+            {errors.companeyType && (
+              <p className="text-xs text-red-500 mt-1">{errors.companeyType}</p>
             )}
           </div>
 
@@ -116,10 +116,10 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             </label>
 
             <select
-              name="employees"
-              value={formData.employees}
+              name="size"
+              value={formData.size}
               onChange={onChange}
-              className={inputClass("employees")}
+              className={inputClass("size")}
             >
               <option value="">Select company size</option>
 
@@ -130,8 +130,8 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
               ))}
             </select>
 
-            {errors.employees && (
-              <p className="text-xs text-red-500 mt-1">{errors.employees}</p>
+            {errors.size && (
+              <p className="text-xs text-red-500 mt-1">{errors.size}</p>
             )}
           </div>
 
@@ -255,15 +255,15 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-zinc-700 mb-1.5">
-              About Company
+              description Company
             </label>
 
             <textarea
-              name="about"
-              value={formData.about}
+              name="description"
+              value={formData.description}
               onChange={onChange}
               rows={4}
-              placeholder="Tell candidates about your company..."
+              placeholder="Tell candidates description your company..."
               className="w-full px-3.5 py-3 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 outline-none transition resize-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
             />
           </div>

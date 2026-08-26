@@ -9,9 +9,11 @@ import {
   X,
   PinIcon,
   MapIcon,
+  Loader,
 } from "lucide-react";
 import { CreateUserAPI } from "../Services/authService";
 import toast from "react-hot-toast";
+import { useAuth } from "../store/UserContext";
 
 const ProfileSetupModal = ({ onComplete }) => {
   const [loading, SetLoading] = useState(false)
@@ -34,6 +36,7 @@ const ProfileSetupModal = ({ onComplete }) => {
   const [educationInput, setEducationInput] = useState("");
   const [experienceInput, setExperienceInput] = useState("");
 
+  const { user } = useAuth();
   const [errors, setErrors] = useState({});
 
   // =========================
@@ -62,8 +65,10 @@ const ProfileSetupModal = ({ onComplete }) => {
 
 
     // Resume
-    if (!formData.resume) {
-      newErrors.resume = "Resume is required";
+    if (user?.role === "candidate") {
+      if (!formData.resume) {
+        newErrors.resume = "Resume is required";
+      }
     }
 
     setErrors(newErrors);
@@ -347,7 +352,7 @@ const ProfileSetupModal = ({ onComplete }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div className=" fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
 
       <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
 
@@ -466,40 +471,43 @@ const ProfileSetupModal = ({ onComplete }) => {
 
             {/* RESUME */}
 
-            <div>
-              <label className="text-sm font-semibold text-zinc-700">
-                Resume
-              </label>
 
-              <div className="relative mt-2">
+            {user?.role === "candidate" && (
+              <div>
+                <label className="text-sm font-semibold text-zinc-700">
+                  Resume
+                </label>
 
-                <FileText
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
-                />
+                <div className="relative mt-2">
 
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleResume}
-                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-2.5 text-sm"
-                />
+                  <FileText
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
+
+                  <input
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    onChange={handleResume}
+                    className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-2.5 text-sm"
+                  />
+
+                </div>
+
+                {errors.resume && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.resume}
+                  </p>
+                )}
+
+                {formData.resume && (
+                  <p className="text-sm text-zinc-500 mt-2">
+                    Selected: {formData.resume.name}
+                  </p>
+                )}
 
               </div>
-
-              {errors.resume && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.resume}
-                </p>
-              )}
-
-              {formData.resume && (
-                <p className="text-sm text-zinc-500 mt-2">
-                  Selected: {formData.resume.name}
-                </p>
-              )}
-
-            </div>
+            )}
 
             <div>
               <label className="text-sm font-semibold text-zinc-700">
@@ -618,161 +626,164 @@ const ProfileSetupModal = ({ onComplete }) => {
           </div>
 
 
+          {user?.role === "candidate" && (
+            <div className="mt-6">
 
-          <div className="mt-6">
+              <label className="text-sm font-semibold text-zinc-700">
+                Experience
+              </label>
 
-            <label className="text-sm font-semibold text-zinc-700">
-              Experience
-            </label>
+              <div className="flex gap-2 mt-2">
 
-            <div className="flex gap-2 mt-2">
+                <div className="relative flex-1">
 
-              <div className="relative flex-1">
+                  <Briefcase
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
+                  />
 
-                <Briefcase
-                  size={18}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400"
-                />
+                  <input
+                    type="text"
+                    value={experienceInput}
+                    onChange={(e) => {
+                      setExperienceInput(e.target.value);
+
+                      setErrors((prev) => ({
+                        ...prev,
+                        experience: "",
+                      }));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addExperience();
+                      }
+                    }}
+                    placeholder="Frontend Developer - ABC Company"
+                    className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  />
+
+                </div>
+
+                <button
+                  type="button"
+                  onClick={addExperience}
+                  className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
+                >
+                  Add
+                </button>
+
+              </div>
+
+              {errors.experience && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.experience}
+                </p>
+              )}
+
+
+
+              <div className="flex flex-wrap gap-2 mt-3">
+
+                {formData.experience.map((experience) => (
+                  <span
+                    key={experience}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
+                  >
+
+                    {experience}
+
+                    <button
+                      type="button"
+                      onClick={() => removeExperience(experience)}
+                      className="hover:text-red-500"
+                    >
+                      <X size={15} />
+                    </button>
+
+                  </span>
+                ))}
+
+              </div>
+
+            </div>
+          )}
+
+
+          {user?.role === "candidate" && (
+
+            <div className="mt-6">
+
+              <label className="text-sm font-semibold text-zinc-700">
+                Skills
+              </label>
+
+              <div className="flex gap-2 mt-2">
 
                 <input
                   type="text"
-                  value={experienceInput}
+                  value={skillInput}
                   onChange={(e) => {
-                    setExperienceInput(e.target.value);
+                    setSkillInput(e.target.value);
 
                     setErrors((prev) => ({
                       ...prev,
-                      experience: "",
+                      skills: "",
                     }));
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
                       e.preventDefault();
-                      addExperience();
+                      addSkill();
                     }
                   }}
-                  placeholder="Frontend Developer - ABC Company"
-                  className="w-full rounded-xl border border-zinc-200 pl-11 pr-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                  placeholder="React, Node.js, MongoDB..."
+                  className="flex-1 rounded-xl border border-zinc-200 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
                 />
+
+                <button
+                  type="button"
+                  onClick={addSkill}
+                  className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
+                >
+                  Add
+                </button>
 
               </div>
 
-              <button
-                type="button"
-                onClick={addExperience}
-                className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
-              >
-                Add
-              </button>
-
-            </div>
-
-            {errors.experience && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.experience}
-              </p>
-            )}
+              {errors.skills && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.skills}
+                </p>
+              )}
 
 
 
-            <div className="flex flex-wrap gap-2 mt-3">
+              <div className="flex flex-wrap gap-2 mt-3">
 
-              {formData.experience.map((experience) => (
-                <span
-                  key={experience}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
-                >
-
-                  {experience}
-
-                  <button
-                    type="button"
-                    onClick={() => removeExperience(experience)}
-                    className="hover:text-red-500"
+                {formData.skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
                   >
-                    <X size={15} />
-                  </button>
 
-                </span>
-              ))}
+                    {skill}
 
-            </div>
+                    <button
+                      type="button"
+                      onClick={() => removeSkill(skill)}
+                      className="hover:text-red-500"
+                    >
+                      <X size={15} />
+                    </button>
 
-          </div>
+                  </span>
+                ))}
 
-
-
-          <div className="mt-6">
-
-            <label className="text-sm font-semibold text-zinc-700">
-              Skills
-            </label>
-
-            <div className="flex gap-2 mt-2">
-
-              <input
-                type="text"
-                value={skillInput}
-                onChange={(e) => {
-                  setSkillInput(e.target.value);
-
-                  setErrors((prev) => ({
-                    ...prev,
-                    skills: "",
-                  }));
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    addSkill();
-                  }
-                }}
-                placeholder="React, Node.js, MongoDB..."
-                className="flex-1 rounded-xl border border-zinc-200 px-4 py-3 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
-              />
-
-              <button
-                type="button"
-                onClick={addSkill}
-                className="px-5 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700"
-              >
-                Add
-              </button>
+              </div>
 
             </div>
-
-            {errors.skills && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.skills}
-              </p>
-            )}
-
-
-
-            <div className="flex flex-wrap gap-2 mt-3">
-
-              {formData.skills.map((skill) => (
-                <span
-                  key={skill}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-sm font-medium"
-                >
-
-                  {skill}
-
-                  <button
-                    type="button"
-                    onClick={() => removeSkill(skill)}
-                    className="hover:text-red-500"
-                  >
-                    <X size={15} />
-                  </button>
-
-                </span>
-              ))}
-
-            </div>
-
-          </div>
+          )}
 
 
 

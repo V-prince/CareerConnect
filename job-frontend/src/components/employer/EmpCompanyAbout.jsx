@@ -1,4 +1,4 @@
-import React from "react";
+
 
 const EmpCompanyAbout = ({ company }) => {
   return (
@@ -6,14 +6,14 @@ const EmpCompanyAbout = ({ company }) => {
       <h2 className="text-lg font-semibold text-zinc-900">About Company</h2>
 
       <p className="text-sm md:text-base text-zinc-600 leading-7 mt-6">
-        {company?.about || "No company information provided."}
+        {company?.description || "No company information provided."}
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-5 mt-7">
         <div>
           <p className="text-sm font-semibold text-zinc-900">Company Type</p>
           <p className="text-sm text-zinc-500 mt-1">
-            {company?.companyType || "Not provided"}
+            {company?.companeyType || "Not provided"}
           </p>
         </div>
 

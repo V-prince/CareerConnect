@@ -64,13 +64,10 @@ const Login = () => {
 
       toast.success("Login successful!");
       setUser(data.user);
-      
+
       SetIsLoggedIn(true);
-      if (data.user.role === "candidate") {
-        navigate('/user/profile')
-      } else {
-        navigate('/employer/profile')
-      }
+
+      navigate('/user/profile')
     } catch (error) {
       console.log("login err", error)
     }
