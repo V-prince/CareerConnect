@@ -16,6 +16,7 @@ import EmpPrevForm from "../../components/employer/EmpPrevForm";
 import StepItem from "../../components/employer/StepItem";
 import TipItem from "../../components/employer/TipItem";
 import BenefitItem from "../../components/employer/BenefitItem";
+import { CreateJobPostApI } from "../../Services/companeyService";
 
 export const EmpPostJob = () => {
   const navigate = useNavigate();
@@ -177,34 +178,22 @@ export const EmpPostJob = () => {
 
     setStep(4);
   };
-  const handlePublish = () => {
-    const newJob = {
-      id: Date.now(),
-      ...formData,
-      title: formData.jobTitle,
-      type: formData.jobType,
-      experience: formData.experienceLevel,
-      location: formData.location,
-      mode: formData.remote ? "Remote" : "On-site",
+  const handlePublish = async() => { 
+    try {
 
-      applications: 0,
-      status: "Active",
-      postedOn: new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      }),
-    };
+     const data = await CreateJobPostApI(formData);
+    
+     if(!data.success){
+      return toast.error(data.message)
+     }
 
-    console.log("New Job:", newJob);
+     toast.success("Job published successfully!");
+       
+    } catch (error) {
+      console.log("post job err:" , err)
+    }
 
-    toast.success("Job published successfully!");
-
-    navigate("/employer/jobs", {
-      state: {
-        newJob,
-      },
-    });
+    navigate("/employer/jobs");
   };
 
   return (

@@ -6,159 +6,18 @@ import EmpJobFilters from "../../components/employer/EmpJobFilters";
 import EmpJobsTable from "../../components/employer/EmpJobsTable";
 import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
 import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
+import { GetJobData } from "../../Services/companeyService";
+import toast from "react-hot-toast";
 
-const jobsData = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    type: "Full Time",
-    experience: "2-5 Years",
-    department: "Engineering",
-    location: "Bengaluru, KA",
-    mode: "Remote",
-    applications: 45,
-    status: "Active",
-    postedOn: "May 26, 2024",
-  },
-  {
-    id: 2,
-    title: "UI/UX Designer",
-    type: "Full Time",
-    experience: "2-4 Years",
-    department: "Design",
-    location: "Mumbai, MH",
-    mode: "Hybrid",
-    applications: 32,
-    status: "Active",
-    postedOn: "May 24, 2024",
-  },
-  {
-    id: 3,
-    title: "Backend Developer",
-    type: "Full Time",
-    experience: "3-6 Years",
-    department: "Engineering",
-    location: "Hyderabad, TS",
-    mode: "Remote",
-    applications: 28,
-    status: "Active",
-    postedOn: "May 22, 2024",
-  },
-  {
-    id: 4,
-    title: "DevOps Engineer",
-    type: "Full Time",
-    experience: "3-5 Years",
-    department: "Engineering",
-    location: "Pune, MH",
-    mode: "On-site",
-    applications: 19,
-    status: "Active",
-    postedOn: "May 21, 2024",
-  },
-  {
-    id: 5,
-    title: "Product Manager",
-    type: "Full Time",
-    experience: "4-8 Years",
-    department: "Product",
-    location: "Mumbai, MH",
-    mode: "Hybrid",
-    applications: 14,
-    status: "Closed",
-    postedOn: "May 19, 2024",
-  },
-  {
-    id: 6,
-    title: "Customer Support Executive",
-    type: "Full Time",
-    experience: "0-2 Years",
-    department: "Support",
-    location: "Delhi, DL",
-    mode: "On-site",
-    applications: 38,
-    status: "Active",
-    postedOn: "May 18, 2024",
-  },
-  {
-    id: 7,
-    title: "QA Engineer",
-    type: "Full Time",
-    experience: "2-4 Years",
-    department: "Engineering",
-    location: "Chennai, TN",
-    mode: "Hybrid",
-    applications: 22,
-    status: "Closed",
-    postedOn: "May 15, 2024",
-  },
-  {
-    id: 8,
-    title: "Data Analyst",
-    type: "Full Time",
-    experience: "1-3 Years",
-    department: "Data",
-    location: "Bengaluru, KA",
-    mode: "Remote",
-    applications: 16,
-    status: "Closed",
-    postedOn: "May 10, 2024",
-  },
-  {
-    id: 9,
-    title: "Marketing Executive",
-    type: "Full Time",
-    experience: "1-3 Years",
-    department: "Marketing",
-    location: "Ahmedabad, GJ",
-    mode: "On-site",
-    applications: 18,
-    status: "Active",
-    postedOn: "May 8, 2024",
-  },
-  {
-    id: 10,
-    title: "HR Executive",
-    type: "Full Time",
-    experience: "1-3 Years",
-    department: "Human Resources",
-    location: "Pune, MH",
-    mode: "Hybrid",
-    applications: 12,
-    status: "Active",
-    postedOn: "May 6, 2024",
-  },
-  {
-    id: 11,
-    title: "Mobile App Developer",
-    type: "Full Time",
-    experience: "2-5 Years",
-    department: "Engineering",
-    location: "Bengaluru, KA",
-    mode: "Remote",
-    applications: 24,
-    status: "Active",
-    postedOn: "May 4, 2024",
-  },
-  {
-    id: 12,
-    title: "Content Writer",
-    type: "Part Time",
-    experience: "0-2 Years",
-    department: "Marketing",
-    location: "Delhi, DL",
-    mode: "Remote",
-    applications: 11,
-    status: "Expired",
-    postedOn: "May 1, 2024",
-  },
-];
+
 
 const EmpJobs = () => {
   const navigate = useNavigate();
   const routeLocation = useLocation();
 
-  const [jobs, setJobs] = useState(jobsData);
+  const [jobs, setJobs] = useState([]);
+
+  console.log("j", jobs)
 
   const [activeTab, setActiveTab] = useState("All Jobs");
   const [search, setSearch] = useState("");
@@ -170,8 +29,7 @@ const EmpJobs = () => {
 
   const [editingJob, setEditingJob] = useState(null);
 
-  const tabs = ["All Jobs", "Active", "Closed", "Expired"];
-
+  const tabs = ["All Jobs", "Open", "Closed", "Expired"];
   const departments = useMemo(
     () => [...new Set(jobs.map((job) => job.department).filter(Boolean))],
     [jobs],
@@ -182,55 +40,55 @@ const EmpJobs = () => {
     [jobs],
   );
 
-  useEffect(() => {
-    const newJob = routeLocation.state?.newJob;
+  // useEffect(() => {
+  //   const newJob = routeLocation.state?.newJob;
 
-    if (!newJob) return;
+  //   if (!newJob) return;
 
-    setJobs((prev) => {
-      const exists = prev.some((job) => String(job.id) === String(newJob.id));
+  //   setJobs((prev) => {
+  //     const exists = prev.some((job) => String(job.id) === String(newJob.id));
 
-      if (exists) {
-        return prev;
-      }
+  //     if (exists) {
+  //       return prev;
+  //     }
 
-      return [newJob, ...prev];
-    });
+  //     return [newJob, ...prev];
+  //   });
 
-    navigate(routeLocation.pathname, {
-      replace: true,
-      state: {},
-    });
-  }, [routeLocation, navigate]);
+  //   navigate(routeLocation.pathname, {
+  //     replace: true,
+  //     state: {},
+  //   });
+  // }, [routeLocation, navigate]);
 
   const filteredJobs = useMemo(() => {
     let result = [...jobs];
 
+    console.log("res", result)
     if (activeTab !== "All Jobs") {
-      result = result.filter((job) => job.status === activeTab);
+      result = result.filter((job) => job.status === activeTab.toLowerCase());
     }
 
     if (search.trim()) {
       const searchValue = search.toLowerCase().trim();
 
       result = result.filter((job) => {
-        return (
-          String(job.title || "")
-            .toLowerCase()
-            .includes(searchValue) ||
-          String(job.type || "")
-            .toLowerCase()
-            .includes(searchValue) ||
-          String(job.location || "")
-            .toLowerCase()
-            .includes(searchValue) ||
-          String(job.department || "")
-            .toLowerCase()
-            .includes(searchValue)
-        );
+        const searchableText = [
+          job.jobTitle,
+          job.jobType,
+          job.location,
+          job.department,
+          job.jobDescription,
+          job.experienceLevel,
+          ...(job.skills || []),
+        ]
+          .filter(Boolean)
+          .join(" ")
+          .toLowerCase();
+
+        return searchableText.includes(searchValue);
       });
     }
-
     if (department) {
       result = result.filter((job) => job.department === department);
     }
@@ -240,11 +98,11 @@ const EmpJobs = () => {
     }
 
     if (sortBy === "Newest") {
-      result.sort((a, b) => b.id - a.id);
+      result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
 
     if (sortBy === "Oldest") {
-      result.sort((a, b) => a.id - b.id);
+      result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
     }
 
     if (sortBy === "Applications") {
@@ -253,7 +111,7 @@ const EmpJobs = () => {
 
     if (sortBy === "Title") {
       result.sort((a, b) =>
-        String(a.title || "").localeCompare(String(b.title || "")),
+        String(a.jobTitle || "").localeCompare(String(b.jobTitle || "")),
       );
     }
 
@@ -303,26 +161,23 @@ const EmpJobs = () => {
   };
 
   const handleSaveEdit = (updatedJob) => {
-    setJobs((prev) =>
-      prev.map((job) =>
-        String(job.id) === String(updatedJob.id)
-          ? {
-              ...job,
-              ...updatedJob,
-            }
-          : job,
-      ),
-    );
+    console.log("data", updatedJob)
+    // setJobs((prev) =>
+    //   prev.map((job) =>
+    //     String(job._id) === String(updatedJob._id)
+    //       ? {
+    //         ...job,
+    //         ...updatedJob,
+    //       }
+    //       : job,
+    //   ),
+    // );
 
     setEditingJob(null);
   };
 
   const handleView = (job) => {
-    navigate(`/employer/job/${job.id}`, {
-      state: {
-        job,
-      },
-    });
+    navigate(`/employer/job/${job._id}`)
   };
 
   const handleDelete = (job) => {
@@ -341,8 +196,29 @@ const EmpJobs = () => {
     }
   };
 
+
+  const getData = async () => {
+    try {
+
+      const data = await GetJobData();
+
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+
+      setJobs(data.jobs)
+
+    } catch (error) {
+      console.log("emp job err:", error)
+    }
+  }
+
+  useEffect(() => {
+    getData()
+  }, [])
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+    <div className="min-h-screen  mt-16 bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-4">
           <button
@@ -380,22 +256,23 @@ const EmpJobs = () => {
         <div className="bg-white border-b border-zinc-200 overflow-hidden">
           <div className="flex items-center gap-8">
             {tabs.map((tab) => {
-              const isActive = activeTab === tab;
+              const isActive = activeTab.toLowerCase() === tab.toLowerCase();
 
               const count =
                 tab === "All Jobs"
                   ? jobs.length
-                  : jobs.filter((job) => job.status === tab).length;
+                  : tab === "Expired"
+                    ? jobs.filter((job) => new Date(job.deadline) < new Date()).length
+                    : jobs.filter((job) => job.status === tab.toLowerCase()).length;
 
               return (
                 <button
                   key={tab}
                   onClick={() => handleTabChange(tab)}
-                  className={`relative py-4 text-sm font-medium whitespace-nowrap transition ${
-                    isActive
-                      ? "text-blue-600"
-                      : "text-zinc-600 hover:text-zinc-900"
-                  }`}
+                  className={`relative py-4 text-sm font-medium whitespace-nowrap transition ${isActive
+                    ? "text-blue-600"
+                    : "text-zinc-600 hover:text-zinc-900"
+                    }`}
                 >
                   {tab} ({count})
                   {isActive && (

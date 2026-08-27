@@ -20,7 +20,7 @@ const companySizeOptions = [
   "500+ size",
 ];
 
-const EmpProfileForm = ({ formData, errors, onChange }) => {
+const EmpProfileForm = ({isLoading, formData, errors, onChange }) => {
   const inputClass = (field) =>
     `w-full h-11 px-3.5 rounded-lg border bg-white text-sm text-zinc-700 outline-none transition ${
       errors[field]
@@ -49,6 +49,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="text"
               name="name"
+              disabled={isLoading}
               value={formData.name}
               onChange={onChange}
               placeholder="Enter company name"
@@ -67,6 +68,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
 
             <select
               name="industry"
+              disabled={isLoading}
               value={formData.industry}
               onChange={onChange}
               className={inputClass("industry")}
@@ -92,6 +94,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
 
             <select
               name="companeyType"
+              disabled={isLoading}
               value={formData.companeyType}
               onChange={onChange}
               className={inputClass("companeyType")}
@@ -117,6 +120,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
 
             <select
               name="size"
+              disabled={isLoading}
               value={formData.size}
               onChange={onChange}
               className={inputClass("size")}
@@ -143,6 +147,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="number"
               name="founded"
+              disabled={isLoading}
               value={formData.founded}
               onChange={onChange}
               placeholder="e.g. 2020"
@@ -160,6 +165,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="text"
               name="registrationNumber"
+              disabled={isLoading}
               value={formData.registrationNumber}
               onChange={onChange}
               placeholder="Enter registration number"
@@ -175,6 +181,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="text"
               name="location"
+              disabled={isLoading}
               value={formData.location}
               onChange={onChange}
               placeholder="e.g. Bengaluru, Karnataka, India"
@@ -201,6 +208,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="tel"
               name="phone"
+              disabled={isLoading}
               value={formData.phone}
               onChange={onChange}
               placeholder="+91 98765 43210"
@@ -216,6 +224,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="email"
               name="email"
+              disabled={isLoading}
               value={formData.email}
               onChange={onChange}
               placeholder="hr@company.com"
@@ -235,6 +244,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
             <input
               type="text"
               name="website"
+              disabled={isLoading}
               value={formData.website}
               onChange={onChange}
               placeholder="https://example.com"
@@ -260,6 +270,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
 
             <textarea
               name="description"
+              disabled={isLoading}
               value={formData.description}
               onChange={onChange}
               rows={4}
@@ -275,6 +286,7 @@ const EmpProfileForm = ({ formData, errors, onChange }) => {
 
             <input
               type="text"
+              disabled={isLoading}
               name="specializations"
               value={formData.specializations}
               onChange={onChange}

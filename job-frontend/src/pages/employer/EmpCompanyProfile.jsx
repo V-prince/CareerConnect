@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 import EmpCompanyOverview from "../../components/employer/EmpCompanyOverview";
 import EmpCompanyAbout from "../../components/employer/EmpCompanyAbout";
 import EmpCompanyDetails from "../../components/employer/EmpCompanyDetails";
-import { CreateCompaneyAPI, GetCompaneyData } from "../../Services/companeyService";
+import { CreateCompaneyAPI, GetCompaneyData, UpdateCompaneyAPI } from "../../Services/companeyService";
 
 
 
@@ -16,6 +16,7 @@ const EmpCompanyProfile = () => {
   const navigate = useNavigate();
 
   const [companyData, setCompanyData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const [showCompleteProfile, setShowCompleteProfile] = useState(false);
@@ -40,7 +41,7 @@ const EmpCompanyProfile = () => {
 
 
       if (!companyData) {
-
+        setIsLoading(true);
         const Createdata = await CreateCompaneyAPI(data);
 
         if (!Createdata.success) {
@@ -53,13 +54,21 @@ const EmpCompanyProfile = () => {
         toast.success(Createdata.message)
         return;
       }
+      setIsLoading(true)
+      const updatedData = await UpdateCompaneyAPI(data, companyData?._id);
 
+      if (!updatedData.success) {
+        return toast.error(updatedData.message)
+      }
+
+      setCompanyData(updatedData?.companey);
+      setShowCompleteProfile(false);
+      toast.success(updatedData.message)
     } catch (error) {
       console.log("companey detail err:", error)
+    } finally {
+      setIsLoading(false)
     }
-
-    setCompanyData(updatedCompany);
-    setShowCompleteProfile(false);
   };
 
   const companyDetails = [
@@ -164,6 +173,7 @@ const EmpCompanyProfile = () => {
       {
         showCompleteProfile && (
           <EmpCompleteProfilePopup
+            isLoading={isLoading}
             isOpen={showCompleteProfile}
             onClose={() => setShowCompleteProfile(false)}
             company={companyData}

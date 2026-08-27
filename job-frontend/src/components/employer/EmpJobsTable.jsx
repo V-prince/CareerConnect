@@ -1,11 +1,13 @@
 import React from "react";
 import { MapPin, Pencil, Eye, Trash2, BriefcaseBusiness } from "lucide-react";
+import relativeTime from "dayjs/plugin/relativeTime";
+import dayjs from "dayjs";
 
 const StatusBadge = ({ status }) => {
   const styles = {
-    Active: "bg-green-50 text-green-600",
-    Closed: "bg-zinc-100 text-zinc-600",
-    Expired: "bg-red-50 text-red-600",
+    open: "bg-green-50 text-green-600",
+    closed: "bg-zinc-100 text-zinc-600",
+    expired: "bg-red-50 text-red-600",
   };
 
   return (
@@ -16,7 +18,7 @@ const StatusBadge = ({ status }) => {
     >
       <span
         className={`w-1.5 h-1.5 rounded-full ${
-          status === "Active"
+          status === "open"
             ? "bg-green-500"
             : status === "Expired"
               ? "bg-red-500"
@@ -30,6 +32,7 @@ const StatusBadge = ({ status }) => {
 };
 
 const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
+  dayjs.extend(relativeTime);
   return (
     <div className="bg-white border border-zinc-200 border-t-0 overflow-x-auto">
       <table className="w-full min-w-[1050px]">
@@ -69,7 +72,7 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
           {currentJobs.length > 0 ? (
             currentJobs.map((job) => (
               <tr
-                key={job.id}
+                key={job._id}
                 className="border-b border-zinc-100 hover:bg-zinc-50 transition"
               >
                 <td className="px-5 py-5">
@@ -80,11 +83,11 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
 
                     <div>
                       <p className="text-sm font-semibold text-blue-600">
-                        {job.title}
+                        {job.jobTitle}
                       </p>
 
                       <p className="text-xs text-zinc-500 mt-1">
-                        {job.type} • {job.experience}
+                        {job.jobType} • {job.experienceLevel}
                       </p>
                     </div>
                   </div>
@@ -110,7 +113,7 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
 
                 <td className="px-5 py-5">
                   <p className="text-sm font-medium text-zinc-700">
-                    {job.applications}
+                    {job.applications || 0}
                   </p>
                 </td>
 
@@ -119,10 +122,10 @@ const EmpJobsTable = ({ currentJobs, onEdit, onView, onDelete }) => {
                 </td>
 
                 <td className="px-5 py-5">
-                  <p className="text-sm text-zinc-700">{job.postedOn}</p>
+                  <p className="text-sm text-zinc-700">{dayjs(job.createdAt).format("DD MMM YYYY")}</p>
 
                   <p className="text-xs text-zinc-500 mt-1">
-                    {job.id === 1 ? "10 days ago" : `${job.id + 9} days ago`}
+                    {dayjs(job.createdAt).fromNow()} 
                   </p>
                 </td>
 

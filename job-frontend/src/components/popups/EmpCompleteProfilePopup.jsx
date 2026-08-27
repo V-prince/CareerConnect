@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { Loader, X } from "lucide-react";
 
 import EmpProfileLogo from "../employer/Popup/EmpProfileLogo";
 import EmpProfileForm from "../employer/Popup/EmpProfileForm";
@@ -20,7 +20,7 @@ const emptyCompany = {
   logo: "",
 };
 
-const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
+const EmpCompleteProfilePopup = ({ isLoading, isOpen, onClose, company, onSave }) => {
   const [formData, setFormData] = useState(emptyCompany);
   const [logoPreview, setLogoPreview] = useState("");
   const [errors, setErrors] = useState({});
@@ -231,6 +231,7 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
           />
 
           <EmpProfileForm
+            isLoading={isLoading}
             formData={formData}
             errors={errors}
             onChange={handleChange}
@@ -240,6 +241,7 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
         <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3 border-t border-zinc-200 bg-white px-5 md:px-6 py-4">
           <button
             type="button"
+            disabled={isLoading}
             onClick={onClose}
             className="px-5 py-2.5 rounded-lg border border-zinc-300 bg-white text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition"
           >
@@ -248,10 +250,14 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
 
           <button
             type="button"
+            disabled={isLoading}
             onClick={handleSave}
             className="px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
           >
-            {isEditing ? "Save Changes" : "Save Profile"}
+            {
+              isLoading ? (<Loader className="animate-spin" />) :
+                (isEditing ? "Save Changes" : "Save Profile")
+            }
           </button>
         </div>
       </div>
