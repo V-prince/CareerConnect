@@ -41,7 +41,7 @@ export const Profile = () => {
   const [data, setData] = useState(null)
   const [loading, SetLoading] = useState(false)
 
-
+  console.log(data)
   const date = dayjs(data?.user.createdAt)
   // ===================d=======================
   // PROFILE DATA

@@ -10,15 +10,17 @@ import EmpCompanyDetails from "../../components/employer/EmpCompanyDetails";
 import { CreateCompaneyAPI, GetCompaneyData } from "../../Services/companeyService";
 
 
+
+
 const EmpCompanyProfile = () => {
   const navigate = useNavigate();
 
   const [companyData, setCompanyData] = useState(null);
 
+
   const [showCompleteProfile, setShowCompleteProfile] = useState(false);
 
   const handleSaveCompany = async (updatedCompany) => {
-
     try {
       const data = new FormData();
 
@@ -45,25 +47,16 @@ const EmpCompanyProfile = () => {
           return toast.error(Createdata.message)
         }
 
-        setCompanyData(Createdata?.companey)
+        setCompanyData(Createdata?.companey);
         setShowCompleteProfile(false);
-        getCompaney()
+        getCompaney();
         toast.success(Createdata.message)
         return;
       }
 
-
-
-
     } catch (error) {
       console.log("companey detail err:", error)
     }
-
-
-
-
-
-
 
     setCompanyData(updatedCompany);
     setShowCompleteProfile(false);
@@ -108,9 +101,13 @@ const EmpCompanyProfile = () => {
 
       const data = await GetCompaneyData();
 
-      console.log(data)
+      setCompanyData(data?.companey)
 
-      setCompanyData(data.companey)
+      if (!data?.companey) {
+        setShowCompleteProfile(true);
+      } else {
+        setShowCompleteProfile(false);
+      }
 
     } catch (error) {
       console.log("companey detail err:", error)
@@ -164,12 +161,17 @@ const EmpCompanyProfile = () => {
         </div>
       </main>
 
-      <EmpCompleteProfilePopup
-        isOpen={showCompleteProfile}
-        onClose={() => setShowCompleteProfile(false)}
-        company={companyData}
-        onSave={handleSaveCompany}
-      />
+      {
+        showCompleteProfile && (
+          <EmpCompleteProfilePopup
+            isOpen={showCompleteProfile}
+            onClose={() => setShowCompleteProfile(false)}
+            company={companyData}
+            onSave={handleSaveCompany}
+          />
+        )
+      }
+
     </div>
   );
 };

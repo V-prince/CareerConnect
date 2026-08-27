@@ -32,20 +32,20 @@ const EmpCompleteProfilePopup = ({ isOpen, onClose, company, onSave }) => {
 
     const data = {
       ...emptyCompany,
-      
-      name: existingCompany.companyName,
-      industry: existingCompany.industry.trim(),
-      location: existingCompany.location.trim(),
-      founded: existingCompany.founded.trim(),
-      size: existingCompany.size.trim(),
-      companeyType: existingCompany.companeyType.trim(),
-      registrationNumber: existingCompany.registrationNumber.trim(),
-      phone: existingCompany.phone.trim(),
-      email: existingCompany.email.trim(),
-      website: existingCompany.website.trim(),
-      description: existingCompany.description.trim(),
-      specializations: existingCompany.specializations.trim(),
-       logo: existingCompany.logo || "",
+
+      name: existingCompany.companyName || "",
+      industry: existingCompany.industry || "",
+      location: existingCompany.location || "",
+      founded: existingCompany.founded || "",
+      size: existingCompany.size || "",
+      companeyType: existingCompany.companeyType || "",
+      registrationNumber: existingCompany.registrationNumber || "",
+      phone: existingCompany.phone || "",
+      email: existingCompany.email || "",
+      website: existingCompany.website || "",
+      description: existingCompany.description || "",
+      specializations: existingCompany.specializations || "",
+      logo: existingCompany.logo || "",
     };
 
     setFormData(data);
