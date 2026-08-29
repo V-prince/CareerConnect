@@ -16,7 +16,7 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
     salaryPeriod: "Per Annum",
     deadline: "",
     openings: "",
-
+    status:"",
     jobDescription: "",
     responsibilities: "",
 
@@ -35,7 +35,7 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
         department: job.department || "",
         location: job.location || "",
         remote: job.remote || false,
-
+        status: job.status||"",
         minSalary: job.minSalary || "",
         maxSalary: job.maxSalary || "",
         salaryPeriod: job.salaryPeriod || "",
@@ -84,7 +84,7 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
       jobType: formData.jobType,
       employmentType: formData.employmentType,
       experienceLevel: formData.experienceLevel,
-
+      status:formData.status,
       department: formData.department,
       location: formData.location,
       remote: formData.remote,
@@ -204,6 +204,18 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
               value={formData.location}
               onChange={handleChange}
               placeholder="Enter city, state or remote"
+            />
+
+            <SelectField
+              label="Status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              options={[
+                "open",
+                "close"
+              ]}
+              placeholder="Select job status"
             />
           </div>
 

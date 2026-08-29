@@ -27,7 +27,7 @@ const EmpJobs = () => {
 
   const [editingJob, setEditingJob] = useState(null);
 
-  const tabs = ["All Jobs", "Open", "Closed", "Expired"];
+  const tabs = ["All Jobs", "Open", "Close", "Expired"];
   const departments = useMemo(
     () => [...new Set(jobs.map((job) => job.department).filter(Boolean))],
     [jobs],
@@ -43,7 +43,7 @@ const EmpJobs = () => {
 
 
     if (activeTab !== "All Jobs") {
-      result = result.filter((job) => job.status === activeTab.toLowerCase());
+      result = result.filter((job) => job.status.toLowerCase() === activeTab.toLowerCase());
     }
 
     if (search.trim()) {
@@ -170,7 +170,6 @@ const EmpJobs = () => {
       if (!data.success) {
         return toast.error(data.message);
       }
-
       getData()
       toast.success(data.message);
 
@@ -246,7 +245,7 @@ const EmpJobs = () => {
                   ? jobs.length
                   : tab === "Expired"
                     ? jobs.filter((job) => new Date(job?.deadline) < new Date()).length
-                    : jobs.filter((job) => job.status === tab.toLowerCase()).length;
+                    : jobs.filter((job) => job.status.toLowerCase() === tab.toLowerCase()).length;
 
               return (
                 <button

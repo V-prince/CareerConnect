@@ -1,23 +1,19 @@
-
 const MainUrl = "http://localhost:5000";
 
 
 
-export const GetSavedJobsData = async () => {
+export const GetPublicJobs = async () => {
   try {
 
-    const res = await fetch(`${MainUrl}/candidate/fetch/save/jobs`, {
+    const res = await fetch(`${MainUrl}/jobs`, {
       method: "GET",
       credentials: "include",
     });
 
     const data = await res.json();
-    console.log(data)
     return data;
 
   } catch (error) {
     console.log(error)
   }
 }
-
-

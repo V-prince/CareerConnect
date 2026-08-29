@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 const StatusBadge = ({ status }) => {
   const styles = {
     open: "bg-green-50 text-green-600",
-    closed: "bg-zinc-100 text-zinc-600",
+    close: "bg-zinc-100 text-zinc-600",
     expired: "bg-red-50 text-red-600",
   };
 
