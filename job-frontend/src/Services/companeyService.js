@@ -40,6 +40,28 @@ export const CreateJobPostApI = async (formData) => {
   }
 }
 
+
+export const UpdateJobPostApI = async (formData,jobId) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/companey/job/edit/post/${jobId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const UpdateCompaneyAPI = async (formData, id) => {
   try {
     console.log(formData, id)

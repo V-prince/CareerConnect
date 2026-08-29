@@ -3,6 +3,7 @@ import { X, CheckCircle2, ChevronDown, CalendarDays } from "lucide-react";
 
 const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
   const [formData, setFormData] = useState({
+    
     jobTitle: "",
     jobType: "",
     employmentType: "",
@@ -79,7 +80,6 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
 
     onSave({
       ...job,
-
       jobTitle: formData.jobTitle,
       jobType: formData.jobType,
       employmentType: formData.employmentType,
@@ -103,263 +103,263 @@ const EmpEditJobPopup = ({ isOpen, job, onClose, onSave }) => {
       qualifications: formData.qualifications,
       requirements: formData.requirements,
     });
-};
+  };
 
-return (
-  <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-    <div
-      className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
-      onClick={onClose}
-    />
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+        onClick={onClose}
+      />
 
-    <div className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden">
-      <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-zinc-200 bg-white shrink-0">
-        <div>
-          <h2 className="text-lg md:text-xl font-bold text-zinc-900">
-            Edit Job
-          </h2>
+      <div className="relative z-10 w-full max-w-4xl max-h-[90vh] bg-white rounded-2xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between px-5 md:px-6 py-4 border-b border-zinc-200 bg-white shrink-0">
+          <div>
+            <h2 className="text-lg md:text-xl font-bold text-zinc-900">
+              Edit Job
+            </h2>
 
-          <p className="text-sm text-zinc-500 mt-1">
-            Update the job information below.
-          </p>
+            <p className="text-sm text-zinc-500 mt-1">
+              Update the job information below.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition"
+          >
+            <X size={20} />
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={onClose}
-          className="w-9 h-9 flex items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800 transition"
-        >
-          <X size={20} />
-        </button>
-      </div>
-
-      <div className="flex-1 overflow-y-auto px-5 md:px-6 py-5">
-        <div className="grid md:grid-cols-2 gap-5">
-          <FormField
-            label="Job Title"
-            name="title"
-            value={formData.jobTitle}
-            onChange={handleChange}
-            placeholder="Enter job title"
-          />
-
-          <SelectField
-            label="Job Type"
-            name="type"
-            value={formData.jobType}
-            onChange={handleChange}
-            options={[
-              "Full Time",
-              "Part Time",
-              "Internship",
-              "Contract"
-            ]}
-            placeholder="Select job type"
-          />
-
-          <SelectField
-            label="Employment Type"
-            name="employmentType"
-            value={formData.employmentType}
-            onChange={handleChange}
-            options={["Permanent", "Temporary", "Contractual"]}
-            placeholder="Select employment type"
-          />
-
-          <SelectField
-            label="Experience Level"
-            name="experience"
-            value={formData.experienceLevel}
-            onChange={handleChange}
-            options={[
-              "Fresher",
-              "0-2 Years",
-              "2-5 Years",
-              "5-8 Years",
-              "8+ Years",
-            ]}
-            placeholder="Select experience level"
-          />
-
-          <SelectField
-            label="Department"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-            options={[
-              "Engineering",
-              "Design",
-              "Marketing",
-              "Sales",
-              "Human Resources",
-              "Finance",
-              "Operations",
-            ]}
-            placeholder="Select department"
-          />
-
-          <FormField
-            label="Job Location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            placeholder="Enter city, state or remote"
-          />
-        </div>
-
-        <div className="mt-4">
-          <label className="flex items-center gap-2 text-sm text-zinc-700 cursor-pointer">
-            <input
-              type="checkbox"
-              name="remote"
-              checked={formData.remote}
+        <div className="flex-1 overflow-y-auto px-5 md:px-6 py-5">
+          <div className="grid md:grid-cols-2 gap-5">
+            <FormField
+              label="Job Title"
+              name="jobTitle"
+              value={formData.jobTitle}
               onChange={handleChange}
-              className="w-4 h-4 accent-blue-600"
-            />
-            Remote Position
-          </label>
-        </div>
-
-        <div className="mt-5">
-          <label className="block text-sm font-semibold text-zinc-700 mb-2">
-            Salary Range
-          </label>
-
-          <div className="grid md:grid-cols-[1fr_auto_1fr_180px] items-center gap-3">
-            <input
-              type="number"
-              name="minSalary"
-              value={formData.minSalary}
-              onChange={handleChange}
-              placeholder="₹ Min"
-              className="w-full h-10 px-3 rounded-lg border border-zinc-300 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-            />
-
-            <span className="hidden md:block text-zinc-400">to</span>
-
-            <input
-              type="number"
-              name="maxSalary"
-              value={formData.maxSalary}
-              onChange={handleChange}
-              placeholder="₹ Max"
-              className="w-full h-10 px-3 rounded-lg border border-zinc-300 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              placeholder="Enter job title"
             />
 
             <SelectField
-              name="salaryPeriod"
-              value={formData.salaryPeriod}
+              label="Job Type"
+              name="jobType"
+              value={formData.jobType}
               onChange={handleChange}
-              options={["Per Annum", "Per Month", "Per Week", "Per Hour"]}
-              placeholder="Salary period"
-              noLabel
+              options={[
+                "Full Time",
+                "Part Time",
+                "Internship",
+                "Contract"
+              ]}
+              placeholder="Select job type"
+            />
+
+            <SelectField
+              label="Employment Type"
+              name="employmentType"
+              value={formData.employmentType}
+              onChange={handleChange}
+              options={["Permanent", "Temporary", "Contractual"]}
+              placeholder="Select employment type"
+            />
+
+            <SelectField
+              label="Experience Level"
+              name="experienceLevel"
+              value={formData.experienceLevel}
+              onChange={handleChange}
+              options={[
+                "Fresher",
+                "0-2 Years",
+                "2-5 Years",
+                "5-8 Years",
+                "8+ Years",
+              ]}
+              placeholder="Select experience level"
+            />
+
+            <SelectField
+              label="Department"
+              name="department"
+              value={formData.department}
+              onChange={handleChange}
+              options={[
+                "Engineering",
+                "Design",
+                "Marketing",
+                "Sales",
+                "Human Resources",
+                "Finance",
+                "Operations",
+              ]}
+              placeholder="Select department"
+            />
+
+            <FormField
+              label="Job Location"
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
+              placeholder="Enter city, state or remote"
             />
           </div>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-5 mt-5">
-          <div>
+          <div className="mt-4">
+            <label className="flex items-center gap-2 text-sm text-zinc-700 cursor-pointer">
+              <input
+                type="checkbox"
+                name="remote"
+                checked={formData.remote}
+                onChange={handleChange}
+                className="w-4 h-4 accent-blue-600"
+              />
+              Remote Position
+            </label>
+          </div>
+
+          <div className="mt-5">
             <label className="block text-sm font-semibold text-zinc-700 mb-2">
-              Application Deadline
+              Salary Range
             </label>
 
-            <div className="relative">
+            <div className="grid md:grid-cols-[1fr_auto_1fr_180px] items-center gap-3">
               <input
-                type="date"
-                name="deadline"
-                value={formData.deadline}
+                type="number"
+                name="minSalary"
+                value={formData.minSalary}
                 onChange={handleChange}
-                className="w-full h-10 px-3 pr-10 rounded-lg border border-zinc-300 text-sm text-zinc-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                placeholder="₹ Min"
+                className="w-full h-10 px-3 rounded-lg border border-zinc-300 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
 
-              <CalendarDays
-                size={17}
-                className="absolute right-3 top-3 text-zinc-400 pointer-events-none"
+              <span className="hidden md:block text-zinc-400">to</span>
+
+              <input
+                type="number"
+                name="maxSalary"
+                value={formData.maxSalary}
+                onChange={handleChange}
+                placeholder="₹ Max"
+                className="w-full h-10 px-3 rounded-lg border border-zinc-300 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+
+              <SelectField
+                name="salaryPeriod"
+                value={formData.salaryPeriod}
+                onChange={handleChange}
+                options={["Per Annum", "Per Month", "Per Week", "Per Hour"]}
+                placeholder="Salary period"
+                noLabel
               />
             </div>
           </div>
 
-          <FormField
-            label="Number of Openings"
-            name="openings"
-            value={formData.openings}
+          <div className="grid md:grid-cols-2 gap-5 mt-5">
+            <div>
+              <label className="block text-sm font-semibold text-zinc-700 mb-2">
+                Application Deadline
+              </label>
+
+              <div className="relative">
+                <input
+                  type="date"
+                  name="deadline"
+                  value={formData.deadline}
+                  onChange={handleChange}
+                  className="w-full h-10 px-3 pr-10 rounded-lg border border-zinc-300 text-sm text-zinc-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+
+                <CalendarDays
+                  size={17}
+                  className="absolute right-3 top-3 text-zinc-400 pointer-events-none"
+                />
+              </div>
+            </div>
+
+            <FormField
+              label="Number of Openings"
+              name="openings"
+              value={formData.openings}
+              onChange={handleChange}
+              placeholder="e.g. 2"
+              type="number"
+            />
+          </div>
+
+          <TextAreaField
+            label="Job Description"
+            name="jobDescription"
+            value={formData.jobDescription}
             onChange={handleChange}
-            placeholder="e.g. 2"
-            type="number"
+            placeholder="Describe the job..."
+          />
+
+          <TextAreaField
+            label="Roles & Responsibilities"
+            name="responsibilities"
+            value={formData.responsibilities}
+            onChange={handleChange}
+            placeholder="Enter responsibilities..."
+          />
+
+          <TagSection
+            title="Required Skills"
+            items={formData.skills}
+            setItems={(items) =>
+              setFormData((prev) => ({
+                ...prev,
+                skills: items,
+              }))
+            }
+          />
+
+          <TagSection
+            title="Qualifications"
+            items={formData.qualifications}
+            setItems={(items) =>
+              setFormData((prev) => ({
+                ...prev,
+                qualifications: items,
+              }))
+            }
+          />
+
+          <TagSection
+            title="Job Requirements"
+            items={formData.requirements}
+            setItems={(items) =>
+              setFormData((prev) => ({
+                ...prev,
+                requirements: items,
+              }))
+            }
           />
         </div>
 
-        <TextAreaField
-          label="Job Description"
-          name="description"
-          value={formData.jobDescription}
-          onChange={handleChange}
-          placeholder="Describe the job..."
-        />
+        <div className="flex items-center justify-between gap-3 px-5 md:px-6 py-4 border-t border-zinc-200 bg-white shrink-0">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-5 py-2.5 rounded-lg border border-zinc-300 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition"
+          >
+            Cancel
+          </button>
 
-        <TextAreaField
-          label="Roles & Responsibilities"
-          name="responsibilities"
-          value={formData.responsibilities}
-          onChange={handleChange}
-          placeholder="Enter responsibilities..."
-        />
-
-        <TagSection
-          title="Required Skills"
-          items={formData.skills}
-          setItems={(items) =>
-            setFormData((prev) => ({
-              ...prev,
-              skills: items,
-            }))
-          }
-        />
-
-        <TagSection
-          title="Qualifications"
-          items={formData.qualifications}
-          setItems={(items) =>
-            setFormData((prev) => ({
-              ...prev,
-              qualifications: items,
-            }))
-          }
-        />
-
-        <TagSection
-          title="Job Requirements"
-          items={formData.requirements}
-          setItems={(items) =>
-            setFormData((prev) => ({
-              ...prev,
-              requirements: items,
-            }))
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between gap-3 px-5 md:px-6 py-4 border-t border-zinc-200 bg-white shrink-0">
-        <button
-          type="button"
-          onClick={onClose}
-          className="px-5 py-2.5 rounded-lg border border-zinc-300 text-sm font-semibold text-zinc-700 hover:bg-zinc-50 transition"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="button"
-          onClick={handleSave}
-          className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
-        >
-          <CheckCircle2 size={17} />
-          Save Changes
-        </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
+          >
+            <CheckCircle2 size={17} />
+            Save Changes
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
 };
 
 const FormField = ({

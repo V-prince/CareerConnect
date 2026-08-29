@@ -6,7 +6,7 @@ import EmpJobFilters from "../../components/employer/EmpJobFilters";
 import EmpJobsTable from "../../components/employer/EmpJobsTable";
 import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
 import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
-import { GetJobData } from "../../Services/companeyService";
+import { GetJobData, UpdateJobPostApI } from "../../Services/companeyService";
 import toast from "react-hot-toast";
 
 
@@ -16,8 +16,6 @@ const EmpJobs = () => {
   const routeLocation = useLocation();
 
   const [jobs, setJobs] = useState([]);
-
-  console.log("j", jobs)
 
   const [activeTab, setActiveTab] = useState("All Jobs");
   const [search, setSearch] = useState("");
@@ -40,31 +38,10 @@ const EmpJobs = () => {
     [jobs],
   );
 
-  // useEffect(() => {
-  //   const newJob = routeLocation.state?.newJob;
-
-  //   if (!newJob) return;
-
-  //   setJobs((prev) => {
-  //     const exists = prev.some((job) => String(job.id) === String(newJob.id));
-
-  //     if (exists) {
-  //       return prev;
-  //     }
-
-  //     return [newJob, ...prev];
-  //   });
-
-  //   navigate(routeLocation.pathname, {
-  //     replace: true,
-  //     state: {},
-  //   });
-  // }, [routeLocation, navigate]);
-
   const filteredJobs = useMemo(() => {
     let result = [...jobs];
 
-    console.log("res", result)
+
     if (activeTab !== "All Jobs") {
       result = result.filter((job) => job.status === activeTab.toLowerCase());
     }
@@ -160,18 +137,19 @@ const EmpJobs = () => {
     setEditingJob(job);
   };
 
-  const handleSaveEdit = (updatedJob) => {
-    console.log("data", updatedJob)
-    // setJobs((prev) =>
-    //   prev.map((job) =>
-    //     String(job._id) === String(updatedJob._id)
-    //       ? {
-    //         ...job,
-    //         ...updatedJob,
-    //       }
-    //       : job,
-    //   ),
-    // );
+  const handleSaveEdit = async (updatedJob) => {
+    console.log("data:", updatedJob)
+    try {
+
+      const data = await UpdateJobPostApI(updatedJob, updatedJob._id);
+      if (!data.success) {
+        return toast.error(data.message);
+      }
+      toast.success(data.message);
+      getData()
+    } catch (error) {
+      console.log(error)
+    }
 
     setEditingJob(null);
   };
@@ -182,17 +160,15 @@ const EmpJobs = () => {
 
   const handleDelete = (job) => {
     const confirmDelete = window.confirm(
-      `Are you sure you want to delete "${job.title}"?`,
+      `Are you sure you want to delete "${job.jobTitle}"?`,
     );
-
     if (!confirmDelete) return;
+    try {
+      
 
-    setJobs((prev) =>
-      prev.filter((item) => String(item.id) !== String(job.id)),
-    );
-
-    if (currentJobs.length === 1 && safeCurrentPage > 1) {
-      setCurrentPage((prev) => prev - 1);
+      
+    } catch (error) {
+      console.log(eror)
     }
   };
 
