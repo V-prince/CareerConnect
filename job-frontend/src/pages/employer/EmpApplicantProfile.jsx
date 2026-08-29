@@ -59,7 +59,7 @@ const EmpApplicantProfile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+    <div className="min-h-screen mt-16 bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-7">
           <button

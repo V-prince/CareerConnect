@@ -6,7 +6,7 @@ import EmpJobFilters from "../../components/employer/EmpJobFilters";
 import EmpJobsTable from "../../components/employer/EmpJobsTable";
 import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
 import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
-import { GetJobData, UpdateJobPostApI } from "../../Services/companeyService";
+import { DeleteJobPostApI, GetJobData, UpdateJobPostApI } from "../../Services/companeyService";
 import toast from "react-hot-toast";
 
 
@@ -158,15 +158,22 @@ const EmpJobs = () => {
     navigate(`/employer/job/${job._id}`)
   };
 
-  const handleDelete = (job) => {
+  const handleDelete = async (job) => {
     const confirmDelete = window.confirm(
       `Are you sure you want to delete "${job.jobTitle}"?`,
     );
     if (!confirmDelete) return;
     try {
-      
 
-      
+      const data = await DeleteJobPostApI(job._id);
+
+      if (!data.success) {
+        return toast.error(data.message);
+      }
+
+      getData()
+      toast.success(data.message);
+
     } catch (error) {
       console.log(eror)
     }
@@ -238,7 +245,7 @@ const EmpJobs = () => {
                 tab === "All Jobs"
                   ? jobs.length
                   : tab === "Expired"
-                    ? jobs.filter((job) => new Date(job.deadline) < new Date()).length
+                    ? jobs.filter((job) => new Date(job?.deadline) < new Date()).length
                     : jobs.filter((job) => job.status === tab.toLowerCase()).length;
 
               return (

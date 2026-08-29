@@ -20,7 +20,7 @@ const StatusBadge = ({ status }) => {
         className={`w-1.5 h-1.5 rounded-full ${
           status === "open"
             ? "bg-green-500"
-            : status === "Expired"
+            : status === "expired"
               ? "bg-red-500"
               : "bg-zinc-400"
         }`}

@@ -34,6 +34,7 @@ export const Profile = () => {
   // INPUT STATES
   // ==========================================
 
+  
   const [skillsInput, setSkillsInput] = useState("");
   const [educationInput, setEducationInput] = useState("");
   const [experienceInput, setExperienceInput] = useState("");
@@ -41,16 +42,16 @@ export const Profile = () => {
   const [data, setData] = useState(null)
   const [loading, SetLoading] = useState(false)
 
-  console.log(data)
+
   const date = dayjs(data?.user.createdAt)
   // ===================d=======================
   // PROFILE DATA
   // ==========================================
-
+  
   const [editData, setEditData] = useState({
     fullname: "",
     email: "",
-    company: "",
+   
     phone: "",
     photo: "",
 
@@ -58,20 +59,21 @@ export const Profile = () => {
 
     // Multiple education
     education: [],
-
+    
     // Multiple experience
     experience: [],
-
+    
     // Multiple skills
     skills: [],
-
+    
     bio: "",
-
+    
     resume: "",
   });
-
+  
   // Original data for Cancel
   const [backupData, setBackupData] = useState(null);
+  
 
   // ==========================================
   // NORMAL INPUT CHANGE
@@ -256,7 +258,6 @@ export const Profile = () => {
     try {
       const formData = new FormData();
       formData.append("phone", editData.phone);
-      formData.append("company", editData.company);
       formData.append("bio", editData.bio);
       formData.append("location", editData.location);
 
@@ -720,7 +721,7 @@ export const Profile = () => {
           </ProfileCard>
 
           {/* COMPANY */}
-          {data?.user.companey && (<ProfileCard
+          {data?.user.company && (<ProfileCard
             icon={<Building2 size={18} />}
             title="Company"
           >
@@ -729,8 +730,7 @@ export const Profile = () => {
 
               <input
                 type="text"
-                name="company"
-                value={editData.company}
+                value={data?.user?.company?.companyName}
                 disabled={true}
                 placeholder="XYZ Infotech / Not Assigned"
                 className="w-full rounded-xl border border-zinc-300 bg-white px-4 py-3 text-zinc-900 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
@@ -739,7 +739,7 @@ export const Profile = () => {
             ) : (
 
               <p className="profile-value">
-                {editData.company || "Not Assigned"}
+                {data?.user?.company?.companyName || "Not Assigned"}
               </p>
 
             )}

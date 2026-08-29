@@ -62,6 +62,27 @@ export const UpdateJobPostApI = async (formData,jobId) => {
   }
 }
 
+export const DeleteJobPostApI = async (jobId) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/companey/job/delete/${jobId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify()
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const UpdateCompaneyAPI = async (formData, id) => {
   try {
     console.log(formData, id)
