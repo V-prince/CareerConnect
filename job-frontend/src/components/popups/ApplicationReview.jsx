@@ -11,110 +11,30 @@ import {
   FaDownload,
 } from "react-icons/fa";
 import toast from "react-hot-toast";
+import { useAuth } from "../../store/UserContext";
+import { Loader } from "lucide-react";
 
-const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
+const ApplicationReview = ({ loading, show, onClose, onSubmit, job }) => {
+  const { user, isLoggedIn } = useAuth()
   if (!show) return null;
 
-  const companyName = job?.company || job?.companey || "Company";
-
-  const getUserProfile = () => {
-    const possibleUsers = [
-      localStorage.getItem("user"),
-      localStorage.getItem("loggedInUser"),
-      localStorage.getItem("currentUser"),
-    ];
-
-    for (const storedUser of possibleUsers) {
-      if (storedUser) {
-        try {
-          const parsedUser = JSON.parse(storedUser);
-
-          if (parsedUser) {
-            return parsedUser;
-          }
-        } catch (error) {
-          console.error("Unable to read user profile:", error);
-        }
-      }
-    }
-
-    return {};
-  };
-
-  const userProfile = getUserProfile();
-
-  const applicantName =
-    userProfile?.name ||
-    userProfile?.fullName ||
-    userProfile?.username ||
-    userProfile?.firstName ||
-    "Not provided";
-
-  const applicantEmail =
-    userProfile?.email || userProfile?.emailAddress || "Not provided";
-
-  const applicantPhone =
-    userProfile?.phone ||
-    userProfile?.mobile ||
-    userProfile?.mobileNumber ||
-    userProfile?.phoneNumber ||
-    "Not provided";
-
-  const applicantLocation =
-    userProfile?.location ||
-    userProfile?.city ||
-    userProfile?.address ||
-    "Not provided";
-
-  const applicantResume =
-    userProfile?.resume ||
-    userProfile?.resumeUrl ||
-    userProfile?.resumeURL ||
-    userProfile?.resumeFile ||
-    "";
-
-  const getResumeUrl = () => {
-    if (!applicantResume) {
-      return "";
-    }
-
-    if (typeof applicantResume === "string") {
-      return applicantResume;
-    }
-
-    if (typeof applicantResume === "object") {
-      return (
-        applicantResume.url ||
-        applicantResume.uri ||
-        applicantResume.path ||
-        applicantResume.fileUrl ||
-        applicantResume.downloadUrl ||
-        ""
-      );
-    }
-
-    return "";
-  };
-
-  const resumeUrl = getResumeUrl();
-
   const handleViewResume = () => {
-    if (!resumeUrl) {
+    if (!user?.resume) {
       toast.error("No resume is available.");
       return;
     }
 
-    window.open(resumeUrl, "_blank", "noopener,noreferrer");
+    window.open(user?.resume, "_blank", "noopener,noreferrer");
   };
 
   const handleDownloadResume = async () => {
-    if (!resumeUrl) {
+    if (!user?.resume) {
       toast.error("No resume is available.");
       return;
     }
 
     try {
-      const response = await fetch(resumeUrl);
+      const response = await fetch(user?.resume);
 
       if (!response.ok) {
         throw new Error("Unable to download resume");
@@ -128,7 +48,7 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
       link.href = blobUrl;
 
-      link.download = `${applicantName.replace(/\s+/g, "_")}_Resume.pdf`;
+      link.download = `${user?.fullname.replace(/\s+/g, "_")}_Resume.pdf`;
 
       document.body.appendChild(link);
 
@@ -142,10 +62,10 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
       const link = document.createElement("a");
 
-      link.href = resumeUrl;
+      link.href = user?.resume;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.download = `${applicantName.replace(/\s+/g, "_")}_Resume`;
+      link.download = `${user?.fullname.replace(/\s+/g, "_")}_Resume`;
 
       document.body.appendChild(link);
 
@@ -187,10 +107,10 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
         <div className="px-6 pt-5">
           <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50 border border-blue-100">
             <div className="w-11 h-11 rounded-lg bg-white border border-blue-100 flex items-center justify-center overflow-hidden shrink-0">
-              {job?.icon ? (
+              {job?.company?.logo ? (
                 <img
-                  src={job.icon}
-                  alt={companyName}
+                  src={job?.company?.logo}
+                  alt={job?.company?.companyName}
                   className="w-full h-full object-contain p-1"
                 />
               ) : (
@@ -200,12 +120,12 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
             <div className="min-w-0">
               <p className="text-sm font-semibold text-zinc-900 truncate">
-                {job?.title || "Job"}
+                {job?.jobTitle || "Job"}
               </p>
 
               <p className="text-xs text-zinc-500 mt-0.5">
-                {companyName}
-                {job?.city ? ` • ${job.city}` : ""}
+                {job?.company?.companyName}
+                {job?.location}
               </p>
             </div>
           </div>
@@ -220,25 +140,25 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
             <ApplicationInfoRow
               icon={<FaUser />}
               label="Full Name"
-              value={applicantName}
+              value={user?.fullname}
             />
 
             <ApplicationInfoRow
               icon={<FaMapMarkerAlt />}
               label="Location"
-              value={applicantLocation}
+              value={user?.location}
             />
 
             <ApplicationInfoRow
               icon={<FaPhone />}
               label="Phone Number"
-              value={applicantPhone}
+              value={user?.phone}
             />
 
             <ApplicationInfoRow
               icon={<FaEnvelope />}
               label="Email Address"
-              value={applicantEmail}
+              value={user?.email}
               last
             />
           </div>
@@ -257,24 +177,24 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-semibold text-zinc-800 truncate">
-                  {resumeUrl ? "Your Resume" : "No resume uploaded"}
+                  {user?.resume ? "Your Resume" : "No resume uploaded"}
                 </p>
 
                 <p className="text-xs text-zinc-500 mt-0.5">
-                  {resumeUrl
+                  {user?.resume
                     ? "Resume ready to be submitted"
                     : "Please upload a resume before applying"}
                 </p>
               </div>
 
-              {resumeUrl && (
+              {user?.resume && (
                 <span className="text-xs font-medium text-green-600">
                   Ready
                 </span>
               )}
             </div>
 
-            {resumeUrl && (
+            {user?.resume && (
               <div className="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-zinc-100">
                 <button
                   type="button"
@@ -303,7 +223,7 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
             <p className="text-xs md:text-sm text-zinc-600 leading-5">
               By submitting this application, your profile information and
               resume will be shared with{" "}
-              <span className="font-semibold text-zinc-800">{companyName}</span>{" "}
+              <span className="font-semibold text-zinc-800">{job?.company?.companyName}</span>{" "}
               for this job application.
             </p>
           </div>
@@ -312,6 +232,7 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
         <div className="px-6 py-5 border-t border-zinc-100 flex flex-col sm:flex-row gap-3 sm:justify-end">
           <button
             type="button"
+            disabled={loading}
             onClick={onClose}
             className="h-11 px-6 rounded-lg border border-zinc-200 text-zinc-700 hover:bg-zinc-50 text-sm font-semibold transition"
           >
@@ -320,16 +241,22 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
           <button
             type="button"
-            onClick={onSubmit}
-            disabled={!resumeUrl}
-            className={`h-11 px-6 rounded-lg text-white text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2 ${
-              resumeUrl
-                ? "bg-blue-600 hover:bg-blue-700"
-                : "bg-zinc-300 cursor-not-allowed"
-            }`}
+
+            onClick={() => onSubmit(user?.resume)}
+            disabled={!user?.resume || loading}
+            className={`h-11 px-6 rounded-lg text-white text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2 ${user?.resume
+              ? "bg-blue-600 hover:bg-blue-700"
+              : "bg-zinc-300 cursor-not-allowed"
+              }`}
           >
-            <FaPaperPlane />
-            Submit Application
+
+            {
+              loading ? <Loader className="animate-spin" /> :
+                (<>
+                  <FaPaperPlane />
+                  Submit Application
+                </>)
+            }
           </button>
         </div>
       </div>
@@ -339,9 +266,8 @@ const ApplicationReview = ({ show, onClose, onSubmit, job }) => {
 
 const ApplicationInfoRow = ({ icon, label, value, last }) => (
   <div
-    className={`flex items-center gap-3 px-4 py-3.5 ${
-      !last ? "border-b border-zinc-100" : ""
-    }`}
+    className={`flex items-center gap-3 px-4 py-3.5 ${!last ? "border-b border-zinc-100" : ""
+      }`}
   >
     <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
       {icon}

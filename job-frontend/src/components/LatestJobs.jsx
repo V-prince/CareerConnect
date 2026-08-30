@@ -3,7 +3,7 @@ import { useJob } from "../store/JobContext";
 import { Link } from "react-router-dom";
 
 const CardRow = ({ item }) => (
-  <div className="flex flex-col gap-3 border-b border-zinc-200 py-4 last:border-0">
+  <Link to={`/jobs/${item._id}`} className="flex flex-col gap-3 border-b border-zinc-200 py-4 last:border-0 hover:bg-zinc-100 rounded-xl p-4">
     <div className="flex items-start justify-between gap-3">
       <div className="flex items-center gap-4 min-w-0">
         <img
@@ -30,7 +30,7 @@ const CardRow = ({ item }) => (
         Apply Now
       </button>
     </div>
-  </div>
+  </Link>
 );
 
 const ListCard = ({ title, items }) => (

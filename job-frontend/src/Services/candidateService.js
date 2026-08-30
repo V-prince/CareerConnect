@@ -20,4 +20,25 @@ export const GetSavedJobsData = async () => {
   }
 }
 
+export const JobApplyApI = async (formData) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/candidate/job/apply`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify(formData)
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 
