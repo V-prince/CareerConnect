@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
 import { TopHeader } from "./TopHeader";
 import { useAuth } from "../store/UserContext";
@@ -10,6 +10,7 @@ export const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const location = useLocation();
+  const navigate = useNavigate()
 
   const { user } = useAuth();
 
@@ -27,6 +28,19 @@ export const Navbar = () => {
   }, [location.pathname])
 
   const showWhiteBg = !isHomePage || isScrolled;
+
+
+  const handelNavigate = ()=>{
+    if(user.role === "candidate"){
+      navigate("/user/profile")
+    }
+    else if(user.role === "employer"){
+      navigate("/employer/profile")
+    }
+    else{
+       navigate("/admin/profile")
+    }
+  }
 
   return (
     <header className={`w-full sticky top-0 z-50 ${showWhiteBg ? "bg-white/70 shadow-lg border-b border-gray-200  backdrop-blur-xl" : "bg-white md:bg-transparent border-b border-transparent shadow-none"}`}>
@@ -90,7 +104,7 @@ export const Navbar = () => {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <Link to={"/user/profile"}  className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-100/70 hover:backdrop-blur-xl transition-all duration-200 cursor-pointer">
+              <div onClick={handelNavigate}   className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-zinc-100/70 hover:backdrop-blur-xl transition-all duration-200 cursor-pointer">
 
 
                 <span
@@ -119,7 +133,7 @@ export const Navbar = () => {
                   </div>
                 </div>
 
-              </Link>
+              </div>
             </>
           ) : (
             <>

@@ -64,7 +64,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <Settings />,
       title: "Settings",
-      to: "/settings",
+      to: "/employer/settings",
     },
   ];
 
@@ -87,7 +87,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <User />,
       title: "Profile",
-      to: "/user/profile",
+      to: "/employer/profile",
     },
     {
       icon: <Building2 />,
@@ -97,7 +97,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <Settings />,
       title: "Settings",
-      to: "/settings",
+      to: "/employer/settings",
     },
   ];
 

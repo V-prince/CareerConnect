@@ -21,6 +21,7 @@ import EmpCompanyProfile from "./pages/employer/EmpCompanyProfile";
 import EmpApplicants from "./pages/employer/EmpApplicants";
 import EmpApplicantProfile from "./pages/employer/EmpApplicantProfile";
 import JobDetail from "./pages/public/JobDetail";
+import { ProtectedRoutes } from "./components/ProtectedRoutes";
 
 function App() {
   return (
@@ -38,31 +39,48 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Route>
 
-        <Route element={<MainSidebar />}>
-          {/* Student */}
+        <Route element={<ProtectedRoutes allowedRoles={["candidate"]} />}>
+          <Route element={<MainSidebar />}>
+            {/* Student */}
 
-          <Route path="/user/dashboard" element={<Dashboard />} />
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/applications" element={<Applications />} />
-          <Route path="/user/save/jobs" element={<SaveJobs />} />
-          <Route path="/settings" element={<Setting />} />
+            <Route path="/user/dashboard" element={<Dashboard />} />
+            <Route path="/user/profile" element={<Profile />} />
+            <Route path="/user/applications" element={<Applications />} />
+            <Route path="/user/save/jobs" element={<SaveJobs />} />
+            <Route path="/user/settings" element={<Setting />} />
 
-          {/* Employer */}
+          </Route>
+        </Route>
 
-          <Route path="/employer/dashboard" element={<EmpDashboard />} />
-          <Route
-            path="/employer/company/profile"
-            element={<EmpCompanyProfile />}
-          />
-          <Route path="/employer/post/job" element={<EmpPostJob />} />
-          <Route path="/employer/jobs" element={<EmpJobs />} />
-          <Route path="/employer/applicants" element={<EmpApplicants />} />
-          <Route path="/employer/applicants/:id" element={<EmpApplicantProfile />} />
 
-          {/* Admim */}
+        <Route element={<ProtectedRoutes allowedRoles={["employer"]} />}>
+          <Route element={<MainSidebar />}>
 
-          <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/manage/users" element={<ManageUsers />} />
+            {/* Employer */}
+
+            <Route path="/employer/dashboard" element={<EmpDashboard />} />
+            <Route
+              path="/employer/company/profile"
+              element={<EmpCompanyProfile />}
+            />
+            <Route path="/employer/profile" element={<Profile />} />
+            <Route path="/employer/post/job" element={<EmpPostJob />} />
+            <Route path="/employer/jobs" element={<EmpJobs />} />
+            <Route path="/employer/applicants" element={<EmpApplicants />} />
+            <Route path="/employer/applicants/:id" element={<EmpApplicantProfile />} />
+            <Route path="/employer/settings" element={<Setting />} />
+
+          </Route>
+        </Route>
+
+
+        <Route element={<ProtectedRoutes allowedRoles={["admin"]} />}>
+          <Route element={<MainSidebar />}>
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/profile" element={<Profile />} />
+            <Route path="/admin/manage/users" element={<ManageUsers />} />
+            <Route path="/admin/settings" element={<Setting />} />
+          </Route>
         </Route>
       </Routes>
     </>

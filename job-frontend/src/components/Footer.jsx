@@ -8,8 +8,11 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useAuth } from "../store/UserContext";
 
 const Footer = () => {
+  const { user } = useAuth()
+
   return (
     <footer className="bg-[#0F172A] text-gray-300">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
@@ -79,17 +82,22 @@ const Footer = () => {
             <h3 className="text-white text-xl font-semibold mb-6">Resources</h3>
 
             <ul className="space-y-4">
-              <li>
-                <Link to="/login" className="hover:text-blue-400">
-                  Login
-                </Link>
-              </li>
 
-              <li>
-                <Link to="/register" className="hover:text-blue-400">
-                  Register
-                </Link>
-              </li>
+              {!user && (
+                <>
+                  <li>
+                    <Link to="/login" className="hover:text-blue-400">
+                      Login
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link to="/register" className="hover:text-blue-400">
+                      Register
+                    </Link>
+                  </li>
+                </>
+              )}
 
               <li>
                 <Link to="/contact" className="hover:text-blue-400">

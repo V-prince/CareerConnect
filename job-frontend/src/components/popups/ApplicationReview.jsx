@@ -15,7 +15,7 @@ import { useAuth } from "../../store/UserContext";
 import { Loader } from "lucide-react";
 
 const ApplicationReview = ({ loading, show, onClose, onSubmit, job }) => {
-  const { user, isLoggedIn } = useAuth()
+  const { user } = useAuth()
   if (!show) return null;
 
   const handleViewResume = () => {

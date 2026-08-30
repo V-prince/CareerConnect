@@ -27,18 +27,29 @@ export const GetPublicJobDetails = async ({id}) => {
       method: "GET",
       credentials: "include",
     });
-
     const data = await res.json();
-    console.log(data);
     return data;
-
-
-
   } catch (error) {
     console.log(error)
   }
 }
 
+
+export const GetPublicJobFilters = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/jobs/filter`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 
 
