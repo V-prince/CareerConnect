@@ -1,6 +1,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
 import { ChevronRight } from "lucide-react";
+import dayjs from "dayjs";
 
 const RecentApplications = ({ recentApplications, navigate }) => {
   const appStatusColor = (status) => {
@@ -13,6 +14,9 @@ const RecentApplications = ({ recentApplications, navigate }) => {
 
       case "interview":
         return "bg-purple-50 text-purple-700 border border-purple-100";
+
+      case "pending":
+        return "bg-yellow-50 text-yellow-700 border border-yellow-100";
 
       default:
         return "bg-zinc-50 text-zinc-600 border border-zinc-200";
@@ -42,45 +46,46 @@ const RecentApplications = ({ recentApplications, navigate }) => {
       </div>
 
       <div className="space-y-2 md:space-y-2.5">
-        {recentApplications.map((app) => (
+        {recentApplications?.map((app) => (
           <div
-            key={app.id}
+            key={app._id}
             className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
           >
             <div className="flex items-center gap-3 min-w-0">
-              <div
-                className={`w-10 h-10 md:w-11 md:h-11 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${app.bg}`}
-              >
-                {app.initials}
-              </div>
+              {app?.candidate?.photo ? (
+                <img
+                  src={app.candidate.photo}
+                  alt={app?.candidate?.fullname || "Candidate"}
+                  className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
+                  {app?.candidate?.fullname?.split(" ").map((name) => name[0]).join("").toUppercase()}
+                </div>
+              )}
+
 
               <div className="min-w-0">
                 <p className="text-sm md:text-[15px] font-semibold text-zinc-800 truncate flex items-center gap-1">
-                  {app.name}
-
-                  {app.featured && (
-                    <span className="text-indigo-500 text-[10px]">
-                      <FaStar />
-                    </span>
-                  )}
+                  {app?.candidate?.fullname}
                 </p>
 
                 <p className="text-[11px] md:text-xs text-zinc-500 truncate">
-                  {app.job}
+                  {app?.job?.jobTitle}
                 </p>
 
                 <p className="text-[10px] md:text-[11px] text-zinc-400 mt-0.5">
-                  {app.date}
+                  {dayjs(app?.createdAt).format("MMM DD, YYYY")}
                 </p>
               </div>
             </div>
 
             <span
               className={`inline-flex px-2.5 py-1 rounded-full text-[10px] md:text-[11px] font-semibold whitespace-nowrap ${appStatusColor(
-                app.status,
+                app?.status,
               )}`}
             >
-              {app.status}
+              {app?.status}
             </span>
           </div>
         ))}

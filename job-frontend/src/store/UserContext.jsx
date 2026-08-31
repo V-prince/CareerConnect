@@ -8,14 +8,11 @@ const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
   const [isLoggedIn, SetIsLoggedIn] = useState(false);
-  const [loading, SetLoading] = useState(false)
+  const [loading, SetLoading] = useState(true)
 
   const userDataFetch = async () => {
     try {
-      SetLoading(true);
-
       const data = await GetUserData();
-
       setUser(data.user);
 
       SetIsLoggedIn(true);

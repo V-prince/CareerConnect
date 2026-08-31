@@ -1,6 +1,6 @@
 import React from "react";
 import { FaBriefcase, FaMapMarkerAlt, FaUsers } from "react-icons/fa";
-
+import dayjs from "dayjs"
 import { ChevronRight, MoreVertical } from "lucide-react";
 
 const RecentJobs = ({ recentJobs, navigate }) => {
@@ -65,9 +65,9 @@ const RecentJobs = ({ recentJobs, navigate }) => {
           </thead>
 
           <tbody>
-            {recentJobs.map((job) => (
+            {recentJobs?.map((job) => (
               <tr
-                key={job.id}
+                key={job._id}
                 className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 transition"
               >
                 <td className="px-5 py-4">
@@ -78,13 +78,13 @@ const RecentJobs = ({ recentJobs, navigate }) => {
 
                     <div>
                       <p className="font-semibold text-sm md:text-[15px] text-zinc-800">
-                        {job.title}
+                        {job?.jobTitle}
                       </p>
 
                       <p className="text-[11px] md:text-xs text-zinc-500 mt-0.5 flex items-center gap-1">
-                        {job.type} •
+                        {job?.jobType} •
                         <FaMapMarkerAlt size={9} />
-                        {job.location}
+                        {job?.location}
                       </p>
                     </div>
                   </div>
@@ -95,7 +95,7 @@ const RecentJobs = ({ recentJobs, navigate }) => {
                     <FaUsers size={12} className="text-zinc-400" />
 
                     <span className="font-medium text-sm text-zinc-700">
-                      {job.applications}
+                      {job?.applications || 0}
                     </span>
                   </div>
                 </td>
@@ -103,15 +103,15 @@ const RecentJobs = ({ recentJobs, navigate }) => {
                 <td className="px-5 py-4">
                   <span
                     className={`inline-flex px-3 py-1 rounded-full text-[11px] font-semibold ${statusColor(
-                      job.status,
+                      job?.status,
                     )}`}
                   >
-                    {job.status}
+                    {job?.status}
                   </span>
                 </td>
 
                 <td className="px-5 py-4 text-xs md:text-sm text-zinc-500">
-                  {job.date}
+                  {dayjs(job?.createdAt).format("MMM DD,  YYYY")}
                 </td>
               </tr>
             ))}

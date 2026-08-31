@@ -41,7 +41,7 @@ export const CreateJobPostApI = async (formData) => {
 }
 
 
-export const UpdateJobPostApI = async (formData,jobId) => {
+export const UpdateJobPostApI = async (formData, jobId) => {
   try {
 
     const res = await fetch(`${MainUrl}/companey/job/edit/post/${jobId}`, {
@@ -110,7 +110,9 @@ export const GetJobData = async () => {
     });
 
     const data = await res.json();
-   
+
+    console.log(data)
+
     return data;
 
   } catch (error) {
@@ -123,6 +125,38 @@ export const GetCompaneyData = async () => {
   try {
 
     const res = await fetch(`${MainUrl}/companey/data`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const GetDashboardData = async (year) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/companey/dashboard/data?year=${year}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const GetApplicationData = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/companey/application/data`, {
       method: "GET",
       credentials: "include",
     });

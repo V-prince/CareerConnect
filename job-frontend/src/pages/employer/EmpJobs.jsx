@@ -155,7 +155,7 @@ const EmpJobs = () => {
   };
 
   const handleView = (job) => {
-    navigate(`/employer/job/${job._id}`)
+    navigate(`/job/${job._id}`)
   };
 
   const handleDelete = async (job) => {

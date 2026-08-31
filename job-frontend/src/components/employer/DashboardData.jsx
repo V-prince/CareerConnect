@@ -21,11 +21,6 @@ const DashboardData = ({ stats }) => {
                 <h2 className="text-2xl md:text-3xl font-bold text-zinc-800 mt-1.5 md:mt-2">
                   {stat.value}
                 </h2>
-
-                <p className="text-[11px] md:text-xs text-green-600 font-medium mt-1.5 flex items-center gap-1">
-                  <FaArrowRight size={9} className="-rotate-45" />↑{" "}
-                  {stat.change}
-                </p>
               </div>
 
               <div

@@ -223,8 +223,9 @@ const Jobs = () => {
 
 
   const handleJobClick = (job) => {
-    navigate(`/jobs/${job._id}`);
+    navigate(`/job/${job._id}`);
   };
+  
   return (
     <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-white min-h-screen">
       <section className="relative overflow-hidden border-b border-blue-200 bg-gradient-to-br from-blue-800 via-indigo-800 to-slate-800">

@@ -43,7 +43,6 @@ const JobsCard = ({ job, onClick }) => {
     const checkSaved = async () => {
       try {
         const data = await GetSavedJobsData();
-        console.log(data)
         if (data.success) {
           const saved = data.jobs.some((item) => String(item.job._id) === String(jobId))
           setIsSaved(saved);

@@ -8,8 +8,7 @@ const jobContext = createContext();
 
 const JobContextProvider = ({ children }) => {
   const [jobs, setJobs] = useState([]);
-
-
+  
   const getJobs = async () => {
     try {
       const data = await GetPublicJobs();
@@ -17,7 +16,6 @@ const JobContextProvider = ({ children }) => {
       if (!data.success) {
         return toast.error(data.message);
       }
-      console.log(data.jobs)
       setJobs(data.jobs)
     } catch (error) {
       console.log(error)
