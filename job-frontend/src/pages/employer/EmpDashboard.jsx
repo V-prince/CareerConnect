@@ -65,7 +65,7 @@ export const EmpDashboard = () => {
     {
       title: "Active Jobs",
       value: data?.status?.ActiveJobs,
-      change: "2 this month",
+
       icon: FaBriefcase,
       iconBg: "bg-blue-100",
       iconColor: "text-blue-600",
@@ -73,7 +73,7 @@ export const EmpDashboard = () => {
     {
       title: "Total Applications",
       value: data?.status?.totalApplications,
-      change: "18 this month",
+
       icon: FaUsers,
       iconBg: "bg-green-100",
       iconColor: "text-green-600",
@@ -89,7 +89,7 @@ export const EmpDashboard = () => {
     {
       title: "Interviews",
       value: data?.status?.interviews,
-      change: "3 this month",
+
       icon: FaCalendarAlt,
       iconBg: "bg-orange-100",
       iconColor: "text-orange-600",
@@ -97,7 +97,7 @@ export const EmpDashboard = () => {
     {
       title: "Hires",
       value: data?.status?.hired,
-      change: "1 this month",
+
       icon: FaStar,
       iconBg: "bg-teal-100",
       iconColor: "text-teal-600",

@@ -65,7 +65,7 @@ const RecentJobs = ({ recentJobs, navigate }) => {
           </thead>
 
           <tbody>
-            {recentJobs?.map((job) => (
+            {recentJobs?.slice(0,5)?.map((job) => (
               <tr
                 key={job._id}
                 className="border-b border-zinc-100 last:border-0 hover:bg-zinc-50 transition"

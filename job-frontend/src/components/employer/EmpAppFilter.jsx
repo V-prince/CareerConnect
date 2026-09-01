@@ -21,6 +21,7 @@ const SelectBox = ({ value, onChange, width = "xl:w-40", children }) => {
 };
 
 const EmpAppFilter = ({
+  locationOptions,
   search,
   onSearchChange,
   experienceFilter,
@@ -57,16 +58,12 @@ const EmpAppFilter = ({
         </SelectBox>
 
         <SelectBox value={locationFilter} onChange={onLocationChange}>
-          <option>All Location</option>
-          <option>Bengaluru, KA</option>
-          <option>Mumbai, MH</option>
-          <option>Pune, MH</option>
-          <option>Hyderabad, TS</option>
-          <option>Ahmedabad, GJ</option>
-          <option>Surat, GJ</option>
-          <option>Delhi, DL</option>
-          <option>Noida, UP</option>
-          <option>Vadodara, GJ</option>
+          <option value="All Location">All Location</option>
+          {locationOptions?.map((location) => (
+            <option key={location} value={location}>
+              {location}
+            </option>
+          ))}
         </SelectBox>
 
         <SelectBox value={sortBy} onChange={onSortChange}>

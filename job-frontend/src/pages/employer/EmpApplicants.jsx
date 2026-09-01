@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
 
@@ -6,6 +6,8 @@ import EmpAppTab from "../../components/employer/EmpAppTab";
 import EmpAppFilter from "../../components/employer/EmpAppFilter";
 import EmpAppTable from "../../components/employer/EmpAppTable";
 import EmpAppPage from "../../components/employer/EmpAppPage";
+import { GetApplicationData, UpdateApplicationStatusAPI } from "../../Services/companeyService";
+import toast from "react-hot-toast";
 
 export const initialApplicantsData = [
   {
@@ -131,21 +133,24 @@ export const initialApplicantsData = [
 ];
 
 const statusNames = [
-  "New",
-  "Shortlisted",
-  "Interview",
-  "Offered",
-  "Hired",
-  "Rejected",
+  "new",
+  "pending",
+  "shortlisted",
+  "interview",
+  "offered",
+  "hired",
+  "rejected",
+
 ];
 
 const EmpApplicants = () => {
   const navigate = useNavigate();
 
-  const [applicants, setApplicants] = useState(initialApplicantsData);
+  const [applicants, setApplicants] = useState([]);
   const statusTabs = useMemo(() => {
-    const counts = applicants.reduce((acc, applicant) => {
-      acc[applicant.status] = (acc[applicant.status] || 0) + 1;
+    const counts = applicants?.reduce((acc, applicant) => {
+      const status = applicant?.status?.toLowerCase();
+      acc[status] = (acc[status] || 0) + 1;
       return acc;
     }, {});
 
@@ -156,7 +161,7 @@ const EmpApplicants = () => {
         count: applicants.length,
       },
       ...statusNames.map((status) => ({
-        label: status,
+        label: status.charAt(0).toUpperCase() + status.slice(1),
         value: status,
         count: counts[status] || 0,
       })),
@@ -186,11 +191,12 @@ const EmpApplicants = () => {
 
       result = result.filter((applicant) => {
         return (
-          applicant.name.toLowerCase().includes(value) ||
-          applicant.email.toLowerCase().includes(value) ||
-          applicant.jobAppliedFor.toLowerCase().includes(value) ||
-          applicant.skills.some((skill) => skill.toLowerCase().includes(value))
-        );
+          applicant?.candidate?.fullname?.toLowerCase().includes(value) ||
+          applicant?.candidate?.email?.toLowerCase().includes(value) ||
+          applicant?.job?.jobTitle?.toLowerCase().includes(value) ||
+          applicant?.status?.toLowerCase().includes(value) ||
+          applicant?.candidate?.skills?.some((skill) => skill.toLowerCase().includes(value))
+        )
       });
     }
 
@@ -222,24 +228,24 @@ const EmpApplicants = () => {
 
     if (locationFilter !== "All Location") {
       result = result.filter(
-        (applicant) => applicant.location === locationFilter,
+        (applicant) => applicant?.candidate?.location === locationFilter,
       );
     }
 
     if (sortBy === "Newest") {
-      result.sort((a, b) => b.appliedDate.getTime() - a.appliedDate.getTime());
+      result.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
     }
 
     if (sortBy === "Oldest") {
-      result.sort((a, b) => a.appliedDate.getTime() - b.appliedDate.getTime());
+      result.sort((a, b) => new Date(a?.createdAt) - new Date(b?.createdAt));
     }
 
     if (sortBy === "Name A-Z") {
-      result.sort((a, b) => a.name.localeCompare(b.name));
+      result.sort((a, b) => a?.candidate?.fullname.localeCompare(b?.candidate?.fullname));
     }
 
     if (sortBy === "Name Z-A") {
-      result.sort((a, b) => b.name.localeCompare(a.name));
+      result.sort((a, b) => b?.candidate?.fullname.localeCompare(b?.candidate?.fullname));
     }
 
     return result;
@@ -257,14 +263,26 @@ const EmpApplicants = () => {
     startIndex + applicantsPerPage,
   );
 
-  const handleStatusChange = (id, newStatus) => {
-    setApplicants((prev) =>
-      prev.map((applicant) =>
-        applicant.id === id ? { ...applicant, status: newStatus } : applicant,
-      ),
-    );
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      const data = await UpdateApplicationStatusAPI(id, newStatus)
 
-    setOpenStatusId(null);
+      if (!data?.success) {
+        return toast.error(data?.message);
+      }
+
+      setApplicants((prev) =>
+        prev.map((applicant) =>
+          applicant._id === id ? { ...applicant, status: newStatus } : applicant,
+        ),
+      );
+
+      setOpenStatusId(null);
+      toast.success("Application status updated");
+    } catch (error) {
+      console.log("update status err:", error)
+    }
+
   };
 
   const handleStatusOpen = (id) => {
@@ -274,7 +292,7 @@ const EmpApplicants = () => {
       }
 
       const index = currentApplicants.findIndex(
-        (applicant) => applicant.id === id,
+        (applicant) => applicant._id === id,
       );
 
       setStatusDropUp(index >= currentApplicants.length - 2);
@@ -317,8 +335,32 @@ const EmpApplicants = () => {
   };
 
   const handleViewProfile = (applicant) => {
-    navigate(`/employer/applicants/${applicant.id}`);
+    navigate(`/employer/applicants/${applicant?.candidate?._id}`);
   };
+
+  const locationOptions = useMemo(() => {
+    const locations = new Set(applicants.map((applicant) => applicant?.candidate?.location).filter(Boolean));
+    return [...Array.from(locations)];
+  }, [applicants]);
+
+  const getempApplicentData = async () => {
+    try {
+      const data = await GetApplicationData()
+
+      if (!data?.success) {
+        return toast.error(data?.message)
+      }
+    
+      setApplicants(data?.applications)
+    } catch (err) {
+      console.log("emp applicant err:", err)
+    }
+  }
+
+
+  useEffect(() => {
+    getempApplicentData()
+  }, [])
 
   return (
     <div className="min-h-screen  mt-16 bg-gradient-to-br from-slate-50 via-blue-50 to-white">
@@ -350,6 +392,7 @@ const EmpApplicants = () => {
           />
 
           <EmpAppFilter
+            locationOptions={locationOptions}
             search={search}
             onSearchChange={handleSearchChange}
             experienceFilter={experienceFilter}

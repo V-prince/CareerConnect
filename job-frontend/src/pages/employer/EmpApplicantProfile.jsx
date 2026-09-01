@@ -11,23 +11,37 @@ import {
   MapPin,
   UserRound,
 } from "lucide-react";
-import { initialApplicantsData } from "./EmpApplicants";
 
-const statusStyles = {
-  New: "bg-sky-50 text-sky-700",
-  Shortlisted: "bg-emerald-50 text-emerald-700",
-  Interview: "bg-purple-50 text-purple-700",
-  Offered: "bg-amber-50 text-amber-700",
-  Hired: "bg-green-50 text-green-700",
-  Rejected: "bg-red-50 text-red-700",
-};
+import { useEffect, useState } from "react";
+import { GetApplicationCandidateData } from "../../Services/companeyService";
+import toast from "react-hot-toast";
+import dayjs from "dayjs";
+
+
 
 const EmpApplicantProfile = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const applicant = initialApplicantsData.find(
-    (item) => String(item.id) === id,
-  );
+  const [applicant, setApplicant] = useState(null);
+
+
+  const getAppcandidateData = async () => {
+    try {
+      const data = await GetApplicationCandidateData(id);
+
+      if (!data?.success) {
+        return toast.error(data?.message);
+      }
+      setApplicant(data?.applicant);
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getAppcandidateData();
+  }, [id])
 
   if (!applicant) {
     return (
@@ -45,17 +59,12 @@ const EmpApplicantProfile = () => {
     );
   }
 
-  const education = applicant.education || "Not provided";
-  const university = applicant.university || "Not provided";
-  const graduation = applicant.graduation || "Not provided";
-  const phone = applicant.phone || "Not provided";
-  const availability = applicant.availability || "Not provided";
-
+  const phone = applicant?.candidate?.phone || "Not provided";
   const details = [
-    [CalendarDays, "Applied on", applicant.appliedOn],
-    [Clock3, "Experience", applicant.experience],
-    [MapPin, "Location", `${applicant.location}, ${applicant.country}`],
-    [GraduationCap, "Education", education],
+    [CalendarDays, "Applied on", dayjs(applicant?.createdAt).format("DD MMM YYYY")],
+    [Clock3, "Experience", applicant?.candidate?.experience || "Not provided"],
+    [MapPin, "Location", `${applicant?.candidate?.location}` || "Not provided"],
+    [GraduationCap, "Education", applicant?.candidate?.education || "Not provided"],
   ];
 
   return (
@@ -91,30 +100,37 @@ const EmpApplicantProfile = () => {
 
         <section className="bg-white border border-zinc-200 rounded-xl p-5 md:p-6">
           <div className="flex flex-col sm:flex-row gap-5">
-            <div className="w-28 h-28 rounded-xl bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0">
-              {applicant.avatar}
-            </div>
+            {
+              applicant?.candidate?.photo ? (
+                <img src={applicant?.candidate?.photo} className="w-28 h-28 rounded-xl  object-cover">
+                </img>
+              ) : (
+                <div className="w-28 h-28 rounded-xl bg-blue-600 text-white flex items-center justify-center text-3xl font-bold shrink-0">
+                  {applicant?.candidate?.fullname?.split(" ").map((name) => name[0]).join("").toUpperCase()}
+                </div>
+              )
+            }
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-3">
-                <h2 className="text-2xl font-bold text-zinc-900">
-                  {applicant.name}
+                <h2 className="text-2xl font-bold text-zinc-900 capitalize">
+                  {applicant?.candidate?.fullname}
                 </h2>
               </div>
               <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm text-zinc-600">
                 <span className="inline-flex items-center gap-1.5">
-                  <MapPin size={16} /> {applicant.location}, {applicant.country}
+                  <MapPin size={16} /> {applicant?.candidate?.location}
                 </span>
                 <span className="inline-flex items-center gap-1.5">
-                  <BriefcaseBusiness size={16} /> {applicant.experience}{" "}
+                  <BriefcaseBusiness size={16} /> {applicant?.candidate?.experienceLevel}{" "}
                   experience
                 </span>
               </div>
               <div className="flex flex-wrap gap-x-5 gap-y-2 mt-4 text-sm text-zinc-600">
                 <a
-                  href={`mailto:${applicant.email}`}
+                  href={`mailto:${applicant?.candidate?.email}`}
                   className="inline-flex items-center gap-1.5 text-blue-600 font-medium hover:text-blue-700"
                 >
-                  <Mail size={16} /> {applicant.email}
+                  <Mail size={16} /> {applicant?.candidate?.email}
                 </a>
               </div>
             </div>
@@ -129,10 +145,10 @@ const EmpApplicantProfile = () => {
             <div className="mt-7 pt-6 border-t border-zinc-100">
               <h3 className="text-sm font-semibold text-zinc-900">Skills</h3>
               <div className="flex flex-wrap gap-2 mt-3">
-                {applicant.skills.map((skill) => (
+                {applicant?.candidate?.skills.map((skill) => (
                   <span
                     key={skill}
-                    className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 text-sm font-medium"
+                    className="px-3 py-1.5 rounded-md bg-blue-50 text-blue-700 text-sm font-medium capitalize"
                   >
                     {skill}
                   </span>
@@ -142,21 +158,29 @@ const EmpApplicantProfile = () => {
             <div className="grid sm:grid-cols-2 gap-5 mt-7">
               <div>
                 <p className="text-sm font-semibold text-zinc-900">Education</p>
-                <p className="text-sm text-zinc-500 mt-1">{education}</p>
+
+                {applicant?.candidate?.education.map((edu) => (
+                  <p key={edu} className="text-sm text-zinc-500 mt-1 mb-3">{edu}</p>
+                ))}
               </div>
               <div>
                 <p className="text-sm font-semibold text-zinc-900">Email</p>
                 <a
-                  href={`mailto:${applicant.email}`}
+                  href={`mailto:${applicant?.candidate?.email}`}
                   className="text-sm text-blue-600 mt-1 inline-block"
                 >
-                  {applicant.email}
+                  {applicant?.candidate?.email}
                 </a>
               </div>
               <div>
                 <p className="text-sm font-semibold text-zinc-900">Phone</p>
                 <p className="text-sm text-zinc-500 mt-1">{phone}</p>
               </div>
+
+            </div>
+            <div className="mt-7 pt-5 border-t border-zinc-100">
+              <p className="text-sm font-semibold text-zinc-900">Bio</p>
+              <p className="text-sm text-zinc-500 mt-1  capitalize">{applicant?.candidate?.bio}</p>
             </div>
 
             <div className="mt-7 pt-5 border-t border-zinc-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -167,16 +191,19 @@ const EmpApplicantProfile = () => {
                 <div>
                   <p className="text-sm font-semibold text-zinc-900">Resume</p>
                   <p className="text-xs text-zinc-500">
-                    {applicant.name.replace(/\s+/g, "_")}_Resume.pdf
+                    {applicant?.candidate?.fullname?.replace(/\s+/g, "_")}_Resume.pdf
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
+              <a
+                href={applicant?.resume}
+                download={`${applicant?.candidate?.fullname?.replace(/\s+/g, "_")}_Resume.pdf`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
               >
                 <Download size={16} />
-              </button>
+              </a>
             </div>
           </section>
 
@@ -192,7 +219,19 @@ const EmpApplicantProfile = () => {
                 >
                   <Icon size={18} className="text-zinc-700 mt-0.5" />
                   <p className="text-sm font-medium text-zinc-700">{label}</p>
-                  <p className="text-sm text-zinc-500 leading-6">{value}</p>
+                  <div>
+                    {
+                      Array.isArray(value) ? (
+                        value.map((val, index) => (
+                          <p key={index} className="text-sm text-zinc-500 leading-6">
+                            {val}
+                          </p>
+                        ))
+                      ) : (
+                        <p className="text-sm text-zinc-500 leading-6">{value}</p>
+                      )
+                    }
+                  </div>
                 </div>
               ))}
             </div>

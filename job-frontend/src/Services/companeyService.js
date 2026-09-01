@@ -168,3 +168,41 @@ export const GetApplicationData = async () => {
     console.log(error)
   }
 }
+
+export const UpdateApplicationStatusAPI = async (appId, status) => {
+  try {
+    const res = await fetch(`${MainUrl}/companey/update/application/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({ appId, status }),
+    });
+
+    const data = await res.json();
+
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+
+
+export const GetApplicationCandidateData = async (id) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/companey/application/candidate/data/${id}`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}

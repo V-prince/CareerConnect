@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import { ChevronDown, MapPin, Search } from "lucide-react";
+import dayjs from "dayjs";
 
 const statusClass = {
-  New: "bg-sky-50 text-sky-600",
-  Shortlisted: "bg-emerald-50 text-emerald-600",
-  Interview: "bg-purple-50 text-purple-600",
-  Offered: "bg-amber-50 text-amber-600",
-  Hired: "bg-green-50 text-green-700",
-  Rejected: "bg-red-50 text-red-600",
+  new: "bg-sky-50 text-sky-600",
+  pending:"bg-yellow-50 text-yellow-700",
+  shortlisted: "bg-emerald-50 text-emerald-600",
+  interview: "bg-purple-50 text-purple-600",
+  offered: "bg-amber-50 text-amber-600",
+  hired: "bg-green-50 text-green-700",
+  rejected: "bg-red-50 text-red-600",
+  
 };
 
 const statusOptions = [
-  "New",
-  "Shortlisted",
-  "Interview",
-  "Offered",
-  "Hired",
-  "Rejected",
+  { label: "New", value: "new" },
+  { label: "Pending", value: "pending" },
+  { label: "Shortlisted", value: "shortlisted" },
+  { label: "Interview", value: "interview" },
+  { label: "Offered", value: "offered" },
+  { label: "Hired", value: "hired" },
+  { label: "Rejected", value: "rejected" },
 ];
 
 const EmpAppTable = ({
@@ -39,9 +43,6 @@ const EmpAppTable = ({
               Job Applied For
             </th>
 
-            <th className="px-4 py-4 text-left text-sm font-semibold text-zinc-700">
-              Experience
-            </th>
 
             <th className="px-4 py-4 text-left text-sm font-semibold text-zinc-700">
               Location
@@ -65,7 +66,7 @@ const EmpAppTable = ({
           {applicants.length > 0 ? (
             applicants.map((applicant) => (
               <ApplicantRow
-                key={applicant.id}
+                key={applicant._id}
                 applicant={applicant}
                 openStatusId={openStatusId}
                 onStatusOpen={onStatusOpen}
@@ -107,6 +108,7 @@ const ApplicantRow = ({
 
   const handleStatusClick = (e) => {
     const button = e.currentTarget;
+    e.stopPropagation();
     const rect = button.getBoundingClientRect();
 
     const dropdownHeight = 260;
@@ -119,37 +121,42 @@ const ApplicantRow = ({
       left: rect.left,
     });
 
-    onStatusOpen(applicant.id);
+    onStatusOpen(applicant._id);
   };
 
   return (
-    <tr className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/70 transition">
+    <tr onClick={() => onViewProfile(applicant)} className="border-b border-zinc-100 last:border-b-0 hover:bg-zinc-50/70 transition cursor-pointer">
       <td className="px-5 py-5">
         <div className="flex items-start gap-3">
-          <div className="w-11 h-11 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-semibold text-sm shrink-0">
-            {applicant.avatar}
-          </div>
+
+          {
+            applicant?.candidate?.photo ? (
+              <img src={applicant?.candidate?.photo} className="w-11 h-11 rounded-full  flex items-center justify-center object-cover bg-zinc-100 text-zinc-400 shrink-0" alt="Candidate Photo">
+              </img>
+            ) :
+              (
+                <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">
+                  {applicant?.candidate?.fullname?.split(" ").map((name) => name[0]).join("").toUpperCase()}
+                </div>
+              )
+          }
 
           <div className="min-w-0">
-            <p className="font-semibold text-zinc-900">{applicant.name}</p>
+            <p className="font-semibold text-zinc-900 capitalize">{applicant?.candidate?.fullname}</p>
 
-            <p className="text-sm text-zinc-500 mt-0.5">{applicant.email}</p>
+            <p className="text-sm text-zinc-500 mt-0.5">{applicant?.candidate?.email}</p>
 
             <p className="text-xs text-blue-600 mt-1.5">
-              Skills: {applicant.skills.join(", ")}
+              Skills: {applicant?.candidate?.skills?.join(", ")}
             </p>
           </div>
         </div>
       </td>
 
       <td className="px-4 py-5">
-        <p className="font-medium text-zinc-900">{applicant.jobAppliedFor}</p>
+        <p className="font-medium text-zinc-900">{applicant?.job?.jobTitle}</p>
 
         <p className="text-xs text-zinc-500 mt-1">Job Application</p>
-      </td>
-
-      <td className="px-4 py-5 text-sm text-zinc-700 whitespace-nowrap">
-        {applicant.experience}
       </td>
 
       <td className="px-4 py-5">
@@ -158,25 +165,19 @@ const ApplicantRow = ({
 
           <div>
             <p className="text-sm text-zinc-700 whitespace-nowrap">
-              {applicant.location}
+              {applicant?.candidate?.location}
             </p>
-
-            <p className="text-xs text-zinc-500 mt-1">{applicant.country}</p>
           </div>
         </div>
       </td>
 
       <td className="px-4 py-5">
         <p className="text-sm text-zinc-700 whitespace-nowrap">
-          {applicant.appliedOn}
+          {dayjs(applicant?.createdAt).format("MMM D, YYYY")}
         </p>
 
         <p className="text-xs text-zinc-500 mt-1">
-          {applicant.id <= 2
-            ? "2 days ago"
-            : applicant.id <= 5
-              ? "3 days ago"
-              : "4 days ago"}
+          {dayjs(applicant?.createdAt).format("h:mm A")}
         </p>
       </td>
 
@@ -184,15 +185,14 @@ const ApplicantRow = ({
         <button
           type="button"
           onClick={handleStatusClick}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium cursor-pointer transition hover:opacity-80 ${
-            statusClass[applicant.status]
-          }`}
+          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium  capitalize cursor-pointer transition hover:opacity-80 ${statusClass[applicant?.status] || "bg-zinc-50 text-zinc-700 "
+            }`}
         >
-          {applicant.status}
+          {applicant?.status}
           <ChevronDown size={13} />
         </button>
 
-        {openStatusId === applicant.id && dropdownPosition && (
+        {openStatusId === applicant._id && dropdownPosition && (
           <div
             className="fixed z-[9999] w-36 rounded-lg border border-zinc-200 bg-white shadow-xl overflow-hidden"
             style={{
@@ -202,19 +202,19 @@ const ApplicantRow = ({
           >
             {statusOptions.map((status) => (
               <button
-                key={status}
+                key={status.value}
                 type="button"
-                onClick={() => {
-                  onStatusChange(applicant.id, status);
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onStatusChange(applicant._id, status.value);
                   setDropdownPosition(null);
                 }}
-                className={`w-full text-left px-3 py-2.5 text-sm transition ${
-                  applicant.status === status
-                    ? "bg-blue-50 text-blue-600 font-medium"
-                    : "text-zinc-700 hover:bg-zinc-50"
-                }`}
+                className={`w-full text-left px-3 py-2.5 text-sm transition ${applicant?.status === status.value
+                  ? "bg-blue-50 text-blue-600 font-medium"
+                  : "text-zinc-700 hover:bg-zinc-50 capitalize"
+                  }`}
               >
-                {status}
+                {status.label}
               </button>
             ))}
           </div>

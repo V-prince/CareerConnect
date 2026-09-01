@@ -46,7 +46,7 @@ const RecentApplications = ({ recentApplications, navigate }) => {
       </div>
 
       <div className="space-y-2 md:space-y-2.5">
-        {recentApplications?.map((app) => (
+        {recentApplications?.slice(0,5).map((app) => (
           <div
             key={app._id}
             className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
