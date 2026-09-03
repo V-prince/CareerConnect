@@ -19,6 +19,42 @@ export const GetSavedJobsData = async () => {
   }
 }
 
+export const GetJobApplyAPI = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/candidate/fetch/applications`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const RemovedSavedJobsData = async (id) => {
+  try {
+
+    const res = await fetch(`${MainUrl}/candidate/save/job/remove/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify()
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const JobApplyApI = async (formData) => {
   try {
 
@@ -40,7 +76,7 @@ export const JobApplyApI = async (formData) => {
   }
 }
 
-export const JobSaveApI = async (jobId) =>{
+export const JobSaveApI = async (jobId) => {
   try {
     const res = await fetch(`${MainUrl}/candidate/save/job/${jobId}`, {
       method: "POST",
@@ -59,3 +95,21 @@ export const JobSaveApI = async (jobId) =>{
   }
 }
 
+
+
+
+export const GetDashboardSatusData = async () => {
+  try {
+
+    const res = await fetch(`${MainUrl}/candidate/fetch/dashboard/data`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log(error)
+  }
+}

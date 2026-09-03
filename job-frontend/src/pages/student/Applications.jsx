@@ -11,8 +11,11 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { ApplicationDetailCard } from "../../components/ApplicationDetailCard";
 import { JobCard } from "../../components/JobCard";
+import { GetJobApplyAPI } from "../../Services/candidateService";
 
 export const Applications = () => {
+  const [JobData, setJobData] = useState([]);
+  const [filterdJobs, setFilterdJobs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectDetails, setSelectDetails] = useState(null);
   const [searchDetail, setsearchDetail] = useState({
@@ -23,67 +26,20 @@ export const Applications = () => {
 
   const options = [
     { value: "all", label: "All Status" },
-    { value: "applied", label: "Applied" },
-    { value: "under_review", label: "Under Review" },
-    { value: "shortlisted", label: "Shortlisted" },
-    { value: "interview", label: "Interview" },
-    { value: "selected", label: "Selected" },
-    { value: "rejected", label: "Rejected" },
+    ...[
+      ...new Set(JobData.map((app) => app?.status).filter(Boolean))
+    ].map((status) => ({
+      value: status,
+      label: status
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase()),
+    })),
   ];
-
   const shortOptions = [
     { value: "old", label: "Old" },
     { value: "new", label: "New" },
   ];
 
-  const JobData = [
-    {
-      icon: "/images/google.png",
-      title: "Software Engineering Intern",
-      companey: "Google",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Under Review",
-      date: "2 days ago",
-    },
-    {
-      icon: "/images/microsoft.png",
-      title: "Product Management Intern",
-      companey: "Microsoft",
-      city: "Hydrabad",
-      state: "Telangana",
-      status: "Shortlisted",
-      date: "2 days ago",
-    },
-    {
-      icon: "/images/Swiggy.png",
-      title: "Marketing Intern",
-      companey: "Swiggy",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Applied",
-      date: "2 days ago",
-    },
-    {
-      icon: "/images/zomato.png",
-      title: "Business Analyst Intern",
-      companey: "Zomato",
-      city: "Gurugram",
-      state: "Haryana",
-      status: "Under Review",
-      date: "2 days ago",
-    },
-    {
-      icon: "/images/delloit.png",
-      title: "Finance intern",
-      companey: "Deloitte",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Under Review",
-      date: "2 days ago",
-    },
-  ];
-  const [filterdJobs, setFilterdJobs] = useState(JobData);
 
   const itemsPerPage = 5;
 
@@ -105,18 +61,18 @@ export const Applications = () => {
     let Filterd = [...JobData];
 
     if (searchDetail.search) {
-      Filterd = Filterd.filter(
+      Filterd = Filterd?.filter(
         (job) =>
-          job.title.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
-          job.companey
+          job?.job?.jobTitle?.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
+          job?.job?.company?.companyName
             .toLowerCase()
             .includes(searchDetail.search.toLowerCase()),
       );
     }
 
     if (searchDetail.status && searchDetail.status !== "all") {
-      Filterd = Filterd.filter((job) =>
-        job.status
+      Filterd = Filterd?.filter((job) =>
+        job?.status
           .toLowerCase()
           .replace(/\s+/g, "_")
           .includes(searchDetail.status),
@@ -124,7 +80,7 @@ export const Applications = () => {
     }
 
     if (searchDetail.sort === "new") {
-      Filterd.reverse();
+      Filterd.sort((a, b) => new Date(b?.job?.createdAt) - new Date(a?.job?.createdAt));
     }
 
     setFilterdJobs(Filterd);
@@ -142,9 +98,31 @@ export const Applications = () => {
     setSelectDetails(null);
   };
 
+
+
+
+  const getApplications = async () => {
+    try {
+      const data = await GetJobApplyAPI()
+      console.log(data)
+      if (!data.success) {
+        return console.log(data.message)
+      }
+      setJobData(data?.applications)
+      setFilterdJobs(data?.applications)
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     SearchFilters();
   }, [searchDetail]);
+
+  useEffect(() => {
+    getApplications()
+  }, [])
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white  mt-16 p-8">
@@ -209,6 +187,8 @@ export const Applications = () => {
               />
             </div>
 
+
+
             <div className="w-full md:w-40">
               <Select
                 options={shortOptions}
@@ -249,17 +229,30 @@ export const Applications = () => {
         </div>
       </div>
 
+
+
       <div className="flex flex-col xl:flex-row gap-6 mt-5">
         <div
           className={`w-full ${!selectDetails ? "xl:w-full" : "xl:w-[45%]"} transition-all duration-300  space-y-3`}
         >
-          {currentJobs.map((job, index) => (
-            <JobCard
-              key={index}
-              setSelectDetails={setSelectDetails}
-              job={job}
-            />
-          ))}
+          {currentJobs.length > 0 ?
+            (currentJobs.map((job, index) => (
+              <JobCard
+                key={index}
+                setSelectDetails={setSelectDetails}
+                job={job}
+              />
+            ))) : (
+              <div className="bg-white border border-zinc-200 rounded-xl p-10 text-center">
+                <h3 className="text-lg font-semibold text-zinc-700">
+                  No Applications Found
+                </h3>
+
+                <p className="text-sm text-zinc-500 mt-1">
+                  You haven't applied for any jobs yet.
+                </p>
+              </div>
+            )}
         </div>
 
         {/* Application details */}
@@ -281,11 +274,10 @@ export const Applications = () => {
           onClick={() => setCurrentPage((prev) => prev - 1)}
           disabled={currentPage === 1}
           className={`px-4 py-2 rounded-lg border transition
-      ${
-        currentPage === 1
-          ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
-          : "hover:bg-indigo-600 hover:text-white"
-      }`}
+      ${currentPage === 1
+              ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
+              : "hover:bg-indigo-600 hover:text-white"
+            }`}
         >
           Previous
         </button>
@@ -295,11 +287,10 @@ export const Applications = () => {
             key={index}
             onClick={() => setCurrentPage(index + 1)}
             className={`w-10 h-10 rounded-lg border font-medium transition
-        ${
-          currentPage === index + 1
-            ? "bg-indigo-600 text-white border-indigo-600"
-            : "hover:bg-zinc-100"
-        }`}
+        ${currentPage === index + 1
+                ? "bg-indigo-600 text-white border-indigo-600"
+                : "hover:bg-zinc-100"
+              }`}
           >
             {index + 1}
           </button>
@@ -309,11 +300,10 @@ export const Applications = () => {
           onClick={() => setCurrentPage((prev) => prev + 1)}
           disabled={currentPage === totalPages}
           className={`px-4 py-2 rounded-lg border transition
-      ${
-        currentPage === totalPages
-          ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
-          : "hover:bg-indigo-600 hover:text-white"
-      }`}
+      ${currentPage === totalPages
+              ? "cursor-not-allowed bg-zinc-100 text-zinc-400"
+              : "hover:bg-indigo-600 hover:text-white"
+            }`}
         >
           Next
         </button>

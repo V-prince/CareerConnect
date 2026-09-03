@@ -1,60 +1,54 @@
 import { icons } from 'lucide-react'
-import React from 'react'
-import { TopHeader } from '../../components/TopHeader'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { GetDashboardSatusData, GetJobApplyAPI } from '../../Services/candidateService'
 
 export const Dashboard = () => {
 
+  const [statusData, setStatusData] = useState([]);
+  const [JobData, setJobData] = useState([]);
 
-  const JobData = [
-    {
-      icon: "/images/google.png",
-      title: "Software Engineering Intern",
-      companey: "Google",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Under Review",
-      date: "2 days ago"
-    },
-    {
-      icon: "/images/microsoft.png",
-      title: "Product Management Intern",
-      companey: "Microsoft",
-      city: "Hydrabad",
-      state: "Telangana",
-      status: "Shortlisted",
-      date: "2 days ago"
-    },
-    {
-      icon: "/images/Swiggy.png",
-      title: "Marketing Intern",
-      companey: "Swiggy",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Applied",
-      date: "2 days ago"
-    },
-    {
-      icon: "/images/zomato.png",
-      title: "Business Analyst Intern",
-      companey: "Zomato",
-      city: "Gurugram",
-      state: "Haryana",
-      status: "Under Review",
-      date: "2 days ago"
-    },
-    {
-      icon: "/images/delloit.png",
-      title: "Finance intern",
-      companey: "Deloitte",
-      city: "Bangaluru",
-      state: "Karnataka",
-      status: "Under Review",
-      date: "2 days ago"
-    },
+  const navigate = useNavigate();
 
-  ]
+  const getDashbordStatus = async () => {
+    try {
+      const data = await GetDashboardSatusData();
+      if (!data.success) {
+        return console.log(data.message)
+      }
+      setStatusData(data?.status)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
+  const getApplications = async () => {
+    try {
+      const data = await GetJobApplyAPI()
+      if (!data.success) {
+        return console.log(data.message)
+      }
+      setJobData(data?.applications)
+    }
+    catch (error) {
+      console.log(error)
+    }
+  }
+
+  const statusClass = {
+    new: "text-orange-600 bg-orange-100",
+    pending: "text-yellow-700 bg-yellow-100",
+    shortlisted: "text-green-700 bg-green-100",
+    interview: "text-purple-700 bg-purple-100",
+    rejected: "text-red-700 bg-red-100",
+    hired: "text-emerald-700 bg-emerald-100",
+
+  };
+
+  useEffect(() => {
+    getDashbordStatus()
+    getApplications()
+  }, [])
 
 
 
@@ -68,7 +62,7 @@ export const Dashboard = () => {
         <p className="text-zinc-600 mt-2 text-sm md:text-base">
           Here's what's happening with your career journey
         </p>
-      
+
 
 
         <div className="bg-white rounded-xl shadow-md mt-8 p-5">
@@ -83,45 +77,60 @@ export const Dashboard = () => {
             </Link>
           </div>
 
-          {JobData.map((job, index) => (
-            <div key={index} className='hover:bg-zinc-50 px-5 cursor-pointer'>
+          {
+            JobData.length > 0 ? (
 
-              <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 ${index === JobData.length - 1 ? "border-none" : "border-b"} py-6 border-zinc-200 `}>
+              JobData.map((job, index) => (
+                <div onClick={() => navigate("/user/applications")} key={index} className='hover:bg-zinc-50 px-5 cursor-pointer'>
+
+                  <div className={`flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 ${index === JobData.length - 1 ? "border-none" : "border-b"} py-6 border-zinc-200 `}>
 
 
-                <div className="flex items-center gap-5">
-                  <img
-                    src={job.icon}
-                    alt="Google"
-                    className="w-10 h-10 object-contain"
-                  />
+                    <div className="flex items-center gap-5">
+                      <img
+                        src={job?.job?.company?.logo}
+                        alt="Google"
+                        className="w-10 h-10 object-contain"
+                      />
 
-                  <div>
-                    <h3 className="font-semibold text-base md:text-lg">
-                      {job.title}
-                    </h3>
+                      <div>
+                        <h3 className="font-semibold text-base md:text-lg">
+                          {job?.job?.jobTitle}
+                        </h3>
 
-                    <p className="text-sm text-zinc-500">
-                      {job.companey} • {job.city}, {job.state}
-                    </p>
+                        <p className="text-sm text-zinc-500">
+                          {job?.job?.company?.companyName} • {job?.job?.location}
+                        </p>
+                      </div>
+                    </div>
+
+
+                    <div className="flex flex-wrap items-center gap-3 lg:gap-5">
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold capitalize ${statusClass[job?.status?.toLowerCase()] ||
+                        "text-zinc-600 bg-zinc-100"
+                        }`}>
+                        {job?.status.toLowerCase() === "new" ? "Applied" : job?.status}
+                      </span>
+
+                      <p className="text-zinc-500 text-sm">
+                        {job.date}
+                      </p>
+                    </div>
+
                   </div>
                 </div>
 
+              ))) : (
+              <div className="bg-white border border-zinc-200 rounded-xl p-10 text-center">
+                <h3 className="text-lg font-semibold text-zinc-700">
+                  No Applications Found
+                </h3>
 
-                <div className="flex flex-wrap items-center gap-3 lg:gap-5">
-                  <span className={`px-3 py-1 rounded-full  ${job.status.toLocaleLowerCase() === "under review" ? "text-indigo-600 bg-indigo-100" : job.status.toLocaleLowerCase() === "applied" ? "text-orange-500 bg-amber-100" : job.status.toLocaleLowerCase() === "shortlisted" ? "text-green-600 bg-green-100" : ""}   text-sm font-semibold`}>
-                    {job.status}
-                  </span>
-
-                  <p className="text-zinc-500 text-sm">
-                    {job.date}
-                  </p>
-                </div>
-
+                <p className="text-sm text-zinc-500 mt-1">
+                  You haven't applied for any jobs yet.
+                </p>
               </div>
-            </div>
-
-          ))}
+            )}
         </div>
 
         <div className="bg-white border border-zinc-200 shadow-lg rounded-2xl p-6 mt-5">
@@ -135,28 +144,28 @@ export const Dashboard = () => {
               <span className="text-sm font-semibold text-green-600 uppercase">
                 Applied
               </span>
-              <p className="text-3xl font-bold text-green-700 mt-2">5</p>
+              <p className="text-3xl font-bold text-green-700 mt-2">{statusData.find((item) => item.status === "new")?.jobStatus || 0}</p>
             </div>
 
             <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-yellow-200 shadow-xl bg-yellow-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-yellow-600 uppercase">
                 Pending
               </span>
-              <p className="text-3xl font-bold text-yellow-700 mt-2">2</p>
+              <p className="text-3xl font-bold text-yellow-700 mt-2">{statusData.find((item) => item.status === "pending")?.jobStatus || 0}</p>
             </div>
 
             <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-blue-200 shadow-xl bg-blue-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-blue-600 uppercase">
                 Interview
               </span>
-              <p className="text-3xl font-bold text-blue-700 mt-2">1</p>
+              <p className="text-3xl font-bold text-blue-700 mt-2">{statusData.find((item) => item.status === "interview")?.jobStatus || 0}</p>
             </div>
 
             <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-red-200 shadow-xl bg-red-50 hover:shadow-md transition">
               <span className="text-sm font-semibold text-red-600 uppercase">
                 Rejected
               </span>
-              <p className="text-3xl font-bold text-red-700 mt-2">3</p>
+              <p className="text-3xl font-bold text-red-700 mt-2">{statusData.find((item) => item.status === "rejected")?.jobStatus || 0}</p>
             </div>
 
           </div>

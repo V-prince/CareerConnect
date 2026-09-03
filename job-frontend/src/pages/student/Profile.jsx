@@ -30,9 +30,7 @@ import toast from "react-hot-toast";
 export const Profile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [showProfileModal, setShowProfileModal] = useState(true);
-  // ==========================================
-  // INPUT STATES
-  // ==========================================
+
 
   
   const [skillsInput, setSkillsInput] = useState("");
@@ -44,9 +42,6 @@ export const Profile = () => {
 
 
   const date = dayjs(data?.user.createdAt)
-  // ===================d=======================
-  // PROFILE DATA
-  // ==========================================
   
   const [editData, setEditData] = useState({
     fullname: "",
@@ -57,13 +52,13 @@ export const Profile = () => {
 
     location: "",
 
-    // Multiple education
+   
     education: [],
     
-    // Multiple experience
+    
     experience: [],
     
-    // Multiple skills
+    
     skills: [],
     
     bio: "",
@@ -71,14 +66,11 @@ export const Profile = () => {
     resume: "",
   });
   
-  // Original data for Cancel
+ 
   const [backupData, setBackupData] = useState(null);
   
 
-  // ==========================================
-  // NORMAL INPUT CHANGE
-  // ==========================================
-
+  
   const handleOnChange = (e) => {
     const { name, value } = e.target;
 
@@ -88,10 +80,7 @@ export const Profile = () => {
     }));
   };
 
-  // ==========================================
-  // EDUCATION
-  // ==========================================
-
+ 
   const handleAddEducation = () => {
     const value = educationInput.trim();
 
@@ -130,9 +119,6 @@ export const Profile = () => {
     }
   };
 
-  // ==========================================
-  // EXPERIENCE
-  // ==========================================
 
   const handleAddExperience = () => {
     const value = experienceInput.trim();
@@ -172,10 +158,7 @@ export const Profile = () => {
     }
   };
 
-  // ==========================================
-  // SKILLS
-  // ==========================================
-
+  
   const handleAddSkill = () => {
     const value = skillsInput.trim();
 
@@ -214,10 +197,6 @@ export const Profile = () => {
     }
   };
 
-  // ==========================================
-  // RESUME
-  // ==========================================
-
   const handleOnFileChange = (e) => {
     const file = e.target.files?.[0];
 
@@ -241,18 +220,12 @@ export const Profile = () => {
     }));
   }
 
-  // ==========================================
-  // EDIT PROFILE
-  // ==========================================
-
+  
   const handleEdit = () => {
     setBackupData(structuredClone(editData));
     setIsEdit(true);
   };
 
-  // ==========================================
-  // SAVE
-  // ==========================================
 
   const handleSave = async () => {
     try {
@@ -303,10 +276,7 @@ export const Profile = () => {
     }
   };
 
-  // ==========================================
-  // CANCEL
-  // ==========================================
-
+  
   const handleCancel = () => {
     if (backupData) {
       setEditData(backupData);
@@ -320,12 +290,7 @@ export const Profile = () => {
     setBackupData(null);
   };
 
-  // ==========================================
-  // PROFILE STRENGTH
-  // ==========================================
-
-
-
+ 
   const getData = async () => {
     try {
 
@@ -363,18 +328,11 @@ export const Profile = () => {
     getData()
   }, [])
 
-  // ==========================================
-  // UI
-  // ==========================================
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white mt-16 p-4 md:p-8">
 
-      {/* ==========================================
-          PAGE HEADER
-      ========================================== */}
-
-      <div>
+    <div>
         <h1 className="text-2xl md:text-3xl font-bold text-zinc-900">
           My Profile
         </h1>
@@ -384,15 +342,11 @@ export const Profile = () => {
         </p>
       </div>
 
-      {/* ==========================================
-          PROFILE HEADER
-      ========================================== */}
-
       <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-4 md:p-6 shadow-sm">
 
         <div className="flex flex-col xl:flex-row xl:items-start xl:justify-between gap-8">
 
-          {/* LEFT */}
+    
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
 
@@ -558,10 +512,7 @@ export const Profile = () => {
 
       </div>
 
-      {/* ==========================================
-          PERSONAL INFORMATION
-      ========================================== */}
-
+    
       <div className="mt-8 rounded-3xl bg-white shadow-sm border border-zinc-200 overflow-hidden p-5 md:p-8">
 
         {/* HEADER */}
@@ -616,10 +567,7 @@ export const Profile = () => {
 
         </div>
 
-        {/* ==========================================
-            INFORMATION GRID
-        ========================================== */}
-
+   
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
           {/* EMAIL */}
@@ -747,9 +695,7 @@ export const Profile = () => {
           </ProfileCard>)}
 
 
-          {/* ==========================================
-              EDUCATION
-          ========================================== */}
+          
 
           <ProfileCard
             icon={<GraduationCap size={18} />}
@@ -828,9 +774,7 @@ export const Profile = () => {
 
           </ProfileCard>
 
-          {/* ==========================================
-              EXPERIENCE
-          ========================================== */}
+         
           {data?.user?.role === "candidate" && (
 
 
@@ -959,9 +903,6 @@ export const Profile = () => {
               </ProfileCard>
             )}
 
-          {/* ==========================================
-              SKILLS
-          ========================================== */}
           {data?.user?.role === "candidate" && (
 
             <ProfileCard
@@ -1042,9 +983,7 @@ export const Profile = () => {
             </ProfileCard>
           )}
 
-          {/* ==========================================
-              BIO
-          ========================================== */}
+         
 
           <div className="lg:col-span-2">
 
@@ -1080,8 +1019,7 @@ export const Profile = () => {
 
       </div>
 
-      {/* PROFILE SETUP MODAL */}
-
+   
       {data?.user?.isComplateProfile === false && showProfileModal && (
         <ProfileSetupModal
           onComplete={() => {

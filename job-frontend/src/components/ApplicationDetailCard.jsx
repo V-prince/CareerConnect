@@ -1,6 +1,54 @@
 import React from 'react'
-import {MapPin, X } from 'lucide-react'
-export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
+import { MapPin, X } from 'lucide-react'
+import dayjs from 'dayjs'
+export const ApplicationDetailCard = ({ selectDetails, setSelectDetails }) => {
+
+
+  const formatSalary = (minSalary, maxSalary, salaryPeriod = "yearly") => {
+
+    const format = (salary) => {
+      if (salary >= 10000000) {
+        return `${(salary / 10000000).toFixed(0)} Cr`;
+      }
+
+      if (salary >= 100000) {
+        return `${(salary / 100000).toFixed(0)} L`;
+      }
+
+      if (salary >= 1000) {
+        return `${(salary / 1000).toFixed(0)}K`;
+      }
+
+      return salary;
+    };
+
+    if (minSalary && maxSalary) {
+      return `₹${format(minSalary)} - ₹${format(maxSalary)} / ${salaryPeriod}`;
+    }
+
+    if (minSalary) {
+      return `₹${format(minSalary)}+ / ${salaryPeriod}`;
+    }
+
+    if (maxSalary) {
+      return `Up to ₹${format(maxSalary)} / ${salaryPeriod}`;
+    }
+
+    return "Based on Performance";
+  };
+
+
+
+  const statusClass = {
+    new: "text-orange-600 bg-orange-100",
+    pending: "text-yellow-700 bg-yellow-100",
+    shortlisted: "text-green-700 bg-green-100",
+    interview: "text-purple-700 bg-purple-100",
+    rejected: "text-red-700 bg-red-100",
+    hired: "text-emerald-700 bg-emerald-100",
+
+  };
+
   return (
     <div className={`flex-1 xl:w-[55%] transition-all duration-300 ${selectDetails
       ? "opacity-100 translate-x-0"
@@ -22,22 +70,22 @@ export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
         <div className="flex items-center gap-4 py-6 border-b">
 
           <img
-            src={selectDetails.icon}
+            src={selectDetails?.job?.company?.logo}
             className="w-12 h-12 object-contain"
           />
 
           <div>
             <h3 className="font-semibold text-lg">
-              {selectDetails.title}
+              {selectDetails?.job?.jobTitle}
             </h3>
 
             <p className="text-zinc-500">
-              {selectDetails.companey}
+              {selectDetails?.job?.company?.companyName}
             </p>
 
             <div className="flex items-center gap-2 text-sm text-zinc-500 mt-1">
               <MapPin size={15} />
-              {selectDetails.city}, {selectDetails.state}
+              {selectDetails?.job?.company?.location}
             </div>
           </div>
 
@@ -51,7 +99,7 @@ export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
             </p>
 
             <p className="font-medium">
-              Internship
+              {selectDetails?.job?.jobType}
             </p>
           </div>
 
@@ -61,7 +109,7 @@ export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
             </p>
 
             <p className="font-medium">
-              25 July 2026
+              {dayjs(selectDetails?.createdAt).format("DD MMM YYYY")}
             </p>
           </div>
 
@@ -70,9 +118,16 @@ export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
               Status
             </p>
 
-            <span className="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-600 text-sm font-medium">
-              Under Review
+
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-semibold capitalize
+                  ${statusClass[selectDetails?.status?.toLowerCase()] ||
+                "text-zinc-600 bg-zinc-100"
+                }`}
+            >
+              {selectDetails?.status}
             </span>
+
           </div>
 
           <div>
@@ -81,7 +136,7 @@ export const ApplicationDetailCard = ({selectDetails,setSelectDetails}) => {
             </p>
 
             <p className="font-medium">
-              ₹40,000 / month
+              {formatSalary(selectDetails?.job?.minSalary, selectDetails?.job?.maxSalary, selectDetails?.job?.salaryPeriod)}
             </p>
           </div>
 

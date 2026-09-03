@@ -7,8 +7,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { GetSavedJobsData } from "../../Services/candidateService";
+import { GetSavedJobsData, RemovedSavedJobsData } from "../../Services/candidateService";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 export const SaveJobs = () => {
   const [currentPage, SetcurrentPage] = useState(1);
@@ -17,9 +19,9 @@ export const SaveJobs = () => {
     search: "",
     sort: "",
   });
-  const [filterdItems, SetfilterdItems] = useState(JobData);
+  const [filterdItems, SetfilterdItems] = useState([]);
   const [openMenu, setOpenMenu] = useState(null);
-
+  const navigate = useNavigate();
   const option = [
     { value: "new", label: "New" },
     { value: "old", label: "Old" },
@@ -32,9 +34,9 @@ export const SaveJobs = () => {
 
   const firstIndex = lastIndex - itemsPerpages;
 
-  const currentJobs = filterdItems.slice(firstIndex, lastIndex);
+  const currentJobs = filterdItems?.slice(firstIndex, lastIndex);
 
-  const totalPages = Math.ceil(filterdItems.length / itemsPerpages);
+  const totalPages = Math.ceil(filterdItems?.length / itemsPerpages);
 
   const handelOnChange = (e) => {
     const { name, value } = e.target;
@@ -50,15 +52,16 @@ export const SaveJobs = () => {
     if (searchDetail.search) {
       Fielterd = Fielterd.filter(
         (job) =>
-          job.title.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
-          job.companey
+          job?.job?.jobTitle?.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
+          job?.job?.location?.toLowerCase().includes(searchDetail.search.toLowerCase()) ||
+          job?.job.company?.companyName
             .toLowerCase()
             .includes(searchDetail.search.toLowerCase()),
       );
     }
 
     if (searchDetail.sort === "new") {
-      Fielterd = Fielterd.reverse();
+      Fielterd = Fielterd?.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt))
     }
 
     SetfilterdItems(Fielterd);
@@ -70,13 +73,33 @@ export const SaveJobs = () => {
       if (!data.success) {
         return toast.error(data.message)
       }
-
-      console.log(data)
-      // SetJobData(data.jobs)
-
+      SetfilterdItems(data?.jobs)
+      SetJobData(data?.jobs)
     } catch (error) {
       console.log("savejobs", error)
     }
+  }
+
+  const handelOnRemoveSavedJob = async (jobId) => {
+    try {
+      const data = await RemovedSavedJobsData(jobId)
+      if (!data.success) {
+        return toast.error(data.message)
+      }
+      toast.success(data.message)
+      getJobData()
+    }
+    catch (error) {
+      console.log("savejobs", error)
+    }
+  }
+
+  const handelClearAllFilters = () => {
+    SetsearchDetail({
+      search: "",
+      sort: null
+    });
+    SetfilterdItems(JobData);
   }
 
   useEffect(() => {
@@ -105,6 +128,7 @@ export const SaveJobs = () => {
                 <input
                   type="text"
                   name="search"
+                  value={searchDetail.search}
                   onChange={handelOnChange}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -127,6 +151,7 @@ export const SaveJobs = () => {
             <div className="w-full cursor-pointer md:w-40">
               <Select
                 options={option}
+                value={option.find((opt) => (opt.value === searchDetail.sort)) || null}
                 name="sort"
                 className="text-sm  w-full cursor-pointer"
                 placeholder="Short"
@@ -148,9 +173,8 @@ export const SaveJobs = () => {
               />
             </div>
 
-            <button className="border w-full md:w-48 cursor-pointer  border-zinc-300 flex items-center justify-center gap-5 px-4 py-2 rounded-lg hover:bg-red-100 hover:text-red-500 hover:border-red-500 transition">
-              <Trash size={20} />
-              Clear All
+            <button onClick={handelClearAllFilters} className="border w-full md:w-48 cursor-pointer  border-zinc-300 flex items-center justify-center gap-5 px-4 py-2 rounded-lg hover:bg-red-100 hover:text-red-500 hover:border-red-500 transition">
+              Clear All Filters
             </button>
           </div>
         </div>
@@ -179,32 +203,32 @@ export const SaveJobs = () => {
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5 p-5">
                   <div className="flex items-center gap-10">
                     <img
-                      src={job.icon}
-                      alt={job.companey}
+                      src={job?.job?.company?.logo}
+                      alt={job?.job?.company?.companyName}
                       className="w-12 h-12 object-contain shrink-0"
                     />
 
                     <div className="space-y-1">
-                      <h3 className="font-semibold text-base">{job.title}</h3>
+                      <h3 className="font-semibold text-base">{job?.job?.jobTitle}</h3>
 
-                      <p className="text-sm text-zinc-500">{job.companey}</p>
+                      <p className="text-sm text-zinc-500">{job?.job?.company?.companyName}</p>
 
                       <div className="flex items-center gap-2 text-sm text-zinc-500">
                         <MapPin size={15} />
                         <span>
-                          {job.city}, {job.state}
+                          {job?.job?.location}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2 text-sm text-zinc-500">
                         <Calendar size={15} />
-                        <span>{job.date}</span>
+                        <span>{dayjs(job?.job?.createdAt).format('DD MMM YYYY')}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center justify-between md:justify-end gap-3">
-                    <button className="border border-indigo-500 text-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-50 font-semibold text-sm cursor-pointer">
+                    <button onClick={() => navigate(`/job/${job?.job?._id}`)}  className="border border-indigo-500 text-indigo-500 px-4 py-2 rounded-lg hover:bg-indigo-50 font-semibold text-sm cursor-pointer">
                       View Job
                     </button>
 
@@ -220,10 +244,7 @@ export const SaveJobs = () => {
                       {openMenu === index && (
                         <div className="absolute right-0 mt-2 md:mt-5 w-36 bg-white border border-zinc-200 rounded-lg shadow-lg z-10">
                           <button
-                            onClick={() => {
-                              console.log("Delete", job);
-                              setOpenMenu(null);
-                            }}
+                            onClick={() => handelOnRemoveSavedJob(job?.job?._id)}
                             className="w-full flex items-center gap-2 px-4 py-2 text-red-500 hover:bg-red-50"
                           >
                             <Trash size={16} />
