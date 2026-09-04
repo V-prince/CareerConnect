@@ -46,9 +46,10 @@ const RecentApplications = ({ recentApplications, navigate }) => {
       </div>
 
       <div className="space-y-2 md:space-y-2.5">
-        {recentApplications?.slice(0,5).map((app) => (
+        {recentApplications?.slice(0, 5).map((app) => (
           <div
             key={app._id}
+            onClick={() => navigate(`/employer/applicants/${app?.candidate?._id}`)}
             className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-zinc-50 transition cursor-pointer border border-transparent hover:border-zinc-100"
           >
             <div className="flex items-center gap-3 min-w-0">
@@ -66,7 +67,7 @@ const RecentApplications = ({ recentApplications, navigate }) => {
 
 
               <div className="min-w-0">
-                <p className="text-sm md:text-[15px] font-semibold text-zinc-800 truncate flex items-center gap-1">
+                <p className="text-sm md:text-[15px] font-semibold text-zinc-800 truncate flex items-center gap-1 capitalize">
                   {app?.candidate?.fullname}
                 </p>
 
