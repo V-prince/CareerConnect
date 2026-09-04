@@ -27,6 +27,7 @@ import { JobApplyApI } from "../../Services/candidateService";
 import dayjs from "dayjs";
 import { ClipboardClock } from "lucide-react";
 import toast from "react-hot-toast";
+import { useAuth } from "../../store/UserContext";
 
 
 
@@ -36,6 +37,8 @@ const JobDetail = () => {
   const [job, setJob] = useState(null);
   const [loading, SetLoading] = useState(false)
   const { id } = useParams();
+
+  const { user } = useAuth();
 
   const [showApplicationReview, setShowApplicationReview] = useState(false);
 
@@ -58,7 +61,7 @@ const JobDetail = () => {
     try {
       const formData = {
         resume,
-        jobId:id
+        jobId: id
       }
       SetLoading(true)
       const data = await JobApplyApI(formData);
@@ -244,13 +247,16 @@ const JobDetail = () => {
                         </>
                       )}
                     </div>
-                    <button
-                      onClick={handleApply}
-                      className="h-11 px-6 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2"
-                    >
-                      <FaPaperPlane />
-                      Apply Now
-                    </button>
+                    {user.role === "candidate" && (
+                      <button
+                        onClick={handleApply}
+                        className="h-11 px-6 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold transition shadow-sm flex items-center justify-center gap-2"
+                      >
+                        <FaPaperPlane />
+                        Apply Now
+                      </button>
+                    )}
+
                   </div>
                 </div>
               </div>
@@ -420,7 +426,7 @@ const JobDetail = () => {
         onClose={() => setShowApplicationReview(false)}
         onSubmit={handleSubmitApplication}
         job={job}
-        loading={ loading}
+        loading={loading}
       />
     </div>
   );

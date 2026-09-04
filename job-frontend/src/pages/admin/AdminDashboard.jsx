@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { AdminAreaChart } from '../../components/charts/AreaChart';
 import { GetAdminAppAndJOBDataApI, GetAdminDashboardApI } from '../../Services/adminService';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 
 export const AdminDashboard = () => {
 
   const [data, setData] = useState(null);
   const [applications, setApplications] = useState([]);
   const [jobs, setjobs] = useState([]);
+  const navigate = useNavigate()
 
 
   const UserCounts = [
@@ -47,10 +49,6 @@ export const AdminDashboard = () => {
     hired: "text-emerald-700 bg-emerald-100",
 
   };
-
-
-
-
 
   const getData = async () => {
     try {
@@ -134,7 +132,7 @@ export const AdminDashboard = () => {
               Recent Job Postings
             </h2>
 
-            <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
+            <button onClick={() => navigate('/admin/jobs')} className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
               View All
             </button>
           </div>
@@ -156,7 +154,7 @@ export const AdminDashboard = () => {
                 {
                   jobs?.slice(0, 5)?.map((job) => (
 
-                    <tr key={job._id} className="border-b border-zinc-100 hover:bg-zinc-50 transition">
+                    <tr key={job._id} onClick={() => navigate(`/job/${job?._id}`)}  className="border-b border-zinc-100 hover:bg-zinc-50 transition">
 
                       <td className="px-4 py-4">
                         <h3 className="text-blue-500 font-semibold">
@@ -199,7 +197,7 @@ export const AdminDashboard = () => {
               Recent Applications
             </h2>
 
-            <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <button onClick={() => navigate('/admin/applicants')} className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
               View All
             </button>
           </div>
@@ -231,7 +229,7 @@ export const AdminDashboard = () => {
 
                 {applications?.slice(0, 5).map((app) => (
 
-                  <tr key={app._id} className="border-b border-zinc-100 hover:bg-zinc-50 transition">
+                  <tr key={app._id} onClick={() => navigate(`/admin/applicants/${app?.candidate?._id}`)} className="border-b border-zinc-100 hover:bg-zinc-50 transition">
 
                     <td className="py-4 px-4">
                       <div>

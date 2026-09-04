@@ -79,6 +79,9 @@ function App() {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             <Route path="/admin/profile" element={<Profile />} />
             <Route path="/admin/manage/users" element={<ManageUsers />} />
+            <Route path="/admin/jobs" element={<EmpJobs />} />
+            <Route path="/admin/applicants" element={<EmpApplicants />} />
+            <Route path="/admin/applicants/:id" element={<EmpApplicantProfile />} />
             <Route path="/admin/settings" element={<Setting />} />
           </Route>
         </Route>

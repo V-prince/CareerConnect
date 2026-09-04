@@ -62,6 +62,21 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
       to: "/admin/manage/users",
     },
     {
+      icon: <User />,
+      title: "Profile",
+      to: "/admin/profile",
+    },
+    {
+      icon: <ClipboardList />,
+      title: "Applications",
+      to: "/admin/applicants",
+    },
+    {
+      icon: <BriefcaseBusiness />,
+      title: "Jobs",
+      to: "/admin/jobs",
+    },
+    {
       icon: <Settings />,
       title: "Settings",
       to: "/admin/settings",

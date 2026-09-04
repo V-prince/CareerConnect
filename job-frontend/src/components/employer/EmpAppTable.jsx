@@ -4,13 +4,13 @@ import dayjs from "dayjs";
 
 const statusClass = {
   new: "bg-sky-50 text-sky-600",
-  pending:"bg-yellow-50 text-yellow-700",
+  pending: "bg-yellow-50 text-yellow-700",
   shortlisted: "bg-emerald-50 text-emerald-600",
   interview: "bg-purple-50 text-purple-600",
   offered: "bg-amber-50 text-amber-600",
   hired: "bg-green-50 text-green-700",
   rejected: "bg-red-50 text-red-600",
-  
+
 };
 
 const statusOptions = [
@@ -24,6 +24,7 @@ const statusOptions = [
 ];
 
 const EmpAppTable = ({
+  user,
   applicants,
   openStatusId,
   onStatusOpen,
@@ -67,6 +68,7 @@ const EmpAppTable = ({
             applicants.map((applicant) => (
               <ApplicantRow
                 key={applicant._id}
+                user={user}
                 applicant={applicant}
                 openStatusId={openStatusId}
                 onStatusOpen={onStatusOpen}
@@ -98,6 +100,7 @@ const EmpAppTable = ({
 };
 
 const ApplicantRow = ({
+  user,
   applicant,
   openStatusId,
   onStatusOpen,
@@ -181,45 +184,58 @@ const ApplicantRow = ({
         </p>
       </td>
 
-      <td className="px-4 py-5">
-        <button
-          type="button"
-          onClick={handleStatusClick}
-          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium  capitalize cursor-pointer transition hover:opacity-80 ${statusClass[applicant?.status] || "bg-zinc-50 text-zinc-700 "
-            }`}
-        >
-          {applicant?.status}
-          <ChevronDown size={13} />
-        </button>
+      {
+        user.role === "employer" ? (
+          <td className="px-4 py-5">
+            <button
+              type="button"
+              onClick={handleStatusClick}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium  capitalize cursor-pointer transition hover:opacity-80 ${statusClass[applicant?.status] || "bg-zinc-50 text-zinc-700 "
+                }`}
+            >
+              {applicant?.status}
+              <ChevronDown size={13} />
+            </button>
 
-        {openStatusId === applicant._id && dropdownPosition && (
-          <div
-            className="fixed z-[9999] w-36 rounded-lg border border-zinc-200 bg-white shadow-xl overflow-hidden"
-            style={{
-              top: `${dropdownPosition.top}px`,
-              left: `${dropdownPosition.left}px`,
-            }}
-          >
-            {statusOptions.map((status) => (
-              <button
-                key={status.value}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onStatusChange(applicant._id, status.value);
-                  setDropdownPosition(null);
+            {openStatusId === applicant._id && dropdownPosition && (
+              <div
+                className="fixed z-[9999] w-36 rounded-lg border border-zinc-200 bg-white shadow-xl overflow-hidden"
+                style={{
+                  top: `${dropdownPosition.top}px`,
+                  left: `${dropdownPosition.left}px`,
                 }}
-                className={`w-full text-left px-3 py-2.5 text-sm transition ${applicant?.status === status.value
-                  ? "bg-blue-50 text-blue-600 font-medium"
-                  : "text-zinc-700 hover:bg-zinc-50 capitalize"
-                  }`}
               >
-                {status.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </td>
+                {statusOptions.map((status) => (
+                  <button
+                    key={status.value}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onStatusChange(applicant._id, status.value);
+                      setDropdownPosition(null);
+                    }}
+                    className={`w-full text-left px-3 py-2.5 text-sm transition ${applicant?.status === status.value
+                      ? "bg-blue-50 text-blue-600 font-medium"
+                      : "text-zinc-700 hover:bg-zinc-50 capitalize"
+                      }`}
+                  >
+                    {status.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </td>
+        ) : (
+          <td className="px-4 py-5">
+            <p
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium  capitalize cursor-pointer transition hover:opacity-80 ${statusClass[applicant?.status] || "bg-zinc-50 text-zinc-700 "
+                }`}
+            >
+              {applicant?.status}
+            </p>
+          </td>
+        )
+      }
 
       <td className="px-4 py-5">
         <button

@@ -24,8 +24,6 @@ const EmpAppFilter = ({
   locationOptions,
   search,
   onSearchChange,
-  experienceFilter,
-  onExperienceChange,
   locationFilter,
   onLocationChange,
   sortBy,
@@ -48,14 +46,6 @@ const EmpAppFilter = ({
             className="w-full h-11 pl-10 pr-4 rounded-lg border border-zinc-300 bg-white text-sm text-zinc-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
           />
         </div>
-
-        <SelectBox value={experienceFilter} onChange={onExperienceChange}>
-          <option>All Experience</option>
-          <option>0-1 Years</option>
-          <option>1-3 Years</option>
-          <option>3-5 Years</option>
-          <option>5+ Years</option>
-        </SelectBox>
 
         <SelectBox value={locationFilter} onChange={onLocationChange}>
           <option value="All Location">All Location</option>

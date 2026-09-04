@@ -8,12 +8,14 @@ import EmpJobsPagination from "../../components/employer/EmpJobsPagination";
 import EmpEditJobPopup from "../../components/popups/EmpEditJobPopup";
 import { DeleteJobPostApI, GetJobData, UpdateJobPostApI } from "../../Services/companeyService";
 import toast from "react-hot-toast";
+import { useAuth } from "../../store/UserContext";
+import { GetAdminAppAndJOBDataApI } from "../../Services/adminService";
 
 
 
 const EmpJobs = () => {
   const navigate = useNavigate();
-  const routeLocation = useLocation();
+  const { user } = useAuth();
 
   const [jobs, setJobs] = useState([]);
 
@@ -138,7 +140,6 @@ const EmpJobs = () => {
   };
 
   const handleSaveEdit = async (updatedJob) => {
-    console.log("data:", updatedJob)
     try {
 
       const data = await UpdateJobPostApI(updatedJob, updatedJob._id);
@@ -182,14 +183,24 @@ const EmpJobs = () => {
   const getData = async () => {
     try {
 
-      const data = await GetJobData();
+      if (user?.role === "employer") {
+        const data = await GetJobData();
 
-      if (!data.success) {
-        return toast.error(data.message)
+        if (!data.success) {
+          return toast.error(data.message)
+        }
+
+        setJobs(data.jobs)
       }
+      else if (user?.role === "admin") {
+        const data = await GetAdminAppAndJOBDataApI();
 
-      setJobs(data.jobs)
+        if (!data.success) {
+          return toast.error(data.message)
+        }
 
+        setJobs(data?.jobs)
+      }
     } catch (error) {
       console.log("emp job err:", error)
     }
@@ -203,12 +214,22 @@ const EmpJobs = () => {
     <div className="min-h-screen  mt-16 bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       <main className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 py-6 md:py-8">
         <div className="flex items-center gap-2 text-sm mb-4">
-          <button
-            onClick={() => navigate("/employer/dashboard")}
-            className="text-blue-600 font-medium hover:text-blue-700"
-          >
-            Dashboard
-          </button>
+          {user?.role === "employer" ? (
+            <button
+              onClick={() => navigate("/employer/dashboard")}
+              className="text-blue-600 font-medium hover:text-blue-700"
+            >
+              Dashboard
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/admin/dashboard")}
+              className="text-blue-600 font-medium hover:text-blue-700"
+            >
+              Dashboard
+            </button>
+          )}
+
 
           <ChevronRight size={15} className="text-zinc-400" />
 
@@ -226,13 +247,17 @@ const EmpJobs = () => {
             </p>
           </div>
 
-          <button
-            onClick={() => navigate("/employer/post/job")}
-            className="flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
-          >
-            <span className="text-lg leading-none">+</span>
-            Post New Job
-          </button>
+
+          {user.role === "employer" && (
+            <button
+              onClick={() => navigate("/employer/post/job")}
+              className="flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+            >
+              <span className="text-lg leading-none">+</span>
+              Post New Job
+            </button>
+          )}
+
         </div>
 
         <div className="bg-white border-b border-zinc-200 overflow-hidden">
@@ -280,6 +305,7 @@ const EmpJobs = () => {
         />
 
         <EmpJobsTable
+          user={user}
           currentJobs={currentJobs}
           onEdit={handleEdit}
           onView={handleView}
