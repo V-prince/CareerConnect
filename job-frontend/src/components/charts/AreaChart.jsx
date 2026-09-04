@@ -32,7 +32,7 @@ export const AdminAreaChart = ({data}) => {
         />
 
         <XAxis
-          dataKey="day"
+          dataKey="month"
           axisLine={false}
           tickLine={false}
         />
@@ -54,7 +54,7 @@ export const AdminAreaChart = ({data}) => {
         <Legend />
 
         <Area
-          type="natural"
+           type="monotone"
           dataKey="users"
           stroke="#7C3AED"
           fill="url(#users)"
@@ -62,7 +62,7 @@ export const AdminAreaChart = ({data}) => {
         />
 
         <Area
-          type="natural"
+          type="monotone"
           dataKey="jobs"
           stroke="#3B82F6"
           fill="url(#jobs)"
@@ -70,7 +70,7 @@ export const AdminAreaChart = ({data}) => {
         />
 
         <Area
-          type="natural"
+           type="monotone"
           dataKey="applications"
           stroke="#22C55E"
           fill="url(#applications)"

@@ -64,7 +64,7 @@ export const Sidebar = ({ isOpen, SetIsOpen }) => {
     {
       icon: <Settings />,
       title: "Settings",
-      to: "/employer/settings",
+      to: "/admin/settings",
     },
   ];
 
