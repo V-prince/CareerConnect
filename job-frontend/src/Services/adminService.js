@@ -29,3 +29,19 @@ export const GetAdminAppAndJOBDataApI = async () => {
     console.log(error)
   }
 }
+
+export const GetAdminManangeDataApI = async () => {
+  try {
+    const res = await fetch(`${MainUrl}/admin/manage/user/data
+`, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    console.log(data)
+    return data;
+  } catch (error) {
+    console.log(error)
+  }
+}
